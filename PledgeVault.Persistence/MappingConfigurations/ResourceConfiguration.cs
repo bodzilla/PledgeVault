@@ -8,6 +8,10 @@ internal sealed class ResourceConfiguration : IEntityTypeConfiguration<Resource>
 {
     public void Configure(EntityTypeBuilder<Resource> builder)
     {
+        builder.Property(x => x.Title).HasMaxLength(250);
+        builder.Property(x => x.SiteUrl).HasMaxLength(250);
+        builder.Property(x => x.Summary).HasMaxLength(10000);
+
         builder.Property(x => x.Title).IsRequired();
         builder.Property(x => x.SiteUrl).IsRequired();
         builder.Property(x => x.ResourceType).IsRequired();

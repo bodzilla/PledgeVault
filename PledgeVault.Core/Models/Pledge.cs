@@ -29,7 +29,7 @@ public sealed class Pledge : EntityBase
 
     public string Summary { get; set; }
 
-    public string FinalStatement { get; set; }
+    public string FulfilledSummary { get; set; }
 
     public int Score { get; set; }
 

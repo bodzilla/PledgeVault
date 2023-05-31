@@ -47,9 +47,11 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -84,16 +86,20 @@ namespace PledgeVault.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LogoUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("SiteUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -129,7 +135,8 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FinalStatement")
+                    b.Property<string>("FulfilledSummary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PledgeCategoryType")
@@ -145,11 +152,13 @@ namespace PledgeVault.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -171,7 +180,8 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<string>("CountryOfBirth")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -188,19 +198,20 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GovernmentTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsPartyLeader")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("PartyId")
                         .HasColumnType("int");
 
                     b.Property<string>("PhotoUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("PositionId")
                         .HasColumnType("int");
@@ -209,6 +220,7 @@ namespace PledgeVault.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -241,11 +253,13 @@ namespace PledgeVault.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 
@@ -280,14 +294,17 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<string>("SiteUrl")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Summary")
+                        .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("Id");
 

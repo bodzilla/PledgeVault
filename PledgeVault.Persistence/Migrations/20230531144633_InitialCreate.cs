@@ -17,10 +17,10 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DateEstablished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GovernmentType = table.Column<int>(type: "int", nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EntityActive = table.Column<bool>(type: "bit", nullable: false)
@@ -36,8 +36,8 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EntityActive = table.Column<bool>(type: "bit", nullable: false)
@@ -53,12 +53,12 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DateEstablished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CountryId = table.Column<int>(type: "int", nullable: false),
-                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogoUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    SiteUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EntityActive = table.Column<bool>(type: "bit", nullable: false)
@@ -80,16 +80,16 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     SexType = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateOfDeath = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CountryOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GovernmentTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CountryOfBirth = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     PartyId = table.Column<int>(type: "int", nullable: false),
                     PositionId = table.Column<int>(type: "int", nullable: false),
-                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPartyLeader = table.Column<bool>(type: "bit", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EntityActive = table.Column<bool>(type: "bit", nullable: false)
@@ -117,14 +117,14 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DatePledged = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateFulfilled = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PledgeCategoryType = table.Column<int>(type: "int", nullable: false),
                     PledgeStatusType = table.Column<int>(type: "int", nullable: false),
                     PoliticianId = table.Column<int>(type: "int", nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FinalStatement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
+                    FulfilledSummary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     Score = table.Column<int>(type: "int", nullable: false),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -147,10 +147,10 @@ namespace PledgeVault.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SiteUrl = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    SiteUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     ResourceType = table.Column<int>(type: "int", nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
                     PledgeId = table.Column<int>(type: "int", nullable: false),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),

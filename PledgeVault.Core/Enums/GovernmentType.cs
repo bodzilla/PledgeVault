@@ -6,5 +6,6 @@ public enum GovernmentType
     Republic = 1,
     Dictatorship = 2,
     Monarchy = 3,
-    Oligarchy = 4
+    Oligarchy = 4,
+    Other = 5
 }

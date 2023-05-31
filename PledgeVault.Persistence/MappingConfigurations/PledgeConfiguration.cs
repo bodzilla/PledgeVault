@@ -8,6 +8,10 @@ internal sealed class PledgeConfiguration : IEntityTypeConfiguration<Pledge>
 {
     public void Configure(EntityTypeBuilder<Pledge> builder)
     {
+        builder.Property(x => x.Title).HasMaxLength(250);
+        builder.Property(x => x.Summary).HasMaxLength(10000);
+        builder.Property(x => x.FulfilledSummary).HasMaxLength(10000);
+
         builder.Property(x => x.Title).IsRequired();
         builder.Property(x => x.DatePledged).IsRequired();
         builder.Property(x => x.PledgeCategoryType).IsRequired();

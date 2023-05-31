@@ -8,6 +8,9 @@ internal sealed class PositionConfiguration : IEntityTypeConfiguration<Position>
 {
     public void Configure(EntityTypeBuilder<Position> builder)
     {
+        builder.Property(x => x.Title).HasMaxLength(250);
+        builder.Property(x => x.Summary).HasMaxLength(10000);
+
         builder.Property(x => x.Title).IsRequired();
         builder.HasIndex(x => x.Title).IsUnique();
 

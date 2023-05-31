@@ -3,7 +3,8 @@
 public enum PledgeStatusType
 {
     Pending = 0,
-    Fulfilled = 1,
-    Broken = 2,
-    Canceled = 3
+    FulfilledExact = 1,
+    FulfilledPartial = 2,
+    Broken = 3,
+    Revoked = 4
 }
