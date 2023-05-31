@@ -25,10 +25,10 @@ public sealed class PledgeService : IPledgeService
         return await _context.Pledges.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<ICollection<Pledge>> GetByPoliticianIdAsync(int politicianId)
+    public async Task<ICollection<Pledge>> GetByPoliticianIdAsync(int id)
     {
-        ValidateExistingId(politicianId);
-        return await _context.Pledges.AsNoTracking().Where(x => x.PoliticianId == politicianId).ToListAsync();
+        ValidateExistingId(id);
+        return await _context.Pledges.AsNoTracking().Where(x => x.PoliticianId == id).ToListAsync();
     }
 
     public async Task<ICollection<Pledge>> GetByTitleAsync(string title)

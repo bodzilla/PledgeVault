@@ -49,6 +49,21 @@ public class PartyController : ControllerBase
         }
     }
 
+
+    [HttpGet("country/{id}")]
+    public async Task<IEnumerable<Party>> GetByCountryIdAsync(int id)
+    {
+        try
+        {
+            return await _service.GetByCountryIdAsync(id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting {nameof(Party)} with {nameof(Party.CountryId)}: '{id}'");
+            throw;
+        }
+    }
+
     [HttpGet("name/{name}")]
     public async Task<IEnumerable<Party>> GetByNameAsync(string name)
     {

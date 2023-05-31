@@ -7,7 +7,7 @@ namespace PledgeVault.Core.Contracts;
 
 public interface IPledgeService : IService<Pledge>, IDisposable
 {
-    Task<ICollection<Pledge>> GetByPoliticianIdAsync(int politicianId);
+    Task<ICollection<Pledge>> GetByPoliticianIdAsync(int id);
 
     Task<ICollection<Pledge>> GetByTitleAsync(string title);
 }

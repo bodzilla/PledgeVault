@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
@@ -24,6 +23,13 @@ public sealed class PartyService : IPartyService
     {
         ValidateExistingId(id);
         return await _context.Parties.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+
+    public async Task<ICollection<Party>> GetByCountryIdAsync(int id)
+    {
+        ValidateExistingId(id);
+        return await _context.Parties.AsNoTracking().Where(x => x.CountryId == id).ToListAsync();
     }
 
     public async Task<ICollection<Party>> GetByNameAsync(string name)
