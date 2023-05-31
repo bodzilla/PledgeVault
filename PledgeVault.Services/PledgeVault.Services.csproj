@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\PledgeVault.Core\PledgeVault.Core.csproj" />
+	  <ProjectReference Include="..\PledgeVault.Persistence\PledgeVault.Persistence.csproj" />
+	</ItemGroup>
+
+</Project>
