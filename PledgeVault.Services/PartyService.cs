@@ -73,7 +73,7 @@ public sealed class PartyService : IPartyService
     private void DetachExternalEntities(Party entity)
     {
         _context.Entry(entity.Country).State = EntityState.Detached;
-        foreach (var party in entity.Politicians) _context.Entry(party).State = EntityState.Detached;
+        foreach (var politician in entity.Politicians) _context.Entry(politician).State = EntityState.Detached;
     }
 
     private static void ValidateNewId(Party entity)
