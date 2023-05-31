@@ -18,7 +18,7 @@ public sealed class PartyService : IPartyService
 
     public async Task<ICollection<Party>> GetAllAsync() => await _context.Parties.AsNoTracking().ToListAsync();
 
-    public async Task<Party> GetAsync(int id)
+    public async Task<Party> GetByIdAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Parties.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);

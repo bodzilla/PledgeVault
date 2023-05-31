@@ -18,7 +18,7 @@ public sealed class ResourceService : IResourceService
 
     public async Task<ICollection<Resource>> GetAllAsync() => await _context.Resources.AsNoTracking().ToListAsync();
 
-    public async Task<Resource> GetAsync(int id)
+    public async Task<Resource> GetByIdAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Resources.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);

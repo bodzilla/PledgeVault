@@ -8,7 +8,7 @@ public interface IService<T> where T : EntityBase
 {
     Task<ICollection<T>> GetAllAsync();
 
-    Task<T> GetAsync(int id);
+    Task<T> GetByIdAsync(int id);
 
     Task<T> AddAsync(T entity);
 

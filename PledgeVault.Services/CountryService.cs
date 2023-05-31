@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
@@ -18,10 +19,16 @@ public sealed class CountryService : ICountryService
 
     public async Task<ICollection<Country>> GetAllAsync() => await _context.Countries.AsNoTracking().ToListAsync();
 
-    public async Task<Country> GetAsync(int id)
+    public async Task<Country> GetByIdAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Countries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Country>> GetByNameAsync(string name)
+    {
+        if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException($"{nameof(Country.Name)} is invalid", nameof(name));
+        return await _context.Countries.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ToListAsync();
     }
 
     public async Task<Country> AddAsync(Country entity)

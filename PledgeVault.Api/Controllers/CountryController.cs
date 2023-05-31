@@ -35,16 +35,30 @@ public class CountryController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<Country> GetAsync(int id)
+    [HttpGet("id/{id:int}")]
+    public async Task<Country> GetByIdAsync(int id)
     {
         try
         {
-            return await _service.GetAsync(id);
+            return await _service.GetByIdAsync(id);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error getting {nameof(Country)} with {nameof(Country.Id)}: '{id}'");
+            throw;
+        }
+    }
+
+    [HttpGet("name/{name}")]
+    public async Task<IEnumerable<Country>> GetByNameAsync(string name)
+    {
+        try
+        {
+            return await _service.GetByNameAsync(name);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting {nameof(Country)} with {nameof(Country.Name)}: '{name}'");
             throw;
         }
     }

@@ -18,7 +18,7 @@ public sealed class PledgeService : IPledgeService
 
     public async Task<ICollection<Pledge>> GetAllAsync() => await _context.Pledges.AsNoTracking().ToListAsync();
 
-    public async Task<Pledge> GetAsync(int id)
+    public async Task<Pledge> GetByIdAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Pledges.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
