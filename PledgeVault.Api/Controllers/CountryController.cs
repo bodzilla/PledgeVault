@@ -78,11 +78,12 @@ public class CountryController : ControllerBase
     }
 
     [HttpPatch("{id:int}")]
-    public async Task<Country> SetInactiveAsync(int id)
+    public async Task<IActionResult> SetInactiveAsync(int id)
     {
         try
         {
-            return await _service.SetInactiveAsync(id);
+            await _service.SetInactiveAsync(id);
+            return NoContent();
         }
         catch (Exception ex)
         {
