@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
@@ -22,6 +23,18 @@ public sealed class PledgeService : IPledgeService
     {
         ValidateExistingId(id);
         return await _context.Pledges.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Pledge>> GetByPoliticianIdAsync(int politicianId)
+    {
+        ValidateExistingId(politicianId);
+        return await _context.Pledges.AsNoTracking().Where(x => x.PoliticianId == politicianId).ToListAsync();
+    }
+
+    public async Task<ICollection<Pledge>> GetByTitleAsync(string title)
+    {
+        if (String.IsNullOrWhiteSpace(title)) throw new ArgumentException($"{nameof(Pledge.Title)} is invalid", nameof(title));
+        return await _context.Pledges.AsNoTracking().Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{title.ToLower()}%")).ToListAsync();
     }
 
     public async Task<Pledge> AddAsync(Pledge entity)
