@@ -40,22 +40,18 @@ public sealed class PartyService : IPartyService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Party> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Parties.FindAsync(id) ?? throw new ArgumentException($"{nameof(Party)} not found", nameof(Party.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Parties.FindAsync(id) ?? throw new ArgumentException($"{nameof(Party)} not found", nameof(Party.Id)), false);
     }
 
-    private async Task<Party> UpdateEntityAndSave(Party entity)
+    private async Task<Party> UpdateEntityAndSave(Party entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Parties.Update(entity);
         await _context.SaveChangesAsync();

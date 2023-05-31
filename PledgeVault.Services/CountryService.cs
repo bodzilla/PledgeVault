@@ -47,22 +47,18 @@ public sealed class CountryService : ICountryService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Country> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Countries.FindAsync(id) ?? throw new ArgumentException($"{nameof(Country)} not found", nameof(Country.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Countries.FindAsync(id) ?? throw new ArgumentException($"{nameof(Country)} not found", nameof(Country.Id)), false);
     }
 
-    private async Task<Country> UpdateEntityAndSave(Country entity)
+    private async Task<Country> UpdateEntityAndSave(Country entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync();

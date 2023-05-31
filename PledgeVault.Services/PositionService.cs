@@ -40,22 +40,18 @@ public sealed class PositionService : IPositionService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Position> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Positions.FindAsync(id) ?? throw new ArgumentException($"{nameof(Position)} not found", nameof(Position.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Positions.FindAsync(id) ?? throw new ArgumentException($"{nameof(Position)} not found", nameof(Position.Id)), false);
     }
 
-    private async Task<Position> UpdateEntityAndSave(Position entity)
+    private async Task<Position> UpdateEntityAndSave(Position entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Positions.Update(entity);
         await _context.SaveChangesAsync();

@@ -40,22 +40,18 @@ public sealed class PoliticianService : IPoliticianService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Politician> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Politicians.FindAsync(id) ?? throw new ArgumentException($"{nameof(Politician)} not found", nameof(Politician.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Politicians.FindAsync(id) ?? throw new ArgumentException($"{nameof(Politician)} not found", nameof(Politician.Id)), false);
     }
 
-    private async Task<Politician> UpdateEntityAndSave(Politician entity)
+    private async Task<Politician> UpdateEntityAndSave(Politician entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
         await _context.SaveChangesAsync();

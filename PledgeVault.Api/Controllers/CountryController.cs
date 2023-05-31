@@ -91,7 +91,7 @@ public class CountryController : ControllerBase
         }
     }
 
-    [HttpPatch("{id:int}")]
+    [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
         try

@@ -40,22 +40,18 @@ public sealed class PledgeService : IPledgeService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Pledge> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Pledges.FindAsync(id) ?? throw new ArgumentException($"{nameof(Pledge)} not found", nameof(Pledge.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Pledges.FindAsync(id) ?? throw new ArgumentException($"{nameof(Pledge)} not found", nameof(Pledge.Id)), false);
     }
 
-    private async Task<Pledge> UpdateEntityAndSave(Pledge entity)
+    private async Task<Pledge> UpdateEntityAndSave(Pledge entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Pledges.Update(entity);
         await _context.SaveChangesAsync();

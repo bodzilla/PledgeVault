@@ -40,22 +40,18 @@ public sealed class ResourceService : IResourceService
         ValidateExistingId(entity.Id);
         ValidateEntity(entity);
 
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(entity, true);
     }
 
     public async Task<Resource> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
-
-        var entity = await _context.Resources.FindAsync(id) ?? throw new ArgumentException($"{nameof(Resource)} not found", nameof(Resource.Id));
-        entity.EntityActive = false;
-
-        return await UpdateEntityAndSave(entity);
+        return await UpdateEntityAndSave(await _context.Resources.FindAsync(id) ?? throw new ArgumentException($"{nameof(Resource)} not found", nameof(Resource.Id)), false);
     }
 
-    private async Task<Resource> UpdateEntityAndSave(Resource entity)
+    private async Task<Resource> UpdateEntityAndSave(Resource entity, bool entityActive)
     {
-        entity.EntityActive = true;
+        entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Resources.Update(entity);
         await _context.SaveChangesAsync();
