@@ -9,6 +9,7 @@ using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
+using Newtonsoft.Json.Converters;
 
 namespace PledgeVault.Api;
 
@@ -20,7 +21,13 @@ public class Program
 
         builder.Services.AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); });
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
-        builder.Services.AddMvc().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
+
+        builder.Services.AddMvc().AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.Converters.Add(new StringEnumConverter()); //TODO: investigate enum serialization in API requests.
+        });
+
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryService, CountryService>();
         builder.Services.AddScoped<IPartyService, PartyService>();
