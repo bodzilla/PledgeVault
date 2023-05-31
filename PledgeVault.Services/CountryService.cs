@@ -18,7 +18,7 @@ public sealed class CountryService : ICountryService
 
     public async Task<ICollection<Country>> GetAllAsync() => await _context.Countries.AsNoTracking().ToListAsync();
 
-    public async Task<Country> GetByIdAsync(int id)
+    public async Task<Country> GetAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Countries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);

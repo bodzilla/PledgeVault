@@ -18,7 +18,7 @@ public sealed class PoliticianService : IPoliticianService
 
     public async Task<ICollection<Politician>> GetAllAsync() => await _context.Politicians.AsNoTracking().ToListAsync();
 
-    public async Task<Politician> GetByIdAsync(int id)
+    public async Task<Politician> GetAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Politicians.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);

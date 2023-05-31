@@ -18,7 +18,7 @@ public sealed class PositionService : IPositionService
 
     public async Task<ICollection<Position>> GetAllAsync() => await _context.Positions.AsNoTracking().ToListAsync();
 
-    public async Task<Position> GetByIdAsync(int id)
+    public async Task<Position> GetAsync(int id)
     {
         ValidateExistingId(id);
         return await _context.Positions.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);

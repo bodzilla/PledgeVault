@@ -20,6 +20,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\PledgeVault.Core\PledgeVault.Core.csproj" />
 	  <ProjectReference Include="..\PledgeVault.Persistence\PledgeVault.Persistence.csproj" />
+	  <ProjectReference Include="..\PledgeVault.Services\PledgeVault.Services.csproj" />
 	</ItemGroup>
 
 </Project>
