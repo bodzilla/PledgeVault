@@ -26,7 +26,7 @@ namespace PledgeVault.Services
         {
             try
             {
-                return await _context.Countries.ToListAsync();
+                return await _context.Countries.AsNoTracking().ToListAsync();
             }
             catch (Exception ex)
             {
@@ -39,26 +39,12 @@ namespace PledgeVault.Services
         {
             try
             {
-                if (id <= 0) throw new ArgumentException($"{nameof(Country.Id)} is invalid", nameof(id));
-                return await _context.Countries.FindAsync(id);
+                ValidateExistingId(id);
+                return await _context.Countries.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"An error occurred while getting {nameof(Country)} by id: {id}");
-                throw;
-            }
-        }
-
-        public async Task<bool> IsExistsByIdAsync(int id)
-        {
-            try
-            {
-                if (id <= 0) throw new ArgumentException($"{nameof(Country.Id)} is invalid", nameof(id));
-                return await _context.Countries.AnyAsync(x => x.Id == id);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"An error occurred while checking if {nameof(Country)} exists by id: {id}");
                 throw;
             }
         }
@@ -68,7 +54,7 @@ namespace PledgeVault.Services
             try
             {
                 ValidateEntity(entity);
-                if (entity.Id != 0) throw new ArgumentException($"{nameof(Country.Id)} should not be set", nameof(Country));
+                ValidateNewId(entity);
 
                 await _context.Countries.AddAsync(entity);
                 await _context.SaveChangesAsync();
@@ -85,8 +71,8 @@ namespace PledgeVault.Services
         {
             try
             {
+                ValidateExistingId(entity.Id);
                 ValidateEntity(entity);
-                if (entity.Id <= 0) throw new ArgumentException($"{nameof(Country.Id)} is invalid", nameof(entity));
 
                 entity.EntityModified = DateTime.Now;
                 _context.Countries.Update(entity);
@@ -104,10 +90,9 @@ namespace PledgeVault.Services
         {
             try
             {
-                if (id <= 0) throw new ArgumentException($"{nameof(Country.Id)} is invalid", nameof(id));
+                ValidateExistingId(id);
 
-                var entity = await _context.Countries.FindAsync(id) ?? throw new ArgumentException($"{nameof(Country)} not found", nameof(id));
-
+                var entity = await _context.Countries.FindAsync(id) ?? throw new ArgumentException($"{nameof(Country)} not found", nameof(Country.Id));
                 entity.EntityActive = false;
                 entity.EntityModified = DateTime.Now;
                 _context.Countries.Update(entity);
@@ -121,11 +106,24 @@ namespace PledgeVault.Services
             }
         }
 
-        private static void ValidateEntity(Country entity)
+        private void ValidateEntity(Country entity)
         {
             if (entity is null) throw new ArgumentNullException(nameof(entity));
             if (String.IsNullOrWhiteSpace(entity.Name)) throw new ArgumentException($"{nameof(Country.Name)} is invalid", nameof(entity));
             if (entity.DateEstablished.HasValue && entity.DateEstablished.Value > DateTime.Now) throw new ArgumentException($"{nameof(Country.DateEstablished)} is invalid", nameof(entity));
+
+            // Detach related entities to prevent EF from trying to add/update/delete them.
+            foreach (var party in entity.Parties) _context.Entry(party).State = EntityState.Detached;
+        }
+
+        private static void ValidateNewId(Country entity)
+        {
+            if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Country.Id)} should not be set", nameof(Country));
+        }
+
+        private static void ValidateExistingId(int id)
+        {
+            if (id <= 0) throw new ArgumentException($"{nameof(Country.Id)} is invalid", nameof(id));
         }
     }
 }
