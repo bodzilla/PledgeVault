@@ -85,7 +85,7 @@ public sealed class CountryService : ICountryService
 
     private static void ValidateNewId(Country entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Country.Id)} should not be set", nameof(Country.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Country.Id)} should not be set", nameof(Country.Id));
     }
 
     private static void ValidateExistingId(int id)

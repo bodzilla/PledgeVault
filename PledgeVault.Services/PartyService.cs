@@ -79,7 +79,7 @@ public sealed class PartyService : IPartyService
 
     private static void ValidateNewId(Party entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Party.Id)} should not be set", nameof(Party.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Party.Id)} should not be set", nameof(Party.Id));
     }
 
     private static void ValidateExistingId(int id)

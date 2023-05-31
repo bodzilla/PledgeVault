@@ -71,7 +71,7 @@ public sealed class ResourceService : IResourceService
 
     private static void ValidateNewId(Resource entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Resource.Id)} should not be set", nameof(Resource.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Resource.Id)} should not be set", nameof(Resource.Id));
     }
 
     private static void ValidateExistingId(int id)

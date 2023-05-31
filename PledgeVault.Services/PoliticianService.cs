@@ -81,7 +81,7 @@ public sealed class PoliticianService : IPoliticianService
 
     private static void ValidateNewId(Politician entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Politician.Id)} should not be set", nameof(Politician.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Politician.Id)} should not be set", nameof(Politician.Id));
     }
 
     private static void ValidateExistingId(int id)

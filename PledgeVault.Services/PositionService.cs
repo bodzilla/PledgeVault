@@ -77,7 +77,7 @@ public sealed class PositionService : IPositionService
 
     private static void ValidateNewId(Position entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Position.Id)} should not be set", nameof(Position.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Position.Id)} should not be set", nameof(Position.Id));
     }
 
     private static void ValidateExistingId(int id)

@@ -80,7 +80,7 @@ public sealed class PledgeService : IPledgeService
 
     private static void ValidateNewId(Pledge entity)
     {
-        if (entity?.Id != 0) throw new ArgumentException($"{nameof(Pledge.Id)} should not be set", nameof(Pledge.Id));
+        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Pledge.Id)} should not be set", nameof(Pledge.Id));
     }
 
     private static void ValidateExistingId(int id)
