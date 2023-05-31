@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using PledgeVault.Api.Conventions;
+using PledgeVault.Api.Middleware;
 using PledgeVault.Persistence;
 
 namespace PledgeVault.Api;
@@ -32,6 +33,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
+        app.UseMiddleware<ExceptionMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
