@@ -23,12 +23,17 @@ public class Program
         builder.Services.AddMvc().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryService, CountryService>();
+        builder.Services.AddScoped<IPartyService, PartyService>();
+        builder.Services.AddScoped<IPledgeService, PledgeService>();
+        builder.Services.AddScoped<IPoliticianService, PoliticianService>();
+        builder.Services.AddScoped<IPositionService, PositionService>();
+        builder.Services.AddScoped<IResourceService, ResourceService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        var app = builder.Build();
+        using var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {

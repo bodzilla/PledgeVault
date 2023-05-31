@@ -70,7 +70,7 @@ public sealed class PledgeService : IPledgeService
 
     private void DetachExternalEntities(Pledge entity)
     {
-        _context.Entry(entity.Politician).State = EntityState.Detached;
+        if (entity.Politician is not null) _context.Entry(entity.Politician).State = EntityState.Detached;
         foreach (var resource in entity.Resources) _context.Entry(resource).State = EntityState.Detached;
     }
 

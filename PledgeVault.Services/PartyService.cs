@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
@@ -22,6 +24,12 @@ public sealed class PartyService : IPartyService
     {
         ValidateExistingId(id);
         return await _context.Parties.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Party>> GetByNameAsync(string name)
+    {
+        if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException($"{nameof(Party.Name)} is invalid", nameof(name));
+        return await _context.Parties.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ToListAsync();
     }
 
     public async Task<Party> AddAsync(Party entity)
@@ -69,7 +77,7 @@ public sealed class PartyService : IPartyService
 
     private void DetachExternalEntities(Party entity)
     {
-        _context.Entry(entity.Country).State = EntityState.Detached;
+        if (entity.Country is not null) _context.Entry(entity.Country).State = EntityState.Detached;
         foreach (var politician in entity.Politicians) _context.Entry(politician).State = EntityState.Detached;
     }
 

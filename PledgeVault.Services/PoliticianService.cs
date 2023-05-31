@@ -70,8 +70,8 @@ public sealed class PoliticianService : IPoliticianService
 
     private void DetachExternalEntities(Politician entity)
     {
-        _context.Entry(entity.Party).State = EntityState.Detached;
-        _context.Entry(entity.Position).State = EntityState.Detached;
+        if (entity.Party is not null) _context.Entry(entity.Party).State = EntityState.Detached;
+        if (entity.Position is not null) _context.Entry(entity.Position).State = EntityState.Detached;
         foreach (var pledge in entity.Pledges) _context.Entry(pledge).State = EntityState.Detached;
     }
 
