@@ -78,7 +78,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpPatch("{id:int}")]
-    public async Task<Country> Delete(int id)
+    public async Task<Country> SetInactiveAsync(int id)
     {
         try
         {
