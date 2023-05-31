@@ -62,6 +62,7 @@ public sealed class CountryService : ICountryService
 
     private async Task<Country> UpdateEntityAndSave(Country entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync();

@@ -55,6 +55,7 @@ public sealed class PledgeService : IPledgeService
 
     private async Task<Pledge> UpdateEntityAndSave(Pledge entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Pledges.Update(entity);
         await _context.SaveChangesAsync();

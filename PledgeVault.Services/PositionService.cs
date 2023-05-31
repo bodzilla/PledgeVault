@@ -55,6 +55,7 @@ public sealed class PositionService : IPositionService
 
     private async Task<Position> UpdateEntityAndSave(Position entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Positions.Update(entity);
         await _context.SaveChangesAsync();

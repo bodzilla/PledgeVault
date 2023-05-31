@@ -55,6 +55,7 @@ public sealed class PartyService : IPartyService
 
     private async Task<Party> UpdateEntityAndSave(Party entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Parties.Update(entity);
         await _context.SaveChangesAsync();

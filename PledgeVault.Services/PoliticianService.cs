@@ -55,6 +55,7 @@ public sealed class PoliticianService : IPoliticianService
 
     private async Task<Politician> UpdateEntityAndSave(Politician entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
         await _context.SaveChangesAsync();

@@ -55,6 +55,7 @@ public sealed class ResourceService : IResourceService
 
     private async Task<Resource> UpdateEntityAndSave(Resource entity)
     {
+        entity.EntityActive = true;
         entity.EntityModified = DateTime.Now;
         _context.Resources.Update(entity);
         await _context.SaveChangesAsync();
