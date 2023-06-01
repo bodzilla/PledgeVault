@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -12,8 +14,13 @@ namespace PledgeVault.Services;
 public sealed class PartyService : IPartyService
 {
     private readonly PledgeVaultContext _context;
+    private readonly IMapper _mapper;
 
-    public PartyService(PledgeVaultContext context) => _context = context;
+    public PartyService(PledgeVaultContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public void Dispose() => _context?.Dispose();
 
@@ -38,24 +45,16 @@ public sealed class PartyService : IPartyService
         return await _context.Parties.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ToListAsync();
     }
 
-    public async Task<Party> AddAsync(Party entity)
+    public async Task<Party> AddAsync(AddPartyRequest request)
     {
-        ValidateEntity(entity);
-        ValidateNewId(entity);
-
+        var entity = _mapper.Map<Party>(request);
         await _context.Parties.AddAsync(entity);
         await _context.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Party> UpdateAsync(Party entity)
-    {
-        ValidateExistingId(entity.Id);
-        ValidateEntity(entity);
+    public async Task<Party> UpdateAsync(UpdatePartyRequest request) => await UpdateEntityAndSave(_mapper.Map<Party>(request), true);
 
-        return await UpdateEntityAndSave(entity, true);
-    }
 
     public async Task<Party> SetInactiveAsync(int id)
     {
@@ -69,27 +68,7 @@ public sealed class PartyService : IPartyService
         entity.EntityModified = DateTime.Now;
         _context.Parties.Update(entity);
         await _context.SaveChangesAsync();
-
         return entity;
-    }
-
-    private void ValidateEntity(Party entity)
-    {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
-        if (String.IsNullOrWhiteSpace(entity.Name)) throw new ArgumentException($"{nameof(Party.Name)} is invalid", nameof(entity.Name));
-        if (entity.DateEstablished.HasValue && entity.DateEstablished.Value > DateTime.Now) throw new ArgumentException($"{nameof(Party.DateEstablished)} is invalid", nameof(entity.DateEstablished));
-        DetachExternalEntities(entity);
-    }
-
-    private void DetachExternalEntities(Party entity)
-    {
-        if (entity.Country is not null) _context.Entry(entity.Country).State = EntityState.Detached;
-        foreach (var politician in entity.Politicians) _context.Entry(politician).State = EntityState.Detached;
-    }
-
-    private static void ValidateNewId(Party entity)
-    {
-        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Party.Id)} should not be set", nameof(Party.Id));
     }
 
     private static void ValidateExistingId(int id)

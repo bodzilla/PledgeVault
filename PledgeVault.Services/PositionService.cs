@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -11,8 +13,13 @@ namespace PledgeVault.Services;
 public sealed class PositionService : IPositionService
 {
     private readonly PledgeVaultContext _context;
+    private readonly IMapper _mapper;
 
-    public PositionService(PledgeVaultContext context) => _context = context;
+    public PositionService(PledgeVaultContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public void Dispose() => _context?.Dispose();
 
@@ -24,24 +31,16 @@ public sealed class PositionService : IPositionService
         return await _context.Positions.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Position> AddAsync(Position entity)
+    public async Task<Position> AddAsync(AddPositionRequest request)
     {
-        ValidateEntity(entity);
-        ValidateNewId(entity);
-
+        var entity = _mapper.Map<Position>(request);
         await _context.Positions.AddAsync(entity);
         await _context.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Position> UpdateAsync(Position entity)
-    {
-        ValidateExistingId(entity.Id);
-        ValidateEntity(entity);
+    public async Task<Position> UpdateAsync(UpdatePositionRequest request) => await UpdateEntityAndSave(_mapper.Map<Position>(request), true);
 
-        return await UpdateEntityAndSave(entity, true);
-    }
 
     public async Task<Position> SetInactiveAsync(int id)
     {
@@ -55,25 +54,7 @@ public sealed class PositionService : IPositionService
         entity.EntityModified = DateTime.Now;
         _context.Positions.Update(entity);
         await _context.SaveChangesAsync();
-
         return entity;
-    }
-
-    private void ValidateEntity(Position entity)
-    {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
-        if (String.IsNullOrWhiteSpace(entity.Title)) throw new ArgumentException($"{nameof(Position.Title)} is invalid", nameof(entity.Title));
-        DetachExternalEntities(entity);
-    }
-
-    private void DetachExternalEntities(Position entity)
-    {
-        foreach (var politician in entity.Politicians) _context.Entry(politician).State = EntityState.Detached;
-    }
-
-    private static void ValidateNewId(Position entity)
-    {
-        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Position.Id)} should not be set", nameof(Position.Id));
     }
 
     private static void ValidateExistingId(int id)

@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using PledgeVault.Core.Enums;
 using System;
-using PledgeVault.Core.Base;
-using PledgeVault.Core.Enums;
+using PledgeVault.Core.Contracts;
 
-namespace PledgeVault.Core.Models;
+namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class Politician : EntityBase
+public sealed class UpdatePoliticianRequest : IRequest
 {
-    public Politician() => Pledges = new List<Pledge>();
+    public int Id { get; set; }
 
     public string Name { get; set; }
 
@@ -21,17 +20,11 @@ public sealed class Politician : EntityBase
 
     public int PartyId { get; set; }
 
-    public Party Party { get; set; }
-
     public int PositionId { get; set; }
-
-    public Position Position { get; set; }
 
     public bool IsPartyLeader { get; set; }
 
     public string PhotoUrl { get; set; }
 
     public string Summary { get; set; }
-
-    public ICollection<Pledge> Pledges { get; set; }
 }

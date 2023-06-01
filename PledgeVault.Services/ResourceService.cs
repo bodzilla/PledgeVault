@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -11,8 +13,13 @@ namespace PledgeVault.Services;
 public sealed class ResourceService : IResourceService
 {
     private readonly PledgeVaultContext _context;
+    private readonly IMapper _mapper;
 
-    public ResourceService(PledgeVaultContext context) => _context = context;
+    public ResourceService(PledgeVaultContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public void Dispose() => _context?.Dispose();
 
@@ -24,24 +31,16 @@ public sealed class ResourceService : IResourceService
         return await _context.Resources.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Resource> AddAsync(Resource entity)
+    public async Task<Resource> AddAsync(AddResourceRequest request)
     {
-        ValidateEntity(entity);
-        ValidateNewId(entity);
-
+        var entity = _mapper.Map<Resource>(request);
         await _context.Resources.AddAsync(entity);
         await _context.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Resource> UpdateAsync(Resource entity)
-    {
-        ValidateExistingId(entity.Id);
-        ValidateEntity(entity);
+    public async Task<Resource> UpdateAsync(UpdateResourceRequest request) => await UpdateEntityAndSave(_mapper.Map<Resource>(request), true);
 
-        return await UpdateEntityAndSave(entity, true);
-    }
 
     public async Task<Resource> SetInactiveAsync(int id)
     {
@@ -55,19 +54,7 @@ public sealed class ResourceService : IResourceService
         entity.EntityModified = DateTime.Now;
         _context.Resources.Update(entity);
         await _context.SaveChangesAsync();
-
         return entity;
-    }
-
-    private void ValidateEntity(Resource entity)
-    {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
-        if (String.IsNullOrWhiteSpace(entity.Title)) throw new ArgumentException($"{nameof(Resource.Title)} is invalid", nameof(entity.Title));
-    }
-
-    private static void ValidateNewId(Resource entity)
-    {
-        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Resource.Id)} should not be set", nameof(Resource.Id));
     }
 
     private static void ValidateExistingId(int id)

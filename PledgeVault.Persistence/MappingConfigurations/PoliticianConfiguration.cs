@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Models;
 
@@ -19,6 +20,8 @@ internal sealed class PoliticianConfiguration : IEntityTypeConfiguration<Politic
         builder.Property(x => x.SexType).IsRequired();
         builder.Property(x => x.DateOfBirth).IsRequired();
         builder.Property(x => x.CountryOfBirth).IsRequired();
+
+        builder.HasIndex(x => new { x.Name, x.DateOfBirth, x.PartyId }).IsUnique();
 
         builder.HasMany(x => x.Pledges)
             .WithOne(x => x.Politician)

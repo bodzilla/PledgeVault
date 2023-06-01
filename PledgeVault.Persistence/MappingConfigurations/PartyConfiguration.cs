@@ -14,7 +14,8 @@ internal sealed class PartyConfiguration : IEntityTypeConfiguration<Party>
         builder.Property(x => x.Summary).HasMaxLength(10000);
 
         builder.Property(x => x.Name).IsRequired();
-        builder.HasIndex(x => x.Name).IsUnique();
+
+        builder.HasIndex(x => new { x.Name, x.CountryId }).IsUnique();
 
         builder.HasMany(x => x.Politicians)
             .WithOne(x => x.Party)

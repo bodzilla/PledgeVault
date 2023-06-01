@@ -1,13 +1,12 @@
-﻿using PledgeVault.Core.Base;
+﻿using PledgeVault.Core.Enums;
 using System;
-using System.Collections.Generic;
-using PledgeVault.Core.Enums;
+using PledgeVault.Core.Contracts;
 
-namespace PledgeVault.Core.Models;
+namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class Pledge : EntityBase
+public sealed class UpdatePledgeRequest : IRequest
 {
-    public Pledge() => Resources = new List<Resource>();
+    public int Id { get; set; }
 
     public string Title { get; set; }
 
@@ -21,13 +20,9 @@ public sealed class Pledge : EntityBase
 
     public int PoliticianId { get; set; }
 
-    public Politician Politician { get; set; }
-
     public string Summary { get; set; }
 
     public string FulfilledSummary { get; set; }
 
     public int Score { get; set; }
-
-    public ICollection<Resource> Resources { get; set; }
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -12,8 +14,13 @@ namespace PledgeVault.Services;
 public sealed class CountryService : ICountryService
 {
     private readonly PledgeVaultContext _context;
+    private readonly IMapper _mapper;
 
-    public CountryService(PledgeVaultContext context) => _context = context;
+    public CountryService(PledgeVaultContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public void Dispose() => _context?.Dispose();
 
@@ -31,24 +38,15 @@ public sealed class CountryService : ICountryService
         return await _context.Countries.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ToListAsync();
     }
 
-    public async Task<Country> AddAsync(Country entity)
+    public async Task<Country> AddAsync(AddCountryRequest request)
     {
-        ValidateEntity(entity);
-        ValidateNewId(entity);
-
+        var entity = _mapper.Map<Country>(request);
         await _context.Countries.AddAsync(entity);
         await _context.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Country> UpdateAsync(Country entity)
-    {
-        ValidateExistingId(entity.Id);
-        ValidateEntity(entity);
-
-        return await UpdateEntityAndSave(entity, true);
-    }
+    public async Task<Country> UpdateAsync(UpdateCountryRequest request) => await UpdateEntityAndSave(_mapper.Map<Country>(request), true);
 
     public async Task<Country> SetInactiveAsync(int id)
     {
@@ -62,26 +60,7 @@ public sealed class CountryService : ICountryService
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync();
-
         return entity;
-    }
-
-    private void ValidateEntity(Country entity)
-    {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
-        if (String.IsNullOrWhiteSpace(entity.Name)) throw new ArgumentException($"{nameof(Country.Name)} is invalid", nameof(entity.Name));
-        if (entity.DateEstablished.HasValue && entity.DateEstablished.Value > DateTime.Now) throw new ArgumentException($"{nameof(Country.DateEstablished)} is invalid", nameof(entity.DateEstablished));
-        DetachExternalEntities(entity);
-    }
-
-    private void DetachExternalEntities(Country entity)
-    {
-        foreach (var party in entity.Parties) _context.Entry(party).State = EntityState.Detached;
-    }
-
-    private static void ValidateNewId(Country entity)
-    {
-        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Country.Id)} should not be set", nameof(Country.Id));
     }
 
     private static void ValidateExistingId(int id)

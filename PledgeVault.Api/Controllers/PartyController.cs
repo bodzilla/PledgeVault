@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -79,7 +80,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Party> AddAsync(Party request)
+    public async Task<Party> AddAsync(AddPartyRequest request)
     {
         try
         {
@@ -87,13 +88,13 @@ public class PartyController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error adding {nameof(Party)}");
+            _logger.LogError(ex, $"Error adding {nameof(AddPartyRequest)}");
             throw;
         }
     }
 
     [HttpPut]
-    public async Task<Party> UpdateAsync(Party request)
+    public async Task<Party> UpdateAsync(UpdatePartyRequest request)
     {
         try
         {
@@ -101,7 +102,7 @@ public class PartyController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error updating {nameof(Party)}");
+            _logger.LogError(ex, $"Error updating {nameof(UpdatePartyRequest)}");
             throw;
         }
     }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -64,7 +65,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Country> AddAsync(Country request)
+    public async Task<Country> AddAsync(AddCountryRequest request)
     {
         try
         {
@@ -72,13 +73,13 @@ public class CountryController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error adding {nameof(Country)}");
+            _logger.LogError(ex, $"Error adding {nameof(AddCountryRequest)}");
             throw;
         }
     }
 
     [HttpPut]
-    public async Task<Country> UpdateAsync(Country request)
+    public async Task<Country> UpdateAsync(UpdateCountryRequest request)
     {
         try
         {
@@ -86,7 +87,7 @@ public class CountryController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error updating {nameof(Country)}");
+            _logger.LogError(ex, $"Error updating {nameof(UpdateCountryRequest)}");
             throw;
         }
     }

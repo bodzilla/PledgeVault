@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -12,8 +14,13 @@ namespace PledgeVault.Services;
 public sealed class PledgeService : IPledgeService
 {
     private readonly PledgeVaultContext _context;
+    private readonly IMapper _mapper;
 
-    public PledgeService(PledgeVaultContext context) => _context = context;
+    public PledgeService(PledgeVaultContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+    }
 
     public void Dispose() => _context?.Dispose();
 
@@ -37,24 +44,16 @@ public sealed class PledgeService : IPledgeService
         return await _context.Pledges.AsNoTracking().Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{title.ToLower()}%")).ToListAsync();
     }
 
-    public async Task<Pledge> AddAsync(Pledge entity)
+    public async Task<Pledge> AddAsync(AddPledgeRequest request)
     {
-        ValidateEntity(entity);
-        ValidateNewId(entity);
-
+        var entity = _mapper.Map<Pledge>(request);
         await _context.Pledges.AddAsync(entity);
         await _context.SaveChangesAsync();
-
         return entity;
     }
 
-    public async Task<Pledge> UpdateAsync(Pledge entity)
-    {
-        ValidateExistingId(entity.Id);
-        ValidateEntity(entity);
+    public async Task<Pledge> UpdateAsync(UpdatePledgeRequest request) => await UpdateEntityAndSave(_mapper.Map<Pledge>(request), true);
 
-        return await UpdateEntityAndSave(entity, true);
-    }
 
     public async Task<Pledge> SetInactiveAsync(int id)
     {
@@ -68,28 +67,7 @@ public sealed class PledgeService : IPledgeService
         entity.EntityModified = DateTime.Now;
         _context.Pledges.Update(entity);
         await _context.SaveChangesAsync();
-
         return entity;
-    }
-
-    private void ValidateEntity(Pledge entity)
-    {
-        if (entity is null) throw new ArgumentNullException(nameof(entity));
-        if (String.IsNullOrWhiteSpace(entity.Title)) throw new ArgumentException($"{nameof(Pledge.Title)} is invalid", nameof(entity.Title));
-        if (entity.DatePledged > DateTime.Now) throw new ArgumentException($"{nameof(Pledge.DatePledged)} is invalid", nameof(entity.DatePledged));
-        if (entity.DateFulfilled.HasValue && entity.DateFulfilled.Value > DateTime.Now) throw new ArgumentException($"{nameof(Pledge.DateFulfilled)} is invalid", nameof(entity.DateFulfilled));
-        DetachExternalEntities(entity);
-    }
-
-    private void DetachExternalEntities(Pledge entity)
-    {
-        if (entity.Politician is not null) _context.Entry(entity.Politician).State = EntityState.Detached;
-        foreach (var resource in entity.Resources) _context.Entry(resource).State = EntityState.Detached;
-    }
-
-    private static void ValidateNewId(Pledge entity)
-    {
-        if (entity?.Id is not 0) throw new ArgumentException($"{nameof(Pledge.Id)} should not be set", nameof(Pledge.Id));
     }
 
     private static void ValidateExistingId(int id)

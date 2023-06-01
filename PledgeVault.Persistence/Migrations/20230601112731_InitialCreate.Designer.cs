@@ -12,7 +12,7 @@ using PledgeVault.Persistence;
 namespace PledgeVault.Persistence.Migrations
 {
     [DbContext(typeof(PledgeVaultContext))]
-    [Migration("20230531144633_InitialCreate")]
+    [Migration("20230601112731_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -109,7 +109,7 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "CountryId")
                         .IsUnique();
 
                     b.ToTable("Parties");
@@ -234,6 +234,9 @@ namespace PledgeVault.Persistence.Migrations
                     b.HasIndex("PartyId");
 
                     b.HasIndex("PositionId");
+
+                    b.HasIndex("Name", "DateOfBirth", "PartyId")
+                        .IsUnique();
 
                     b.ToTable("Politicians");
                 });

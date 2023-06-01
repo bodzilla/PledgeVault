@@ -179,9 +179,9 @@ namespace PledgeVault.Persistence.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Parties_Name",
+                name: "IX_Parties_Name_CountryId",
                 table: "Parties",
-                column: "Name",
+                columns: new[] { "Name", "CountryId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -199,6 +199,12 @@ namespace PledgeVault.Persistence.Migrations
                 name: "IX_Politicians_Name",
                 table: "Politicians",
                 column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Politicians_Name_DateOfBirth_PartyId",
+                table: "Politicians",
+                columns: new[] { "Name", "DateOfBirth", "PartyId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

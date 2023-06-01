@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -78,7 +79,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Pledge> AddAsync(Pledge request)
+    public async Task<Pledge> AddAsync(AddPledgeRequest request)
     {
         try
         {
@@ -86,13 +87,13 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error adding {nameof(Pledge)}");
+            _logger.LogError(ex, $"Error adding {nameof(AddPledgeRequest)}");
             throw;
         }
     }
 
     [HttpPut]
-    public async Task<Pledge> UpdateAsync(Pledge request)
+    public async Task<Pledge> UpdateAsync(UpdatePledgeRequest request)
     {
         try
         {
@@ -100,7 +101,7 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error updating {nameof(Pledge)}");
+            _logger.LogError(ex, $"Error updating {nameof(UpdatePledgeRequest)}");
             throw;
         }
     }
