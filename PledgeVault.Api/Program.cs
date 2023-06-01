@@ -6,16 +6,12 @@ using Microsoft.Extensions.Hosting;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts;
-using PledgeVault.Core.Models.Validators;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using PledgeVault.Core.Dtos.MappingProfiles.Requests;
-using AutoMapper;
-using PledgeVault.Core.Dtos.Requests;
 using System;
 
 namespace PledgeVault.Api;
@@ -35,19 +31,8 @@ public class Program
 
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddCountryRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddPartyRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddPledgeRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddPoliticianRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddPositionRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<AddResourceRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdateCountryRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdatePartyRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdatePledgeRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdatePoliticianRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdatePositionRequestValidator>();
-        builder.Services.AddValidatorsFromAssemblyContaining<UpdateResourceRequestValidator>();
 
+        builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
