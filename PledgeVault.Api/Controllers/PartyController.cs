@@ -51,7 +51,7 @@ public class PartyController : ControllerBase
     }
 
 
-    [HttpGet("country/{id}")]
+    [HttpGet("country/{id:int}")]
     public async Task<IEnumerable<Party>> GetByCountryIdAsync(int id)
     {
         try

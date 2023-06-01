@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,18 @@ public sealed class PoliticianService : IPoliticianService
     {
         ValidateExistingId(id);
         return await _context.Politicians.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Politician>> GetByPartyIdAsync(int id)
+    {
+        ValidateExistingId(id);
+        return await _context.Politicians.AsNoTracking().Where(x => x.PartyId == id).ToListAsync();
+    }
+
+    public async Task<ICollection<Politician>> GetByNameAsync(string name)
+    {
+        if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException($"{nameof(Politician.Name)} is invalid", nameof(name));
+        return await _context.Politicians.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ToListAsync();
     }
 
     public async Task<Politician> AddAsync(AddPoliticianRequest request)

@@ -32,7 +32,6 @@ public sealed class PartyService : IPartyService
         return await _context.Parties.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
 
-
     public async Task<ICollection<Party>> GetByCountryIdAsync(int id)
     {
         ValidateExistingId(id);

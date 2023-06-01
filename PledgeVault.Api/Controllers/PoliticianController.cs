@@ -11,19 +11,19 @@ namespace PledgeVault.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PledgeController : ControllerBase
+public class PoliticianController : ControllerBase
 {
-    private readonly ILogger<PledgeController> _logger;
-    private readonly IPledgeService _service;
+    private readonly ILogger<PoliticianController> _logger;
+    private readonly IPoliticianService _service;
 
-    public PledgeController(ILogger<PledgeController> logger, IPledgeService service)
+    public PoliticianController(ILogger<PoliticianController> logger, IPoliticianService service)
     {
         _logger = logger;
         _service = service;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Pledge>> GetAllAsync()
+    public async Task<IEnumerable<Politician>> GetAllAsync()
     {
         try
         {
@@ -31,13 +31,13 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting all {nameof(Pledge)}");
+            _logger.LogError(ex, $"Error getting all {nameof(Politician)}");
             throw;
         }
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Pledge> GetByIdAsync(int id)
+    public async Task<Politician> GetByIdAsync(int id)
     {
         try
         {
@@ -45,41 +45,42 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.Id)}: '{id}'");
+            _logger.LogError(ex, $"Error getting {nameof(Politician)} with {nameof(Politician.Id)}: '{id}'");
             throw;
         }
     }
 
-    [HttpGet("politician/{id:int}")]
-    public async Task<IEnumerable<Pledge>> GetByPoliticianIdAsync(int id)
+
+    [HttpGet("party/{id:int}")]
+    public async Task<IEnumerable<Politician>> GetByPartyIdAsync(int id)
     {
         try
         {
-            return await _service.GetByPoliticianIdAsync(id);
+            return await _service.GetByPartyIdAsync(id);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.PoliticianId)}: '{id}'");
+            _logger.LogError(ex, $"Error getting {nameof(Politician)} with {nameof(Politician.PartyId)}: '{id}'");
             throw;
         }
     }
 
-    [HttpGet("title/{title}")]
-    public async Task<IEnumerable<Pledge>> GetByTitleAsync(string title)
+    [HttpGet("name/{name}")]
+    public async Task<IEnumerable<Politician>> GetByNameAsync(string name)
     {
         try
         {
-            return await _service.GetByTitleAsync(title);
+            return await _service.GetByNameAsync(name);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.Title)}: '{title}'");
+            _logger.LogError(ex, $"Error getting {nameof(Politician)} with {nameof(Politician.Name)}: '{name}'");
             throw;
         }
     }
 
     [HttpPost]
-    public async Task<Pledge> AddAsync(AddPledgeRequest request)
+    public async Task<Politician> AddAsync(AddPoliticianRequest request)
     {
         try
         {
@@ -87,13 +88,13 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error adding {nameof(AddPledgeRequest)}");
+            _logger.LogError(ex, $"Error adding {nameof(AddPoliticianRequest)}");
             throw;
         }
     }
 
     [HttpPut]
-    public async Task<Pledge> UpdateAsync(UpdatePledgeRequest request)
+    public async Task<Politician> UpdateAsync(UpdatePoliticianRequest request)
     {
         try
         {
@@ -101,7 +102,7 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error updating {nameof(UpdatePledgeRequest)}");
+            _logger.LogError(ex, $"Error updating {nameof(UpdatePoliticianRequest)}");
             throw;
         }
     }
@@ -116,7 +117,7 @@ public class PledgeController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error setting {nameof(Pledge)} inactive with {nameof(Pledge.Id)}: '{id}'");
+            _logger.LogError(ex, $"Error setting {nameof(Politician)} inactive with {nameof(Politician.Id)}: '{id}'");
             throw;
         }
     }
