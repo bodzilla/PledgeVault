@@ -2,7 +2,7 @@
 
 public enum PledgeStatusType
 {
-    Committed = 0,
+    Open = 0,
     FulfilledExact = 1,
     FulfilledPartial = 2,
     Failed = 3,
