@@ -56,7 +56,6 @@ public sealed class PartyService : IPartyService
 
     public async Task<PartyResponse> UpdateAsync(UpdatePartyRequest request) => await UpdateEntityAndSave(_mapper.Map<Party>(request), true);
 
-
     public async Task<PartyResponse> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
