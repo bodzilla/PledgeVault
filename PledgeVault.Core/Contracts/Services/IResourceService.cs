@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using PledgeVault.Core.Dtos.Responses;
 
-namespace PledgeVault.Core.Contracts;
+namespace PledgeVault.Core.Contracts.Services;
 
 public interface IResourceService : IService<AddResourceRequest, UpdateResourceRequest, ResourceResponse>, IDisposable
 {

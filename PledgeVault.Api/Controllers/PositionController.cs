@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;

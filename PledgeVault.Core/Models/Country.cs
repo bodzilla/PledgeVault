@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using PledgeVault.Core.Base;
+using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Enums;
 
 namespace PledgeVault.Core.Models;
 
-public sealed class Country : EntityBase
+public sealed class Country : IEntity
 {
-    public Country() => Parties = new List<Party>();
+    public Country()
+    {
+        EntityCreated = DateTime.Now;
+        EntityActive = true;
+        Parties = new List<Party>();
+    }
+
+    public int Id { get; set; }
+
+    public DateTime EntityCreated { get; set; }
+
+    public DateTime? EntityModified { get; set; }
+
+    public bool EntityActive { get; set; }
 
     public string Name { get; set; }
 

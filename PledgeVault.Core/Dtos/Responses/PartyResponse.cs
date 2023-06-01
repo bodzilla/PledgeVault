@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Contracts.Dtos;
 
 namespace PledgeVault.Core.Dtos.Responses;
 

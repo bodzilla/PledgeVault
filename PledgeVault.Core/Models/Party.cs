@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using PledgeVault.Core.Base;
+using PledgeVault.Core.Contracts;
 
 namespace PledgeVault.Core.Models;
 
-public sealed class Party : EntityBase
+public sealed class Party : IEntity
 {
-    public Party() => Politicians = new List<Politician>();
+    public Party()
+    {
+        EntityCreated = DateTime.Now;
+        EntityActive = true;
+        Politicians = new List<Politician>();
+    }
+
+    public int Id { get; set; }
+
+    public DateTime EntityCreated { get; set; }
+
+    public DateTime? EntityModified { get; set; }
+
+    public bool EntityActive { get; set; }
 
     public string Name { get; set; }
 

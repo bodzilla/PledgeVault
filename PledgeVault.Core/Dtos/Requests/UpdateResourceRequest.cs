@@ -1,5 +1,5 @@
 ﻿using PledgeVault.Core.Enums;
-using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Contracts.Dtos;
 
 namespace PledgeVault.Core.Dtos.Requests;
 

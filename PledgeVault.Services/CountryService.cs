@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Enums;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -39,6 +40,8 @@ public sealed class CountryService : ICountryService
         if (String.IsNullOrWhiteSpace(name)) throw new ArgumentException($"{nameof(Country.Name)} is invalid", nameof(name));
         return await _context.Countries.AsNoTracking().Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{name.ToLower()}%")).ProjectTo<CountryResponse>(_mapper.ConfigurationProvider).ToListAsync();
     }
+
+    public async Task<ICollection<CountryResponse>> GetByGovernmentTypeAsync(GovernmentType type) => await _context.Countries.AsNoTracking().Where(x => x.GovernmentType == type).ProjectTo<CountryResponse>(_mapper.ConfigurationProvider).ToListAsync();
 
     public async Task<CountryResponse> AddAsync(AddCountryRequest request)
     {

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using PledgeVault.Core.Contracts.Dtos;
 
-namespace PledgeVault.Core.Contracts;
+namespace PledgeVault.Core.Contracts.Services;
 
 public interface IService<in TAdd, in TUpdate, TResponse>
     where TAdd : IRequest

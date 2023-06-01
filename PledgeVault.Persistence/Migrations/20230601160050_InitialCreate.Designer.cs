@@ -12,7 +12,7 @@ using PledgeVault.Persistence;
 namespace PledgeVault.Persistence.Migrations
 {
     [DbContext(typeof(PledgeVaultContext))]
-    [Migration("20230601112731_InitialCreate")]
+    [Migration("20230601160050_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

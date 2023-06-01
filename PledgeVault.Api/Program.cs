@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
-using PledgeVault.Core.Contracts;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
 using FluentValidation;
@@ -13,6 +12,7 @@ using FluentValidation.AspNetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using PledgeVault.Core.Contracts.Services;
 
 namespace PledgeVault.Api;
 

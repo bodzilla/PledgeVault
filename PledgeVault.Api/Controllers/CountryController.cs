@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PledgeVault.Core.Contracts;
+using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Enums;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -61,6 +62,20 @@ public class CountryController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, $"Error getting {nameof(Country)} with {nameof(Country.Name)}: '{name}'");
+            throw;
+        }
+    }
+
+    [HttpGet("government/{type}")]
+    public async Task<IEnumerable<CountryResponse>> GetByGovernmentTypeAsync(GovernmentType type)
+    {
+        try
+        {
+            return await _service.GetByGovernmentTypeAsync(type);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error getting {nameof(Country)} with {nameof(Country.GovernmentType)}: '{type}'");
             throw;
         }
     }

@@ -1,4 +1,4 @@
-﻿using PledgeVault.Core.Contracts;
+﻿using PledgeVault.Core.Contracts.Dtos;
 using PledgeVault.Core.Enums;
 
 namespace PledgeVault.Core.Dtos.Responses;

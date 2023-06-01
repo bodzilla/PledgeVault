@@ -1,13 +1,26 @@
-﻿using PledgeVault.Core.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using PledgeVault.Core.Enums;
+using PledgeVault.Core.Contracts;
 
 namespace PledgeVault.Core.Models;
 
-public sealed class Pledge : EntityBase
+public sealed class Pledge : IEntity
 {
-    public Pledge() => Resources = new List<Resource>();
+    public Pledge()
+    {
+        EntityCreated = DateTime.Now;
+        EntityActive = true;
+        Resources = new List<Resource>();
+    }
+
+    public int Id { get; set; }
+
+    public DateTime EntityCreated { get; set; }
+
+    public DateTime? EntityModified { get; set; }
+
+    public bool EntityActive { get; set; }
 
     public string Title { get; set; }
 
