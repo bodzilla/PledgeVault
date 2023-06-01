@@ -9,12 +9,11 @@ using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Models.Validators;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using PledgeVault.Core.Dtos.MappingProfiles;
-using System.Text.Json.Serialization;
 
 namespace PledgeVault.Api;
 
@@ -24,16 +23,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); })
-        .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); }); // Show enum values as strings in Swagger docs.
+        builder.Services
+            .AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); })
+            .AddNewtonsoftJson(options => { options.SerializerSettings.Converters.Add(new StringEnumConverter()); });
 
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
-
-        builder.Services.AddMvc().AddNewtonsoftJson(options =>
-        {
-            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            options.SerializerSettings.Converters.Add(new StringEnumConverter()); // Serialize enum values as strings in JSON.
-        });
+        builder.Services.AddMvc().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
 
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
@@ -69,6 +64,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGenNewtonsoftSupport();
 
         using var app = builder.Build();
 
