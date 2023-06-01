@@ -16,7 +16,7 @@ using PledgeVault.Core.Contracts.Services;
 
 namespace PledgeVault.Api;
 
-public class Program
+internal class Program
 {
     public static void Main(string[] args)
     {

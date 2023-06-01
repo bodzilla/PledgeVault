@@ -2,7 +2,7 @@
 
 namespace PledgeVault.Core.Contracts;
 
-public interface IEntity
+internal interface IEntity
 {
     int Id { get; set; }
 
