@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Party>> GetAllAsync()
+    public async Task<IEnumerable<PartyResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Party> GetByIdAsync(int id)
+    public async Task<PartyResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -52,7 +53,7 @@ public class PartyController : ControllerBase
 
 
     [HttpGet("country/{id:int}")]
-    public async Task<IEnumerable<Party>> GetByCountryIdAsync(int id)
+    public async Task<IEnumerable<PartyResponse>> GetByCountryIdAsync(int id)
     {
         try
         {
@@ -66,7 +67,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpGet("name/{name}")]
-    public async Task<IEnumerable<Party>> GetByNameAsync(string name)
+    public async Task<IEnumerable<PartyResponse>> GetByNameAsync(string name)
     {
         try
         {
@@ -80,7 +81,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Party> AddAsync(AddPartyRequest request)
+    public async Task<PartyResponse> AddAsync(AddPartyRequest request)
     {
         try
         {
@@ -94,7 +95,7 @@ public class PartyController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Party> UpdateAsync(UpdatePartyRequest request)
+    public async Task<PartyResponse> UpdateAsync(UpdatePartyRequest request)
     {
         try
         {

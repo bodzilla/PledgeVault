@@ -3,10 +3,11 @@ using System;
 using PledgeVault.Core.Dtos.Requests;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Core.Contracts;
 
-public interface IResourceService : IService<Resource, AddResourceRequest, UpdateResourceRequest>, IDisposable
+public interface IResourceService : IService<Resource, AddResourceRequest, UpdateResourceRequest, ResourceResponse>, IDisposable
 {
-    Task<ICollection<Resource>> GetByPledgeIdAsync(int id);
+    Task<ICollection<ResourceResponse>> GetByPledgeIdAsync(int id);
 }

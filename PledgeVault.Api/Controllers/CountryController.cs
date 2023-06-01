@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Country>> GetAllAsync()
+    public async Task<IEnumerable<CountryResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Country> GetByIdAsync(int id)
+    public async Task<CountryResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -51,7 +52,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpGet("name/{name}")]
-    public async Task<IEnumerable<Country>> GetByNameAsync(string name)
+    public async Task<IEnumerable<CountryResponse>> GetByNameAsync(string name)
     {
         try
         {
@@ -65,7 +66,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Country> AddAsync(AddCountryRequest request)
+    public async Task<CountryResponse> AddAsync(AddCountryRequest request)
     {
         try
         {
@@ -79,7 +80,7 @@ public class CountryController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Country> UpdateAsync(UpdateCountryRequest request)
+    public async Task<CountryResponse> UpdateAsync(UpdateCountryRequest request)
     {
         try
         {

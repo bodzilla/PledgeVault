@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Position>> GetAllAsync()
+    public async Task<IEnumerable<PositionResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Position> GetByIdAsync(int id)
+    public async Task<PositionResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -51,7 +52,7 @@ public class PositionController : ControllerBase
     }
 
     [HttpGet("title/{title}")]
-    public async Task<IEnumerable<Position>> GetByTitleAsync(string title)
+    public async Task<IEnumerable<PositionResponse>> GetByTitleAsync(string title)
     {
         try
         {
@@ -65,7 +66,7 @@ public class PositionController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Position> AddAsync(AddPositionRequest request)
+    public async Task<PositionResponse> AddAsync(AddPositionRequest request)
     {
         try
         {
@@ -79,7 +80,7 @@ public class PositionController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Position> UpdateAsync(UpdatePositionRequest request)
+    public async Task<PositionResponse> UpdateAsync(UpdatePositionRequest request)
     {
         try
         {

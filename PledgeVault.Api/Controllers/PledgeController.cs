@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Pledge>> GetAllAsync()
+    public async Task<IEnumerable<PledgeResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Pledge> GetByIdAsync(int id)
+    public async Task<PledgeResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -51,7 +52,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpGet("politician/{id:int}")]
-    public async Task<IEnumerable<Pledge>> GetByPoliticianIdAsync(int id)
+    public async Task<IEnumerable<PledgeResponse>> GetByPoliticianIdAsync(int id)
     {
         try
         {
@@ -65,7 +66,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpGet("title/{title}")]
-    public async Task<IEnumerable<Pledge>> GetByTitleAsync(string title)
+    public async Task<IEnumerable<PledgeResponse>> GetByTitleAsync(string title)
     {
         try
         {
@@ -79,7 +80,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Pledge> AddAsync(AddPledgeRequest request)
+    public async Task<PledgeResponse> AddAsync(AddPledgeRequest request)
     {
         try
         {
@@ -93,7 +94,7 @@ public class PledgeController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Pledge> UpdateAsync(UpdatePledgeRequest request)
+    public async Task<PledgeResponse> UpdateAsync(UpdatePledgeRequest request)
     {
         try
         {

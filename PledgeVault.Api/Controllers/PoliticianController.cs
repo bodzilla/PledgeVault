@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class PoliticianController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Politician>> GetAllAsync()
+    public async Task<IEnumerable<PoliticianResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class PoliticianController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Politician> GetByIdAsync(int id)
+    public async Task<PoliticianResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -52,7 +53,7 @@ public class PoliticianController : ControllerBase
 
 
     [HttpGet("party/{id:int}")]
-    public async Task<IEnumerable<Politician>> GetByPartyIdAsync(int id)
+    public async Task<IEnumerable<PoliticianResponse>> GetByPartyIdAsync(int id)
     {
         try
         {
@@ -66,7 +67,7 @@ public class PoliticianController : ControllerBase
     }
 
     [HttpGet("name/{name}")]
-    public async Task<IEnumerable<Politician>> GetByNameAsync(string name)
+    public async Task<IEnumerable<PoliticianResponse>> GetByNameAsync(string name)
     {
         try
         {
@@ -80,7 +81,7 @@ public class PoliticianController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Politician> AddAsync(AddPoliticianRequest request)
+    public async Task<PoliticianResponse> AddAsync(AddPoliticianRequest request)
     {
         try
         {
@@ -94,7 +95,7 @@ public class PoliticianController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Politician> UpdateAsync(UpdatePoliticianRequest request)
+    public async Task<PoliticianResponse> UpdateAsync(UpdatePoliticianRequest request)
     {
         try
         {

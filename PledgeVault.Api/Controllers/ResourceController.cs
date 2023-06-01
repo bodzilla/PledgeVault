@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
@@ -23,7 +24,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Resource>> GetAllAsync()
+    public async Task<IEnumerable<ResourceResponse>> GetAllAsync()
     {
         try
         {
@@ -37,7 +38,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Resource> GetByIdAsync(int id)
+    public async Task<ResourceResponse> GetByIdAsync(int id)
     {
         try
         {
@@ -51,7 +52,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpGet("pledge/{id:int}")]
-    public async Task<IEnumerable<Resource>> GetByPledgeIdAsync(int id)
+    public async Task<IEnumerable<ResourceResponse>> GetByPledgeIdAsync(int id)
     {
         try
         {
@@ -65,7 +66,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Resource> AddAsync(AddResourceRequest request)
+    public async Task<ResourceResponse> AddAsync(AddResourceRequest request)
     {
         try
         {
@@ -79,7 +80,7 @@ public class ResourceController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<Resource> UpdateAsync(UpdateResourceRequest request)
+    public async Task<ResourceResponse> UpdateAsync(UpdateResourceRequest request)
     {
         try
         {

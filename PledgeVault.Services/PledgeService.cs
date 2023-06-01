@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 
@@ -24,50 +26,50 @@ public sealed class PledgeService : IPledgeService
 
     public void Dispose() => _context?.Dispose();
 
-    public async Task<ICollection<Pledge>> GetAllAsync() => await _context.Pledges.AsNoTracking().ToListAsync();
+    public async Task<ICollection<PledgeResponse>> GetAllAsync() => await _context.Pledges.AsNoTracking().ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider).ToListAsync();
 
-    public async Task<Pledge> GetByIdAsync(int id)
+    public async Task<PledgeResponse> GetByIdAsync(int id)
     {
         ValidateExistingId(id);
-        return await _context.Pledges.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+        return await _context.Pledges.Where(x => x.Id == id).ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider).SingleOrDefaultAsync();
     }
 
-    public async Task<ICollection<Pledge>> GetByPoliticianIdAsync(int id)
+    public async Task<ICollection<PledgeResponse>> GetByPoliticianIdAsync(int id)
     {
         ValidateExistingId(id);
-        return await _context.Pledges.AsNoTracking().Where(x => x.PoliticianId == id).ToListAsync();
+        return await _context.Pledges.Where(x => x.PoliticianId == id).ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public async Task<ICollection<Pledge>> GetByTitleAsync(string title)
+    public async Task<ICollection<PledgeResponse>> GetByTitleAsync(string title)
     {
         if (String.IsNullOrWhiteSpace(title)) throw new ArgumentException($"{nameof(Pledge.Title)} is invalid", nameof(title));
-        return await _context.Pledges.AsNoTracking().Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{title.ToLower()}%")).ToListAsync();
+        return await _context.Pledges.AsNoTracking().Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{title.ToLower()}%")).ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
-    public async Task<Pledge> AddAsync(AddPledgeRequest request)
+    public async Task<PledgeResponse> AddAsync(AddPledgeRequest request)
     {
         var entity = _mapper.Map<Pledge>(request);
         await _context.Pledges.AddAsync(entity);
         await _context.SaveChangesAsync();
-        return entity;
+        return _mapper.Map<PledgeResponse>(entity);
     }
 
-    public async Task<Pledge> UpdateAsync(UpdatePledgeRequest request) => await UpdateEntityAndSave(_mapper.Map<Pledge>(request), true);
+    public async Task<PledgeResponse> UpdateAsync(UpdatePledgeRequest request) => await UpdateEntityAndSave(_mapper.Map<Pledge>(request), true);
 
 
-    public async Task<Pledge> SetInactiveAsync(int id)
+    public async Task<PledgeResponse> SetInactiveAsync(int id)
     {
         ValidateExistingId(id);
         return await UpdateEntityAndSave(await _context.Pledges.FindAsync(id) ?? throw new ArgumentException($"{nameof(Pledge)} not found", nameof(Pledge.Id)), false);
     }
 
-    private async Task<Pledge> UpdateEntityAndSave(Pledge entity, bool entityActive)
+    private async Task<PledgeResponse> UpdateEntityAndSave(Pledge entity, bool entityActive)
     {
         entity.EntityActive = entityActive;
         entity.EntityModified = DateTime.Now;
         _context.Pledges.Update(entity);
         await _context.SaveChangesAsync();
-        return entity;
+        return _mapper.Map<PledgeResponse>(entity);
     }
 
     private static void ValidateExistingId(int id)

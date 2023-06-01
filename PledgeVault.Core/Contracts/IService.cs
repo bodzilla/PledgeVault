@@ -4,15 +4,19 @@ using PledgeVault.Core.Base;
 
 namespace PledgeVault.Core.Contracts;
 
-public interface IService<T, in TAdd, in TUpdate> where T : EntityBase where TAdd : IRequest where TUpdate : IRequest
+public interface IService<T, in TAdd, in TUpdate, TResponse>
+    where T : EntityBase
+    where TAdd : IRequest
+    where TUpdate : IRequest
+    where TResponse : IResponse
 {
-    Task<ICollection<T>> GetAllAsync();
+    Task<ICollection<TResponse>> GetAllAsync();
 
-    Task<T> GetByIdAsync(int id);
+    Task<TResponse> GetByIdAsync(int id);
 
-    Task<T> AddAsync(TAdd request);
+    Task<TResponse> AddAsync(TAdd request);
 
-    Task<T> UpdateAsync(TUpdate request);
+    Task<TResponse> UpdateAsync(TUpdate request);
 
-    Task<T> SetInactiveAsync(int id);
+    Task<TResponse> SetInactiveAsync(int id);
 }

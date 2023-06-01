@@ -13,7 +13,10 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using PledgeVault.Core.Dtos.MappingProfiles;
+using PledgeVault.Core.Dtos.MappingProfiles.Requests;
+using AutoMapper;
+using PledgeVault.Core.Dtos.Requests;
+using System;
 
 namespace PledgeVault.Api;
 
@@ -45,13 +48,7 @@ public class Program
         builder.Services.AddValidatorsFromAssemblyContaining<UpdatePositionRequestValidator>();
         builder.Services.AddValidatorsFromAssemblyContaining<UpdateResourceRequestValidator>();
 
-        builder.Services.AddAutoMapper(
-            typeof(AddCountryRequestProfile), typeof(UpdateCountryRequestProfile),
-            typeof(AddPartyRequestProfile), typeof(UpdatePartyRequestProfile),
-            typeof(AddPledgeRequestProfile), typeof(UpdatePledgeRequestProfile),
-            typeof(AddPoliticianRequestProfile), typeof(UpdatePoliticianRequestProfile),
-            typeof(AddPositionRequestProfile), typeof(UpdatePositionRequestProfile),
-            typeof(AddResourceRequestProfile), typeof(UpdateResourceRequestProfile));
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryService, CountryService>();
