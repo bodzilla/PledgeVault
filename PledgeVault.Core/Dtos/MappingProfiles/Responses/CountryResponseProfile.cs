@@ -6,5 +6,5 @@ namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
 public sealed class CountryResponseProfile : Profile
 {
-    public CountryResponseProfile() => CreateMap<CountryResponse, Country>().ReverseMap();
+    public CountryResponseProfile() => CreateMap<CountryResponse, Country>().ReverseMap().MaxDepth(1);
 }

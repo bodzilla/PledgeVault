@@ -6,5 +6,5 @@ namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
 public sealed class PledgeResponseProfile : Profile
 {
-    public PledgeResponseProfile() => CreateMap<PledgeResponse, Pledge>().ReverseMap();
+    public PledgeResponseProfile() => CreateMap<PledgeResponse, Pledge>().ReverseMap().MaxDepth(1);
 }
