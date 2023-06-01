@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,11 @@ public sealed class PositionService : IPositionService
     {
         ValidateExistingId(id);
         return await _context.Positions.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+    public async Task<ICollection<Position>> GetByTitleAsync(string title)
+    {
+        if (String.IsNullOrWhiteSpace(title)) throw new ArgumentException($"{nameof(Position.Title)} is invalid", nameof(title));
+        return await _context.Positions.AsNoTracking().Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{title.ToLower()}%")).ToListAsync();
     }
 
     public async Task<Position> AddAsync(AddPositionRequest request)
