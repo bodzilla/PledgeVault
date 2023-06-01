@@ -31,6 +31,7 @@ public sealed class PositionService : IPositionService
         ValidateExistingId(id);
         return await _context.Positions.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
     }
+
     public async Task<ICollection<Position>> GetByTitleAsync(string title)
     {
         if (String.IsNullOrWhiteSpace(title)) throw new ArgumentException($"{nameof(Position.Title)} is invalid", nameof(title));

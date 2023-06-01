@@ -11,19 +11,19 @@ namespace PledgeVault.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PositionController : ControllerBase
+public class ResourceController : ControllerBase
 {
-    private readonly ILogger<PositionController> _logger;
-    private readonly IPositionService _service;
+    private readonly ILogger<ResourceController> _logger;
+    private readonly IResourceService _service;
 
-    public PositionController(ILogger<PositionController> logger, IPositionService service)
+    public ResourceController(ILogger<ResourceController> logger, IResourceService service)
     {
         _logger = logger;
         _service = service;
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Position>> GetAllAsync()
+    public async Task<IEnumerable<Resource>> GetAllAsync()
     {
         try
         {
@@ -31,13 +31,13 @@ public class PositionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting all {nameof(Position)}");
+            _logger.LogError(ex, $"Error getting all {nameof(Resource)}");
             throw;
         }
     }
 
     [HttpGet("id/{id:int}")]
-    public async Task<Position> GetByIdAsync(int id)
+    public async Task<Resource> GetByIdAsync(int id)
     {
         try
         {
@@ -45,27 +45,27 @@ public class PositionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting {nameof(Position)} with {nameof(Position.Id)}: '{id}'");
+            _logger.LogError(ex, $"Error getting {nameof(Resource)} with {nameof(Resource.Id)}: '{id}'");
             throw;
         }
     }
 
-    [HttpGet("title/{title}")]
-    public async Task<IEnumerable<Position>> GetByTitleAsync(string title)
+    [HttpGet("pledge/{id:int}")]
+    public async Task<IEnumerable<Resource>> GetByPledgeIdAsync(int id)
     {
         try
         {
-            return await _service.GetByTitleAsync(title);
+            return await _service.GetByPledgeIdAsync(id);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error getting {nameof(Position)} with {nameof(Position.Title)}: '{title}'");
+            _logger.LogError(ex, $"Error getting {nameof(Resource)} with {nameof(Resource.PledgeId)}: '{id}'");
             throw;
         }
     }
 
     [HttpPost]
-    public async Task<Position> AddAsync(AddPositionRequest request)
+    public async Task<Resource> AddAsync(AddResourceRequest request)
     {
         try
         {
@@ -73,13 +73,13 @@ public class PositionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error adding {nameof(AddPositionRequest)}");
+            _logger.LogError(ex, $"Error adding {nameof(AddResourceRequest)}");
             throw;
         }
     }
 
     [HttpPut]
-    public async Task<Position> UpdateAsync(UpdatePositionRequest request)
+    public async Task<Resource> UpdateAsync(UpdateResourceRequest request)
     {
         try
         {
@@ -87,7 +87,7 @@ public class PositionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error updating {nameof(UpdatePositionRequest)}");
+            _logger.LogError(ex, $"Error updating {nameof(UpdateResourceRequest)}");
             throw;
         }
     }
@@ -102,7 +102,7 @@ public class PositionController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error setting {nameof(Position)} inactive with {nameof(Position.Id)}: '{id}'");
+            _logger.LogError(ex, $"Error setting {nameof(Resource)} inactive with {nameof(Resource.Id)}: '{id}'");
             throw;
         }
     }

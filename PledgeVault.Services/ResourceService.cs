@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,12 @@ public sealed class ResourceService : IResourceService
     {
         ValidateExistingId(id);
         return await _context.Resources.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ICollection<Resource>> GetByPledgeIdAsync(int id)
+    {
+        ValidateExistingId(id);
+        return await _context.Resources.AsNoTracking().Where(x => x.PledgeId == id).ToListAsync();
     }
 
     public async Task<Resource> AddAsync(AddResourceRequest request)
