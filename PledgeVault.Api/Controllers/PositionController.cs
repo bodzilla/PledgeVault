@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -14,97 +11,29 @@ namespace PledgeVault.Api.Controllers;
 [ApiController]
 public class PositionController : ControllerBase
 {
-    private readonly ILogger<PositionController> _logger;
     private readonly IPositionService _service;
 
-    public PositionController(ILogger<PositionController> logger, IPositionService service)
-    {
-        _logger = logger;
-        _service = service;
-    }
+    public PositionController(IPositionService service) => _service = service;
 
     [HttpGet]
-    public async Task<IEnumerable<PositionResponse>> GetAllAsync()
-    {
-        try
-        {
-            return await _service.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting all {nameof(Position)}");
-            throw;
-        }
-    }
+    public async Task<IEnumerable<PositionResponse>> GetAllAsync() => await _service.GetAllAsync();
 
     [HttpGet("id/{id:int}")]
-    public async Task<PositionResponse> GetByIdAsync(int id)
-    {
-        try
-        {
-            return await _service.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting {nameof(Position)} with {nameof(Position.Id)}: '{id}'");
-            throw;
-        }
-    }
+    public async Task<PositionResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
 
     [HttpGet("title/{title}")]
-    public async Task<IEnumerable<PositionResponse>> GetByTitleAsync(string title)
-    {
-        try
-        {
-            return await _service.GetByTitleAsync(title);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting {nameof(Position)} with {nameof(Position.Title)}: '{title}'");
-            throw;
-        }
-    }
+    public async Task<IEnumerable<PositionResponse>> GetByTitleAsync(string title) => await _service.GetByTitleAsync(title);
 
     [HttpPost]
-    public async Task<PositionResponse> AddAsync(AddPositionRequest request)
-    {
-        try
-        {
-            return await _service.AddAsync(request);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error adding {nameof(AddPositionRequest)}");
-            throw;
-        }
-    }
+    public async Task<PositionResponse> AddAsync(AddPositionRequest request) => await _service.AddAsync(request);
 
     [HttpPut]
-    public async Task<PositionResponse> UpdateAsync(UpdatePositionRequest request)
-    {
-        try
-        {
-            return await _service.UpdateAsync(request);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error updating {nameof(UpdatePositionRequest)}");
-            throw;
-        }
-    }
+    public async Task<PositionResponse> UpdateAsync(UpdatePositionRequest request) => await _service.UpdateAsync(request);
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        try
-        {
-            await _service.SetInactiveAsync(id);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error setting {nameof(Position)} inactive with {nameof(Position.Id)}: '{id}'");
-            throw;
-        }
+        await _service.SetInactiveAsync(id);
+        return NoContent();
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -14,111 +11,32 @@ namespace PledgeVault.Api.Controllers;
 [ApiController]
 public class PledgeController : ControllerBase
 {
-    private readonly ILogger<PledgeController> _logger;
     private readonly IPledgeService _service;
 
-    public PledgeController(ILogger<PledgeController> logger, IPledgeService service)
-    {
-        _logger = logger;
-        _service = service;
-    }
+    public PledgeController(IPledgeService service) => _service = service;
 
     [HttpGet]
-    public async Task<IEnumerable<PledgeResponse>> GetAllAsync()
-    {
-        try
-        {
-            return await _service.GetAllAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting all {nameof(Pledge)}");
-            throw;
-        }
-    }
+    public async Task<IEnumerable<PledgeResponse>> GetAllAsync() => await _service.GetAllAsync();
 
     [HttpGet("id/{id:int}")]
-    public async Task<PledgeResponse> GetByIdAsync(int id)
-    {
-        try
-        {
-            return await _service.GetByIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.Id)}: '{id}'");
-            throw;
-        }
-    }
+    public async Task<PledgeResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
 
     [HttpGet("politician/{id:int}")]
-    public async Task<IEnumerable<PledgeResponse>> GetByPoliticianIdAsync(int id)
-    {
-        try
-        {
-            return await _service.GetByPoliticianIdAsync(id);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.PoliticianId)}: '{id}'");
-            throw;
-        }
-    }
+    public async Task<IEnumerable<PledgeResponse>> GetByPoliticianIdAsync(int id) => await _service.GetByPoliticianIdAsync(id);
 
     [HttpGet("title/{title}")]
-    public async Task<IEnumerable<PledgeResponse>> GetByTitleAsync(string title)
-    {
-        try
-        {
-            return await _service.GetByTitleAsync(title);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error getting {nameof(Pledge)} with {nameof(Pledge.Title)}: '{title}'");
-            throw;
-        }
-    }
+    public async Task<IEnumerable<PledgeResponse>> GetByTitleAsync(string title) => await _service.GetByTitleAsync(title);
 
     [HttpPost]
-    public async Task<PledgeResponse> AddAsync(AddPledgeRequest request)
-    {
-        try
-        {
-            return await _service.AddAsync(request);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error adding {nameof(AddPledgeRequest)}");
-            throw;
-        }
-    }
+    public async Task<PledgeResponse> AddAsync(AddPledgeRequest request) => await _service.AddAsync(request);
 
     [HttpPut]
-    public async Task<PledgeResponse> UpdateAsync(UpdatePledgeRequest request)
-    {
-        try
-        {
-            return await _service.UpdateAsync(request);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error updating {nameof(UpdatePledgeRequest)}");
-            throw;
-        }
-    }
+    public async Task<PledgeResponse> UpdateAsync(UpdatePledgeRequest request) => await _service.UpdateAsync(request);
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        try
-        {
-            await _service.SetInactiveAsync(id);
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error setting {nameof(Pledge)} inactive with {nameof(Pledge.Id)}: '{id}'");
-            throw;
-        }
+        await _service.SetInactiveAsync(id);
+        return NoContent();
     }
 }
