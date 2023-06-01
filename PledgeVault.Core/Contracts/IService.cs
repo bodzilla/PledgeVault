@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using PledgeVault.Core.Base;
 
 namespace PledgeVault.Core.Contracts;
 
-public interface IService<T, in TAdd, in TUpdate, TResponse>
-    where T : EntityBase
+public interface IService<in TAdd, in TUpdate, TResponse>
     where TAdd : IRequest
     where TUpdate : IRequest
     where TResponse : IResponse

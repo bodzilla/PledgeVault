@@ -1,5 +1,4 @@
-﻿using PledgeVault.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PledgeVault.Core.Dtos.Requests;
@@ -7,7 +6,7 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Core.Contracts;
 
-public interface IPledgeService : IService<Pledge, AddPledgeRequest, UpdatePledgeRequest, PledgeResponse>, IDisposable
+public interface IPledgeService : IService<AddPledgeRequest, UpdatePledgeRequest, PledgeResponse>, IDisposable
 {
     Task<ICollection<PledgeResponse>> GetByPoliticianIdAsync(int id);
 
