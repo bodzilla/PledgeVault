@@ -34,7 +34,7 @@ internal sealed class ExceptionMiddleware
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-        var response = new { message = exception.Message };
+        var response = new { message = exception.Message, innerException = exception.InnerException?.Message };
         return context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }
