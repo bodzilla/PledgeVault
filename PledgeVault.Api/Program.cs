@@ -32,8 +32,9 @@ public class Program
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
 
-        builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        builder.Services.AddValidatorsFromAssemblies(assemblies);
+        builder.Services.AddAutoMapper(assemblies);
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryService, CountryService>();
