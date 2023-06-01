@@ -1,7 +1,6 @@
-﻿namespace PledgeVault.Core.Contracts.Dtos
+﻿namespace PledgeVault.Core.Contracts.Dtos;
+
+public interface IResponse
 {
-    public interface IResponse
-    {
-        int Id { get; set; }
-    }
+    int Id { get; set; }
 }
