@@ -6,7 +6,7 @@ namespace PledgeVault.Core.Dtos.Requests;
 
 public sealed class AddPledgeRequest : IRequest
 {
-    public AddPledgeRequest() => PledgeStatusType = PledgeStatusType.Pending;
+    public AddPledgeRequest() => PledgeStatusType = PledgeStatusType.Committed;
 
     public string Title { get; set; }
 
