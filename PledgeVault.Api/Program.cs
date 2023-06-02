@@ -19,6 +19,8 @@ using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 using PledgeVault.Services.Commands;
 using PledgeVault.Services.Handlers;
+using PledgeVault.Core.Dtos.Pagination;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api;
 
@@ -42,6 +44,8 @@ internal sealed class Program
         builder.Services.AddAutoMapper(assemblies);
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        builder.Services.AddTransient<IRequestHandler<GetAllQuery<CountryResponse>, PaginationResponse<CountryResponse>>, GetAllQueryHandler<Country, CountryResponse>>();
+        builder.Services.AddTransient<IRequestHandler<GetAllQuery<PartyResponse>, PaginationResponse<PartyResponse>>, GetAllQueryHandler<Party, PartyResponse>>();
         builder.Services.AddTransient<IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>, AddCommandHandler<Country, AddCountryRequest, CountryResponse>>();
         builder.Services.AddTransient<IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>, AddCommandHandler<Party, AddPartyRequest, PartyResponse>>();
 

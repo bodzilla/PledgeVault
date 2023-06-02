@@ -4,7 +4,7 @@ using PledgeVault.Core.Dtos.Pagination;
 
 namespace PledgeVault.Services.Queries;
 
-public sealed class GetAllQuery<T> : IRequest<PaginationResponse<T>> where T : IResponse
+public sealed class GetAllQuery<TResponse> : IRequest<PaginationResponse<TResponse>> where TResponse : IResponse
 {
     public PaginationQuery PaginationQuery { get; set; }
 }
