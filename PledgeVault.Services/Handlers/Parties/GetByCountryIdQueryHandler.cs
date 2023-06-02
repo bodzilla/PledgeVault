@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries.Parties;
@@ -25,7 +26,10 @@ public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQ
     }
 
     public async Task<Page<PartyResponse>> Handle(GetByCountryIdQuery query, CancellationToken cancellationToken)
-        => new()
+    {
+        if (query.Id <= 0) throw new InvalidRequestException();
+
+        return new()
         {
             Data = await _context.Parties
                 .AsNoTracking()
@@ -37,4 +41,5 @@ public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQ
             PageSize = query.PageOptions.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
+    }
 }
