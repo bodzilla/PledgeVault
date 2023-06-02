@@ -6,5 +6,7 @@ namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
 public sealed class PledgeProfile : Profile
 {
-    public PledgeProfile() => CreateMap<Pledge, PledgeResponse>().MaxDepth(1);
+    public PledgeProfile() => CreateMap<Pledge, PledgeResponse>()
+        .ForMember(x => x.Resources, options => options.ExplicitExpansion())
+        .ForMember(x => x.Politician, options => options.ExplicitExpansion());
 }

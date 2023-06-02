@@ -7,7 +7,7 @@ using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries;
+using PledgeVault.Services.Queries.Countries;
 using System;
 using System.Linq;
 using System.Threading;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, Page<CountryResponse>>
+public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Count
         _mapper = mapper;
     }
 
-    public async Task<Page<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetByNameQuery query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
@@ -36,7 +36,7 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Count
                 .AsNoTracking()
                 .PaginateFrom(query.PageOptions)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
-                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

@@ -2,20 +2,17 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PledgeVault.Core.Contracts;
-using PledgeVault.Core.Contracts.Dtos;
 using PledgeVault.Core.Dtos.Pagination;
+using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries;
+using PledgeVault.Services.Queries.Countries;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PledgeVault.Services.Handlers;
+namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<GetAllQuery<TResponse>, Page<TResponse>>
-    where TEntity : class, IEntity
-    where TResponse : IResponse
+public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -26,13 +23,13 @@ public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<Get
         _mapper = mapper;
     }
 
-    public async Task<Page<TResponse>> Handle(GetAllQuery<TResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetAllQuery query, CancellationToken cancellationToken)
         => new()
         {
-            Data = await _context.Set<TEntity>()
+            Data = await _context.Countries
                 .AsNoTracking()
                 .PaginateFrom(query.PageOptions)
-                .ProjectTo<TResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

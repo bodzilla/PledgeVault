@@ -6,5 +6,6 @@ namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
 public sealed class CountryProfile : Profile
 {
-    public CountryProfile() => CreateMap<Country, CountryResponse>().ForMember(x => x.Parties, options => options.ExplicitExpansion());
+    public CountryProfile() => CreateMap<Country, CountryResponse>()
+        .ForMember(x => x.Parties, options => options.ExplicitExpansion());
 }

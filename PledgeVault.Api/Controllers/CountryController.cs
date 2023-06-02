@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Enums;
-using PledgeVault.Services.Commands;
-using PledgeVault.Services.Queries;
+using PledgeVault.Services.Commands.Countries;
 using PledgeVault.Services.Queries.Countries;
 using System.Threading.Tasks;
 
@@ -21,15 +19,15 @@ public sealed class CountryController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery<CountryResponse> { PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetAllQuery { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
-        => Ok(await _mediator.Send(new GetByIdQuery<CountryResponse> { Id = id }));
+        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetByNameQuery { Name = name, PageOptions = pageOptions }));
 
     [HttpGet("government/{type}")]
     public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PageOptions pageOptions)
@@ -37,16 +35,16 @@ public sealed class CountryController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddCountryRequest request)
-        => Ok(await _mediator.Send(new AddCommand<AddCountryRequest, CountryResponse> { Request = request }));
+        => Ok(await _mediator.Send(new AddCommand { Request = request }));
 
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdateCountryRequest request)
-        => Ok(await _mediator.Send(new UpdateCommand<PartyResponse> { Request = request }));
+        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _mediator.Send(new SetInactiveCommand<PartyResponse> { Id = id });
+        await _mediator.Send(new SetInactiveCommand { Id = id });
         return NoContent();
     }
 }

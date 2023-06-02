@@ -31,7 +31,7 @@ public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQ
                 .AsNoTracking()
                 .PaginateFrom(query.PageOptions)
                 .Where(x => x.CountryId == query.Id)
-                .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider)
+                .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

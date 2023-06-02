@@ -11,15 +11,8 @@ using Newtonsoft.Json.Converters;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts.Services;
-using PledgeVault.Core.Dtos.Pagination;
-using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
-using PledgeVault.Services.Commands;
-using PledgeVault.Services.Handlers;
-using PledgeVault.Services.Queries;
 using System;
 
 namespace PledgeVault.Api;
@@ -44,10 +37,6 @@ internal sealed class Program
         builder.Services.AddAutoMapper(assemblies);
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        builder.Services.AddTransient<IRequestHandler<GetAllQuery<CountryResponse>, Page<CountryResponse>>, GetAllQueryHandler<Country, CountryResponse>>();
-        builder.Services.AddTransient<IRequestHandler<GetAllQuery<PartyResponse>, Page<PartyResponse>>, GetAllQueryHandler<Party, PartyResponse>>();
-        builder.Services.AddTransient<IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>, AddCommandHandler<Country, AddCountryRequest, CountryResponse>>();
-        builder.Services.AddTransient<IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>, AddCommandHandler<Party, AddPartyRequest, PartyResponse>>();
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<IPartyService, PartyService>();
