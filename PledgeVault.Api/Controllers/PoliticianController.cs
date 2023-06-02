@@ -21,7 +21,6 @@ public class PoliticianController : ControllerBase
     [HttpGet("id/{id:int}")]
     public async Task<PoliticianResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
 
-
     [HttpGet("party/{id:int}")]
     public async Task<IEnumerable<PoliticianResponse>> GetByPartyIdAsync(int id) => await _service.GetByPartyIdAsync(id);
 
