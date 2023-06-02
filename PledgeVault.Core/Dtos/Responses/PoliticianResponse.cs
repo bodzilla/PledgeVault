@@ -23,7 +23,7 @@ public sealed class PoliticianResponse : IResponse
 
     public PartyResponse Party { get; set; }
 
-    public PositionResponse Position { get; set; }
+    public string Position { get; set; }
 
     public bool IsPartyLeader { get; set; }
 

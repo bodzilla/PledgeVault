@@ -12,7 +12,7 @@ using PledgeVault.Persistence;
 namespace PledgeVault.Persistence.Migrations
 {
     [DbContext(typeof(PledgeVaultContext))]
-    [Migration("20230601160050_InitialCreate")]
+    [Migration("20230602202004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -216,8 +216,10 @@ namespace PledgeVault.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("PositionId")
-                        .HasColumnType("int");
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("SexType")
                         .HasColumnType("int");
@@ -233,46 +235,10 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.HasIndex("PartyId");
 
-                    b.HasIndex("PositionId");
-
                     b.HasIndex("Name", "DateOfBirth", "PartyId")
                         .IsUnique();
 
                     b.ToTable("Politicians");
-                });
-
-            modelBuilder.Entity("PledgeVault.Core.Models.Position", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("EntityCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EntityModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Summary")
-                        .HasMaxLength(10000)
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Title")
-                        .IsUnique();
-
-                    b.ToTable("Positions");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Resource", b =>
@@ -352,15 +318,7 @@ namespace PledgeVault.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PledgeVault.Core.Models.Position", "Position")
-                        .WithMany("Politicians")
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Party");
-
-                    b.Navigation("Position");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Resource", b =>
@@ -392,11 +350,6 @@ namespace PledgeVault.Persistence.Migrations
             modelBuilder.Entity("PledgeVault.Core.Models.Politician", b =>
                 {
                     b.Navigation("Pledges");
-                });
-
-            modelBuilder.Entity("PledgeVault.Core.Models.Position", b =>
-                {
-                    b.Navigation("Politicians");
                 });
 #pragma warning restore 612, 618
         }

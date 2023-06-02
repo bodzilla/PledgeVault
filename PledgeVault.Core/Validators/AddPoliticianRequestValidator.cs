@@ -16,7 +16,7 @@ public sealed class AddPoliticianRequestValidator : AbstractValidator<AddPolitic
         RuleFor(x => x.DateOfDeath).LessThanOrEqualTo(DateTime.Now).When(x => x.DateOfDeath.HasValue);
         RuleFor(x => x.CountryOfBirth.Trim()).NotEmpty().Length(1, 250);
         RuleFor(x => x.PartyId).GreaterThan(0);
-        RuleFor(x => x.PositionId).GreaterThan(0);
+        RuleFor(x => x.Position).NotEmpty().Length(1, 250);
         RuleFor(x => x.PhotoUrl).Length(1, 250).When(x => !string.IsNullOrWhiteSpace(x.PhotoUrl));
         RuleFor(x => x.Summary.Trim()).Length(1, 10000).When(x => !string.IsNullOrWhiteSpace(x.Summary));
     }

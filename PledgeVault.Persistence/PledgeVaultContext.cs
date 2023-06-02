@@ -12,8 +12,6 @@ public sealed class PledgeVaultContext : DbContext
 
     public DbSet<Politician> Politicians { get; set; }
 
-    public DbSet<Position> Positions { get; set; }
-
     public DbSet<Pledge> Pledges { get; set; }
 
     public DbSet<Resource> Resources { get; set; }
@@ -27,7 +25,6 @@ public sealed class PledgeVaultContext : DbContext
         .ApplyConfiguration(new CountryConfiguration())
         .ApplyConfiguration(new PartyConfiguration())
         .ApplyConfiguration(new PoliticianConfiguration())
-        .ApplyConfiguration(new PositionConfiguration())
         .ApplyConfiguration(new PledgeConfiguration())
         .ApplyConfiguration(new ResourceConfiguration());
 }

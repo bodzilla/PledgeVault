@@ -36,9 +36,7 @@ public sealed class Politician : IEntity
 
     public Party Party { get; set; }
 
-    public int PositionId { get; set; }
-
-    public Position Position { get; set; }
+    public string Position { get; set; }
 
     public bool IsPartyLeader { get; set; }
 

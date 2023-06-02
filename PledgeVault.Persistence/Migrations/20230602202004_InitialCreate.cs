@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -28,23 +28,6 @@ namespace PledgeVault.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Positions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Positions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,7 +72,7 @@ namespace PledgeVault.Persistence.Migrations
                     DateOfDeath = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CountryOfBirth = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     PartyId = table.Column<int>(type: "int", nullable: false),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     IsPartyLeader = table.Column<bool>(type: "bit", nullable: false),
                     PhotoUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true)
@@ -101,12 +84,6 @@ namespace PledgeVault.Persistence.Migrations
                         name: "FK_Politicians_Parties_PartyId",
                         column: x => x.PartyId,
                         principalTable: "Parties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Politicians_Positions_PositionId",
-                        column: x => x.PositionId,
-                        principalTable: "Positions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -213,17 +190,6 @@ namespace PledgeVault.Persistence.Migrations
                 column: "PartyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Politicians_PositionId",
-                table: "Politicians",
-                column: "PositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Positions_Title",
-                table: "Positions",
-                column: "Title",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Resources_PledgeId",
                 table: "Resources",
                 column: "PledgeId");
@@ -249,9 +215,6 @@ namespace PledgeVault.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Parties");
-
-            migrationBuilder.DropTable(
-                name: "Positions");
 
             migrationBuilder.DropTable(
                 name: "Countries");

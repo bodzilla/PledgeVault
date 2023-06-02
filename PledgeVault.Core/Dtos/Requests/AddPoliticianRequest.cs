@@ -20,7 +20,7 @@ public sealed class AddPoliticianRequest : IRequest
 
     public int PartyId { get; set; }
 
-    public int PositionId { get; set; }
+    public string Position { get; set; }
 
     public bool IsPartyLeader { get; set; }
 
