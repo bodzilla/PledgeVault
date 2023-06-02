@@ -10,26 +10,26 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Services.Queries;
 
-namespace PledgeVault.Services.Handlers.Countries;
+namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery<CountryResponse>, CountryResponse>
+public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<PartyResponse>, PartyResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public GetByCountryIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByIdQueryHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(GetByIdQuery<CountryResponse> query, CancellationToken cancellationToken)
+    public async Task<PartyResponse> Handle(GetByIdQuery<PartyResponse> query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 
-        return await _context.Countries
+        return await _context.Parties
             .Where(x => x.Id == query.Id)
-            .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
+            .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider)
             .SingleOrDefaultAsync(cancellationToken);
     }
 }

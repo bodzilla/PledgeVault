@@ -8,9 +8,9 @@ using System;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Services.Commands;
 
-namespace PledgeVault.Services.Handlers.Countries;
+namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand<CountryResponse>, CountryResponse>
+public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand<PartyResponse>, PartyResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -21,16 +21,16 @@ public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveComma
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(SetInactiveCommand<CountryResponse> command, CancellationToken cancellationToken)
+    public async Task<PartyResponse> Handle(SetInactiveCommand<PartyResponse> command, CancellationToken cancellationToken)
     {
         if (command.Id <= 0) throw new InvalidRequestException();
 
-        var entity = await _context.Countries.FindAsync(command.Id) ?? throw new NotFoundException();
+        var entity = await _context.Parties.FindAsync(command.Id) ?? throw new NotFoundException();
 
         entity.EntityActive = false;
         entity.EntityModified = DateTime.Now;
-        _context.Countries.Update(entity);
+        _context.Parties.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
-        return _mapper.Map<CountryResponse>(entity);
+        return _mapper.Map<PartyResponse>(entity);
     }
 }

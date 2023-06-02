@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PledgeVault.Core.Contracts.Services;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Services.Commands;
+using PledgeVault.Services.Queries;
+using PledgeVault.Services.Queries.Parties;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -11,33 +14,38 @@ namespace PledgeVault.Api.Controllers;
 [ApiController]
 public sealed class PartyController : ControllerBase
 {
-    private readonly IPartyService _service;
+    private readonly IMediator _mediator;
 
-    public PartyController(IPartyService service) => _service = service;
+    public PartyController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IEnumerable<PartyResponse>> GetAllAsync() => await _service.GetAllAsync();
+    public async Task<IActionResult> GetAllAsync([FromQuery] PaginationQuery paginationQuery)
+        => Ok(await _mediator.Send(new GetAllQuery<PartyResponse> { PaginationQuery = paginationQuery }));
 
     [HttpGet("id/{id:int}")]
-    public async Task<PartyResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
-
-
-    [HttpGet("country/{id:int}")]
-    public async Task<IEnumerable<PartyResponse>> GetByCountryIdAsync(int id) => await _service.GetByCountryIdAsync(id);
+    public async Task<IActionResult> GetByIdAsync(int id)
+        => Ok(await _mediator.Send(new GetByIdQuery<PartyResponse> { Id = id }));
 
     [HttpGet("name/{name}")]
-    public async Task<IEnumerable<PartyResponse>> GetByNameAsync(string name) => await _service.GetByNameAsync(name);
+    public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PaginationQuery paginationQuery)
+        => Ok(await _mediator.Send(new GetByNameQuery<PartyResponse> { Name = name, PaginationQuery = paginationQuery }));
+
+    [HttpGet("country/{id:int}")]
+    public async Task<IActionResult> GetByCountryIdAsync(int id, [FromQuery] PaginationQuery paginationQuery)
+        => Ok(await _mediator.Send(new GetByCountryIdQuery { Id = id, PaginationQuery = paginationQuery }));
 
     [HttpPost]
-    public async Task<PartyResponse> AddAsync(AddPartyRequest request) => await _service.AddAsync(request);
+    public async Task<IActionResult> AddAsync(AddCountryRequest request)
+        => Ok(await _mediator.Send(new AddCommand<AddCountryRequest, PartyResponse> { Request = request }));
 
     [HttpPut]
-    public async Task<PartyResponse> UpdateAsync(UpdatePartyRequest request) => await _service.UpdateAsync(request);
+    public async Task<IActionResult> UpdateAsync(UpdateCountryRequest request)
+        => Ok(await _mediator.Send(new UpdateCommand<PartyResponse> { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _service.SetInactiveAsync(id);
+        await _mediator.Send(new SetInactiveCommand<PartyResponse> { Id = id });
         return NoContent();
     }
 }

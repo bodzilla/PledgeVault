@@ -14,6 +14,11 @@ using System;
 using PledgeVault.Core.Contracts.Services;
 using MediatR;
 using FluentValidation;
+using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Models;
+using PledgeVault.Services.Commands;
+using PledgeVault.Services.Handlers;
 
 namespace PledgeVault.Api;
 
@@ -32,13 +37,13 @@ internal sealed class Program
 
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
-
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         builder.Services.AddValidatorsFromAssemblies(assemblies);
         builder.Services.AddAutoMapper(assemblies);
-
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        builder.Services.AddTransient<IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>, AddCommandHandler<Country, AddCountryRequest, CountryResponse>>();
+        builder.Services.AddTransient<IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>, AddCommandHandler<Party, AddPartyRequest, PartyResponse>>();
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<IPartyService, PartyService>();
