@@ -6,14 +6,14 @@ using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries.Countries;
+using PledgeVault.Services.Queries.Politicians;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PledgeVault.Services.Handlers.Countries;
+namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, Page<CountryResponse>>
+public sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByPartyIdQuery, Page<PoliticianResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -24,14 +24,14 @@ public sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByGovernmentTy
         _mapper = mapper;
     }
 
-    public async Task<Page<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
+    public async Task<Page<PoliticianResponse>> Handle(GetByPartyIdQuery query, CancellationToken cancellationToken)
         => new()
         {
-            Data = await _context.Countries
+            Data = await _context.Politicians
                 .AsNoTracking()
-                .Where(x => x.GovernmentType == query.GovernmentType)
+                .Where(x => x.PartyId == query.Id)
                 .PaginateFrom(query.PageOptions)
-                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
+                .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

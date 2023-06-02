@@ -41,7 +41,6 @@ internal sealed class Program
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IPoliticianService, PoliticianService>();
         builder.Services.AddScoped<IPositionService, PositionService>();
         builder.Services.AddScoped<IResourceService, ResourceService>();
 
