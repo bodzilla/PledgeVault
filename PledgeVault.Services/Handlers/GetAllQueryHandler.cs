@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers;
 
-public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<GetAllQuery<TResponse>, PageResponse<TResponse>>
+public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<GetAllQuery<TResponse>, Page<TResponse>>
     where TEntity : class, IEntity
     where TResponse : IResponse
 {
@@ -26,16 +26,16 @@ public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<Get
         _mapper = mapper;
     }
 
-    public async Task<PageResponse<TResponse>> Handle(GetAllQuery<TResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<TResponse>> Handle(GetAllQuery<TResponse> query, CancellationToken cancellationToken)
         => new()
         {
             Data = await _context.Set<TEntity>()
                 .AsNoTracking()
-                .PaginateFrom(query.Page)
+                .PaginateFrom(query.PageOptions)
                 .ProjectTo<TResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.Page.PageNumber,
-            PageSize = query.Page.PageSize,
+            PageNumber = query.PageOptions.PageNumber,
+            PageSize = query.PageOptions.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
 }

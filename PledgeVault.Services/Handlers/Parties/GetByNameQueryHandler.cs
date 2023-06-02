@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PartyResponse>, PageResponse<PartyResponse>>
+public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PartyResponse>, Page<PartyResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -26,20 +26,20 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Party
         _mapper = mapper;
     }
 
-    public async Task<PageResponse<PartyResponse>> Handle(GetByNameQuery<PartyResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<PartyResponse>> Handle(GetByNameQuery<PartyResponse> query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
-        return new PageResponse<PartyResponse>
+        return new Page<PartyResponse>
         {
             Data = await _context.Parties
                 .AsNoTracking()
-                .PaginateFrom(query.Page)
+                .PaginateFrom(query.PageOptions)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.Page.PageNumber,
-            PageSize = query.Page.PageSize,
+            PageNumber = query.PageOptions.PageNumber,
+            PageSize = query.PageOptions.PageSize,
             TotalItems = await _context.Parties.CountAsync(cancellationToken)
         };
     }

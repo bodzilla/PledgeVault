@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, PageResponse<CountryResponse>>
+public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -24,17 +24,17 @@ public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGover
         _mapper = mapper;
     }
 
-    public async Task<PageResponse<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
         => new()
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .PaginateFrom(query.Page)
+                .PaginateFrom(query.PageOptions)
                 .Where(x => x.GovernmentType == query.GovernmentType)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.Page.PageNumber,
-            PageSize = query.Page.PageSize,
+            PageNumber = query.PageOptions.PageNumber,
+            PageSize = query.PageOptions.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
 }

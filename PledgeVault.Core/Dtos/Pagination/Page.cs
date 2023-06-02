@@ -1,8 +1,20 @@
-﻿namespace PledgeVault.Core.Dtos.Pagination;
+﻿using PledgeVault.Core.Contracts.Dtos;
+using System;
+using System.Collections.Generic;
 
-public sealed class Page
+namespace PledgeVault.Core.Dtos.Pagination;
+
+public sealed class Page<T> where T : IResponse
 {
-    public int PageNumber { get; set; } = 1;
+    public Page() => Data = new List<T>();
 
-    public int PageSize { get; set; } = 50;
+    public int PageNumber { get; set; }
+
+    public int PageSize { get; set; }
+
+    public int TotalItems { get; set; }
+
+    public int TotalPages => (int)Math.Ceiling(decimal.Divide(TotalItems, PageSize));
+
+    public List<T> Data { get; set; }
 }

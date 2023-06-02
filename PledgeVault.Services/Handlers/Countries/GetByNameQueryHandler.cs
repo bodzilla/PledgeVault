@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, PageResponse<CountryResponse>>
+public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -26,20 +26,20 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Count
         _mapper = mapper;
     }
 
-    public async Task<PageResponse<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
-        return new PageResponse<CountryResponse>
+        return new Page<CountryResponse>
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .PaginateFrom(query.Page)
+                .PaginateFrom(query.PageOptions)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.Page.PageNumber,
-            PageSize = query.Page.PageSize,
+            PageNumber = query.PageOptions.PageNumber,
+            PageSize = query.PageOptions.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
     }

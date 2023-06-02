@@ -5,9 +5,9 @@ using PledgeVault.Core.Enums;
 
 namespace PledgeVault.Services.Queries.Countries;
 
-public sealed class GetByGovernmentTypeQuery : IRequest<PageResponse<CountryResponse>>
+public sealed class GetByGovernmentTypeQuery : IRequest<Page<CountryResponse>>
 {
     public GovernmentType GovernmentType { get; set; }
 
-    public Page Page { get; set; }
+    public PageOptions PageOptions { get; set; }
 }
