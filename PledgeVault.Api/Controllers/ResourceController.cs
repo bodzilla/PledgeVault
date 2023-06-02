@@ -9,7 +9,7 @@ namespace PledgeVault.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ResourceController : ControllerBase
+public sealed class ResourceController : ControllerBase
 {
     private readonly IResourceService _service;
 

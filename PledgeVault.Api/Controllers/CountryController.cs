@@ -11,7 +11,7 @@ namespace PledgeVault.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CountryController : ControllerBase
+public sealed class CountryController : ControllerBase
 {
     private readonly IMediator _mediator;
 

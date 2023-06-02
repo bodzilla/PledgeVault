@@ -9,7 +9,7 @@ namespace PledgeVault.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PartyController : ControllerBase
+public sealed class PartyController : ControllerBase
 {
     private readonly IPartyService _service;
 
