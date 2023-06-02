@@ -1,6 +1,6 @@
 ﻿namespace PledgeVault.Core.Dtos.Pagination;
 
-public sealed class PaginationQuery
+public sealed class Page
 {
     public int PageNumber { get; set; } = 1;
 

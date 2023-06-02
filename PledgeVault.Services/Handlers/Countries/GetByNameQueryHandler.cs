@@ -10,11 +10,12 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using PledgeVault.Core.Dtos.Pagination;
+using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, PaginationResponse<CountryResponse>>
+public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, PageResponse<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -25,21 +26,20 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Count
         _mapper = mapper;
     }
 
-    public async Task<PaginationResponse<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
+    public async Task<PageResponse<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
-        return new PaginationResponse<CountryResponse>
+        return new PageResponse<CountryResponse>
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .Skip((query.PaginationQuery.PageNumber - 1) * query.PaginationQuery.PageSize)
-                .Take(query.PaginationQuery.PageSize)
+                .Paginate(query.Page)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.PaginationQuery.PageNumber,
-            PageSize = query.PaginationQuery.PageSize,
+            PageNumber = query.Page.PageNumber,
+            PageSize = query.Page.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
     }

@@ -9,10 +9,11 @@ using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Pagination;
+using PledgeVault.Persistence.Extensions;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, PaginationResponse<CountryResponse>>
+public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, PageResponse<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -23,18 +24,17 @@ public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGover
         _mapper = mapper;
     }
 
-    public async Task<PaginationResponse<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
+    public async Task<PageResponse<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
         => new()
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .Skip((query.PaginationQuery.PageNumber - 1) * query.PaginationQuery.PageSize)
-                .Take(query.PaginationQuery.PageSize)
+                .Paginate(query.Page)
                 .Where(x => x.GovernmentType == query.GovernmentType)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
-            PageNumber = query.PaginationQuery.PageNumber,
-            PageSize = query.PaginationQuery.PageSize,
+            PageNumber = query.Page.PageNumber,
+            PageSize = query.Page.PageSize,
             TotalItems = await _context.Countries.CountAsync(cancellationToken)
         };
 }

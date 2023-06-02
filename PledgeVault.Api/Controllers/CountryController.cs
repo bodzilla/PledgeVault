@@ -20,20 +20,20 @@ public sealed class CountryController : ControllerBase
     public CountryController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetAllQuery<CountryResponse> { PaginationQuery = paginationQuery }));
+    public async Task<IActionResult> GetAllAsync([FromQuery] Page page)
+        => Ok(await _mediator.Send(new GetAllQuery<CountryResponse> { Page = page }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
         => Ok(await _mediator.Send(new GetByIdQuery<CountryResponse> { Id = id }));
 
     [HttpGet("name/{name}")]
-    public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, PaginationQuery = paginationQuery }));
+    public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] Page page)
+        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, Page = page }));
 
     [HttpGet("government/{type}")]
-    public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetByGovernmentTypeQuery { GovernmentType = type, PaginationQuery = paginationQuery }));
+    public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] Page page)
+        => Ok(await _mediator.Send(new GetByGovernmentTypeQuery { GovernmentType = type, Page = page }));
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddCountryRequest request)

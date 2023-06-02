@@ -3,7 +3,7 @@
 using FluentValidation;
 using PledgeVault.Core.Dtos.Pagination;
 
-public sealed class PaginationQueryValidator : AbstractValidator<PaginationQuery>
+public sealed class PaginationQueryValidator : AbstractValidator<Page>
 {
     public PaginationQueryValidator()
     {

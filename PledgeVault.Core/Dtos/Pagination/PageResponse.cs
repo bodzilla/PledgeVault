@@ -4,9 +4,9 @@ using PledgeVault.Core.Contracts.Dtos;
 
 namespace PledgeVault.Core.Dtos.Pagination;
 
-public sealed class PaginationResponse<T> where T : IResponse
+public sealed class PageResponse<T> where T : IResponse
 {
-    public PaginationResponse() => Data = new List<T>();
+    public PageResponse() => Data = new List<T>();
 
     public int PageNumber { get; set; }
 

@@ -44,8 +44,8 @@ internal sealed class Program
         builder.Services.AddAutoMapper(assemblies);
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        builder.Services.AddTransient<IRequestHandler<GetAllQuery<CountryResponse>, PaginationResponse<CountryResponse>>, GetAllQueryHandler<Country, CountryResponse>>();
-        builder.Services.AddTransient<IRequestHandler<GetAllQuery<PartyResponse>, PaginationResponse<PartyResponse>>, GetAllQueryHandler<Party, PartyResponse>>();
+        builder.Services.AddTransient<IRequestHandler<GetAllQuery<CountryResponse>, PageResponse<CountryResponse>>, GetAllQueryHandler<Country, CountryResponse>>();
+        builder.Services.AddTransient<IRequestHandler<GetAllQuery<PartyResponse>, PageResponse<PartyResponse>>, GetAllQueryHandler<Party, PartyResponse>>();
         builder.Services.AddTransient<IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>, AddCommandHandler<Country, AddCountryRequest, CountryResponse>>();
         builder.Services.AddTransient<IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>, AddCommandHandler<Party, AddPartyRequest, PartyResponse>>();
 
