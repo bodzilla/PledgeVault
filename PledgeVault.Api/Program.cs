@@ -32,14 +32,15 @@ internal sealed class Program
 
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
+
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         builder.Services.AddValidatorsFromAssemblies(assemblies);
         builder.Services.AddAutoMapper(assemblies);
+
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IPartyService, PartyService>();
         builder.Services.AddScoped<IPledgeService, PledgeService>();
         builder.Services.AddScoped<IPoliticianService, PoliticianService>();
         builder.Services.AddScoped<IPositionService, PositionService>();
