@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
@@ -11,10 +10,11 @@ using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using PledgeVault.Core.Dtos.Pagination;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetCountriesByNameQueryHandler : IRequestHandler<GetCountriesByNameQuery, IEnumerable<CountryResponse>>
+public sealed class GetCountriesByNameQueryHandler : IRequestHandler<GetCountriesByNameQuery, PaginationResponse<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -25,13 +25,22 @@ public sealed class GetCountriesByNameQueryHandler : IRequestHandler<GetCountrie
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CountryResponse>> Handle(GetCountriesByNameQuery query, CancellationToken cancellationToken)
+    public async Task<PaginationResponse<CountryResponse>> Handle(GetCountriesByNameQuery query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
-        return await _context.Countries.AsNoTracking()
-            .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
-            .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken);
+        return new PaginationResponse<CountryResponse>
+        {
+            Data = await _context.Countries
+                .AsNoTracking()
+                .Skip((query.PaginationQuery.PageNumber - 1) * query.PaginationQuery.PageSize)
+                .Take(query.PaginationQuery.PageSize)
+                .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
+                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken),
+            PageNumber = query.PaginationQuery.PageNumber,
+            PageSize = query.PaginationQuery.PageSize,
+            TotalItems = await _context.Countries.CountAsync(cancellationToken)
+        };
     }
 }

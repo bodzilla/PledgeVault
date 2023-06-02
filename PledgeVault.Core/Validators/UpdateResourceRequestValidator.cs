@@ -1,19 +1,20 @@
 ﻿using System;
 using PledgeVault.Core.Dtos.Requests;
 
-namespace PledgeVault.Core.Models.Validators;
+namespace PledgeVault.Core.Validators;
 
 using FluentValidation;
 
-public sealed class AddResourceRequestValidator : AbstractValidator<AddResourceRequest>
+public sealed class UpdateResourceRequestValidator : AbstractValidator<UpdateResourceRequest>
 {
-    public AddResourceRequestValidator()
+    public UpdateResourceRequestValidator()
     {
         RuleFor(x => x).NotNull();
+        RuleFor(x => x.Id).GreaterThan(0);
         RuleFor(x => x.Title.Trim()).NotEmpty().Length(1, 250);
         RuleFor(x => x.SiteUrl.Trim()).NotEmpty().Length(1, 250);
         RuleFor(x => x.ResourceType).NotNull().IsInEnum();
-        RuleFor(x => x.Summary.Trim()).Length(1, 10000).When(x => !String.IsNullOrWhiteSpace(x.Summary));
+        RuleFor(x => x.Summary.Trim()).Length(1, 10000).When(x => !string.IsNullOrWhiteSpace(x.Summary));
         RuleFor(x => x.PledgeId).GreaterThan(0);
     }
 }

@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 using System.Threading;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using System.Linq;
+using PledgeVault.Core.Dtos.Pagination;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetAllCountriesQueryHandler : IRequestHandler<GetAllCountriesQuery, IEnumerable<CountryResponse>>
+public sealed class GetAllCountriesQueryHandler : IRequestHandler<GetAllCountriesQuery, PaginationResponse<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -22,6 +23,17 @@ public sealed class GetAllCountriesQueryHandler : IRequestHandler<GetAllCountrie
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CountryResponse>> Handle(GetAllCountriesQuery request, CancellationToken cancellationToken) =>
-        await _context.Countries.AsNoTracking().ProjectTo<CountryResponse>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+    public async Task<PaginationResponse<CountryResponse>> Handle(GetAllCountriesQuery query, CancellationToken cancellationToken)
+        => new()
+        {
+            Data = await _context.Countries
+                .AsNoTracking()
+                .Skip((query.PaginationQuery.PageNumber - 1) * query.PaginationQuery.PageSize)
+                .Take(query.PaginationQuery.PageSize)
+                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken),
+            PageNumber = query.PaginationQuery.PageNumber,
+            PageSize = query.PaginationQuery.PageSize,
+            TotalItems = await _context.Countries.CountAsync(cancellationToken)
+        };
 }

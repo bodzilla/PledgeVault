@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using MediatR;
+﻿using MediatR;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Enums;
 
 namespace PledgeVault.Services.Queries.Countries;
 
-public sealed class GetCountriesByGovernmentTypeQuery : IRequest<IEnumerable<CountryResponse>>
+public sealed class GetCountriesByGovernmentTypeQuery : IRequest<PaginationResponse<CountryResponse>>
 {
     public GovernmentType GovernmentType { get; set; }
+
+    public PaginationQuery PaginationQuery { get; set; }
 }
