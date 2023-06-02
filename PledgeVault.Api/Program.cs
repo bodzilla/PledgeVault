@@ -7,12 +7,13 @@ using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using PledgeVault.Core.Contracts.Services;
+using MediatR;
+using FluentValidation;
 
 namespace PledgeVault.Api;
 
@@ -36,8 +37,10 @@ internal class Program
         builder.Services.AddValidatorsFromAssemblies(assemblies);
         builder.Services.AddAutoMapper(assemblies);
 
+        builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
+        builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<ICountryService, CountryService>();
         builder.Services.AddScoped<IPartyService, PartyService>();
         builder.Services.AddScoped<IPledgeService, PledgeService>();
         builder.Services.AddScoped<IPoliticianService, PoliticianService>();
