@@ -33,11 +33,11 @@ public sealed class PledgeController : ControllerBase
         => Ok(await _mediator.Send(new GetByTitleQuery { Title = title, PageOptions = pageOptions }));
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync(AddPoliticianRequest request)
+    public async Task<IActionResult> AddAsync(AddPledgeRequest request)
         => Ok(await _mediator.Send(new AddCommand { Request = request }));
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(UpdatePoliticianRequest request)
+    public async Task<IActionResult> UpdateAsync(UpdatePledgeRequest request)
         => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]

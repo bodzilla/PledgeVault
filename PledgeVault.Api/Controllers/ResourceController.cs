@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PledgeVault.Core.Contracts.Services;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Dtos.Responses;
-using System.Collections.Generic;
+using PledgeVault.Services.Queries.Resources;
 using System.Threading.Tasks;
+using PledgeVault.Services.Commands.Resources;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -11,29 +12,34 @@ namespace PledgeVault.Api.Controllers;
 [ApiController]
 public sealed class ResourceController : ControllerBase
 {
-    private readonly IResourceService _service;
+    private readonly IMediator _mediator;
 
-    public ResourceController(IResourceService service) => _service = service;
+    public ResourceController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IEnumerable<ResourceResponse>> GetAllAsync() => await _service.GetAllAsync();
+    public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
+        => Ok(await _mediator.Send(new GetAllQuery { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
-    public async Task<ResourceResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
+    public async Task<IActionResult> GetByIdAsync(int id)
+        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
 
     [HttpGet("pledge/{id:int}")]
-    public async Task<IEnumerable<ResourceResponse>> GetByPledgeIdAsync(int id) => await _service.GetByPledgeIdAsync(id);
+    public async Task<IActionResult> GetByPledgeIdAsync(int id, [FromQuery] PageOptions pageOptions)
+        => Ok(await _mediator.Send(new GetByPledgeIdQuery { Id = id, PageOptions = pageOptions }));
 
     [HttpPost]
-    public async Task<ResourceResponse> AddAsync(AddResourceRequest request) => await _service.AddAsync(request);
+    public async Task<IActionResult> AddAsync(AddResourceRequest request)
+        => Ok(await _mediator.Send(new AddCommand { Request = request }));
 
     [HttpPut]
-    public async Task<ResourceResponse> UpdateAsync(UpdateResourceRequest request) => await _service.UpdateAsync(request);
+    public async Task<IActionResult> UpdateAsync(UpdateResourceRequest request)
+        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _service.SetInactiveAsync(id);
+        await _mediator.Send(new SetInactiveCommand { Id = id });
         return NoContent();
     }
 }

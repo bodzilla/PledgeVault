@@ -6,5 +6,5 @@ namespace PledgeVault.Services.Commands.Pledges;
 
 public sealed class AddCommand : IRequest<PledgeResponse>
 {
-    public AddPoliticianRequest Request { get; set; }
+    public AddPledgeRequest Request { get; set; }
 }

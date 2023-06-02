@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
-using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Persistence;
-using PledgeVault.Services;
 using System;
+using PledgeVault.Core.Contracts.Services;
+using PledgeVault.Services;
 
 namespace PledgeVault.Api;
 
@@ -32,7 +32,6 @@ internal sealed class Program
 
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddFluentValidationClientsideAdapters();
-
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         builder.Services.AddValidatorsFromAssemblies(assemblies);
         builder.Services.AddAutoMapper(assemblies);
@@ -41,7 +40,7 @@ internal sealed class Program
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IResourceService, ResourceService>();
+        builder.Services.AddSingleton<IService, Service>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

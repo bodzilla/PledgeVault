@@ -7,39 +7,39 @@ using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries.Parties;
+using PledgeVault.Services.Queries.Resources;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PledgeVault.Services.Handlers.Parties;
+namespace PledgeVault.Services.Handlers.Resources;
 
-public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQuery, Page<PartyResponse>>
+public sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQuery, Page<ResourceResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public GetByCountryIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByPledgeIdQueryHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<Page<PartyResponse>> Handle(GetByCountryIdQuery query, CancellationToken cancellationToken)
+    public async Task<Page<ResourceResponse>> Handle(GetByPledgeIdQuery query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 
         return new()
         {
-            Data = await _context.Parties
+            Data = await _context.Resources
                 .AsNoTracking()
-                .Where(x => x.CountryId == query.Id)
+                .Where(x => x.PledgeId == query.Id)
                 .PaginateFrom(query.PageOptions)
-                .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
+                .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Parties.CountAsync(cancellationToken)
+            TotalItems = await _context.Resources.CountAsync(cancellationToken)
         };
     }
 }

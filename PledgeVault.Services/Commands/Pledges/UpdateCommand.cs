@@ -6,5 +6,5 @@ namespace PledgeVault.Services.Commands.Pledges;
 
 public sealed class UpdateCommand : IRequest<PledgeResponse>
 {
-    public UpdatePoliticianRequest Request { get; set; }
+    public UpdatePledgeRequest Request { get; set; }
 }

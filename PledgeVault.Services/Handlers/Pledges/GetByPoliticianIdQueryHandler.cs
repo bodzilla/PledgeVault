@@ -39,7 +39,7 @@ public sealed class GetByPoliticianIdQueryHandler : IRequestHandler<GetByPolitic
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Countries.CountAsync(cancellationToken)
+            TotalItems = await _context.Pledges.CountAsync(cancellationToken)
         };
     }
 }
