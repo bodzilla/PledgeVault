@@ -31,7 +31,7 @@ public sealed class GetAllQueryHandler<TEntity, TResponse> : IRequestHandler<Get
         {
             Data = await _context.Set<TEntity>()
                 .AsNoTracking()
-                .Paginate(query.Page)
+                .PaginateFrom(query.Page)
                 .ProjectTo<TResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
             PageNumber = query.Page.PageNumber,

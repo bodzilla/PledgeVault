@@ -34,7 +34,7 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Party
         {
             Data = await _context.Parties
                 .AsNoTracking()
-                .Paginate(query.Page)
+                .PaginateFrom(query.Page)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),

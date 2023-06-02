@@ -6,8 +6,8 @@ namespace PledgeVault.Persistence.Extensions;
 public static class PaginateQueryableExtension
 {
     /// <summary>
-    /// Applies pagination to a queryable.
+    /// Given a <see cref="Page"/>, applies pagination to the queryable.
     /// </summary>
-    public static IQueryable<T> Paginate<T>(this IQueryable<T> queryable, Page page)
+    public static IQueryable<T> PaginateFrom<T>(this IQueryable<T> queryable, Page page)
         => queryable.Skip((page.PageNumber - 1) * page.PageSize).Take(page.PageSize);
 }

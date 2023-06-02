@@ -29,7 +29,7 @@ public sealed class GetByGovernmentTypeQueryHandler : IRequestHandler<GetByGover
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .Paginate(query.Page)
+                .PaginateFrom(query.Page)
                 .Where(x => x.GovernmentType == query.GovernmentType)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken),
