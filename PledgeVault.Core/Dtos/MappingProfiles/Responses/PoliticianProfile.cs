@@ -4,7 +4,7 @@ using PledgeVault.Core.Models;
 
 namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
-public sealed class PledgeResponseProfile : Profile
+public sealed class PoliticianProfile : Profile
 {
-    public PledgeResponseProfile() => CreateMap<PledgeResponse, Pledge>().ReverseMap().MaxDepth(1);
+    public PoliticianProfile() => CreateMap<Politician, PoliticianResponse>().MaxDepth(1);
 }
