@@ -34,8 +34,8 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery, Page
         {
             Data = await _context.Countries
                 .AsNoTracking()
-                .PaginateFrom(query.PageOptions)
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
+                .PaginateFrom(query.PageOptions)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

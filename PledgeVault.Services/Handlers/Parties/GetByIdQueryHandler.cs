@@ -28,6 +28,7 @@ public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, PartyRes
         if (query.Id <= 0) throw new InvalidRequestException();
 
         return await _context.Parties
+            .AsNoTracking()
             .Where(x => x.Id == query.Id)
             .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
             .SingleOrDefaultAsync(cancellationToken);

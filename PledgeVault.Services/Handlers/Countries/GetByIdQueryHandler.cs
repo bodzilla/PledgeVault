@@ -28,6 +28,7 @@ public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery, C
         if (query.Id <= 0) throw new InvalidRequestException();
 
         return await _context.Countries
+            .AsNoTracking()
             .Where(x => x.Id == query.Id)
             .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
             .SingleOrDefaultAsync(cancellationToken);
