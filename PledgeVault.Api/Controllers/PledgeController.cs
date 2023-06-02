@@ -25,7 +25,7 @@ public sealed class PledgeController : ControllerBase
         => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
 
     [HttpGet("politician/{id:int}")]
-    public async Task<IActionResult> GetByCountryIdAsync(int id, [FromQuery] PageOptions pageOptions)
+    public async Task<IActionResult> GetByPoliticianIdAsync(int id, [FromQuery] PageOptions pageOptions)
         => Ok(await _mediator.Send(new GetByPoliticianIdQuery { Id = id, PageOptions = pageOptions }));
 
     [HttpGet("title/{title}")]
