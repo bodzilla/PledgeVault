@@ -30,6 +30,6 @@ public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, CountryR
         return await _context.Countries
             .Where(x => x.Id == query.Id)
             .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider)
-            .SingleOrDefaultAsync(cancellationToken) ?? throw new PledgeVaultException();
+            .SingleOrDefaultAsync(cancellationToken);
     }
 }
