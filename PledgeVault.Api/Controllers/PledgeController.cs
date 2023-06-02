@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PledgeVault.Core.Contracts.Services;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Dtos.Responses;
-using System.Collections.Generic;
+using PledgeVault.Services.Commands.Pledges;
+using PledgeVault.Services.Queries.Pledges;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Controllers;
@@ -11,32 +12,38 @@ namespace PledgeVault.Api.Controllers;
 [ApiController]
 public sealed class PledgeController : ControllerBase
 {
-    private readonly IPledgeService _service;
+    private readonly IMediator _mediator;
 
-    public PledgeController(IPledgeService service) => _service = service;
+    public PledgeController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IEnumerable<PledgeResponse>> GetAllAsync() => await _service.GetAllAsync();
+    public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
+        => Ok(await _mediator.Send(new GetAllQuery { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
-    public async Task<PledgeResponse> GetByIdAsync(int id) => await _service.GetByIdAsync(id);
+    public async Task<IActionResult> GetByIdAsync(int id)
+        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
 
     [HttpGet("politician/{id:int}")]
-    public async Task<IEnumerable<PledgeResponse>> GetByPoliticianIdAsync(int id) => await _service.GetByPoliticianIdAsync(id);
+    public async Task<IActionResult> GetByCountryIdAsync(int id, [FromQuery] PageOptions pageOptions)
+        => Ok(await _mediator.Send(new GetByPoliticianIdQuery { Id = id, PageOptions = pageOptions }));
 
     [HttpGet("title/{title}")]
-    public async Task<IEnumerable<PledgeResponse>> GetByTitleAsync(string title) => await _service.GetByTitleAsync(title);
+    public async Task<IActionResult> GetByTitleAsync(string title, [FromQuery] PageOptions pageOptions)
+        => Ok(await _mediator.Send(new GetByTitleQuery { Title = title, PageOptions = pageOptions }));
 
     [HttpPost]
-    public async Task<PledgeResponse> AddAsync(AddPledgeRequest request) => await _service.AddAsync(request);
+    public async Task<IActionResult> AddAsync(AddPoliticianRequest request)
+        => Ok(await _mediator.Send(new AddCommand { Request = request }));
 
     [HttpPut]
-    public async Task<PledgeResponse> UpdateAsync(UpdatePledgeRequest request) => await _service.UpdateAsync(request);
+    public async Task<IActionResult> UpdateAsync(UpdatePoliticianRequest request)
+        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _service.SetInactiveAsync(id);
+        await _mediator.Send(new SetInactiveCommand { Id = id });
         return NoContent();
     }
 }
