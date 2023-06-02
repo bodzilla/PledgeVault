@@ -1,5 +1,4 @@
-﻿using System;
-using PledgeVault.Core.Dtos.Requests;
+﻿using PledgeVault.Core.Dtos.Requests;
 
 namespace PledgeVault.Core.Validators;
 

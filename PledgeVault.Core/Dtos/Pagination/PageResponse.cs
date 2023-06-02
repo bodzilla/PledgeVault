@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PledgeVault.Core.Contracts.Dtos;
+using System;
 using System.Collections.Generic;
-using PledgeVault.Core.Contracts.Dtos;
 
 namespace PledgeVault.Core.Dtos.Pagination;
 

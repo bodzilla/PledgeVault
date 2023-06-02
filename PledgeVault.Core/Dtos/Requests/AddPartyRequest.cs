@@ -1,5 +1,5 @@
-﻿using System;
-using PledgeVault.Core.Contracts.Dtos;
+﻿using PledgeVault.Core.Contracts.Dtos;
+using System;
 
 namespace PledgeVault.Core.Dtos.Requests;
 

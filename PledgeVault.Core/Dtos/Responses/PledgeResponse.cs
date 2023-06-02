@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using PledgeVault.Core.Contracts.Dtos;
 using PledgeVault.Core.Enums;
-using PledgeVault.Core.Contracts.Dtos;
+using System;
+using System.Collections.Generic;
 
 namespace PledgeVault.Core.Dtos.Responses;
 

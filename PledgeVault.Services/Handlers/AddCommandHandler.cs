@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using PledgeVault.Core.Contracts;
 using PledgeVault.Persistence;
 using PledgeVault.Services.Commands;
-using System.Threading.Tasks;
 using System.Threading;
-using PledgeVault.Core.Contracts;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers;
 

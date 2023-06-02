@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using PledgeVault.Core.Contracts;
+﻿using PledgeVault.Core.Contracts;
 using PledgeVault.Core.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace PledgeVault.Core.Models;
 

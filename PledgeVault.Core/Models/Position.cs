@@ -1,6 +1,6 @@
-﻿using System;
+﻿using PledgeVault.Core.Contracts;
+using System;
 using System.Collections.Generic;
-using PledgeVault.Core.Contracts;
 
 namespace PledgeVault.Core.Models;
 

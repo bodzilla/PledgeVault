@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PledgeVault.Core.Dtos.Requests;
+using PledgeVault.Core.Dtos.Responses;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Core.Contracts.Services;
 

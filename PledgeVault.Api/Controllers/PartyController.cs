@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
@@ -7,6 +6,7 @@ using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Services.Commands;
 using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Parties;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Controllers;
 

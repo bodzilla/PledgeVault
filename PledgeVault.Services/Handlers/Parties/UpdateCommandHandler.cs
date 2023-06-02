@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Persistence;
 using PledgeVault.Core.Models;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
+using PledgeVault.Persistence;
 using PledgeVault.Services.Commands;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 

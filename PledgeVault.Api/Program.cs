@@ -1,26 +1,26 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PledgeVault.Api.Conventions;
-using PledgeVault.Api.Middleware;
-using PledgeVault.Persistence;
-using PledgeVault.Services;
-using FluentValidation.AspNetCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
+using PledgeVault.Api.Conventions;
+using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts.Services;
-using MediatR;
-using FluentValidation;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
+using PledgeVault.Persistence;
+using PledgeVault.Services;
 using PledgeVault.Services.Commands;
 using PledgeVault.Services.Handlers;
-using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Services.Queries;
+using System;
 
 namespace PledgeVault.Api;
 

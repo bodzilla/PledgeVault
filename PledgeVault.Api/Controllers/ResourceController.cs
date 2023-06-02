@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Contracts.Services;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Controllers;
 

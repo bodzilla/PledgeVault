@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Linq;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using PledgeVault.Services.Queries.Parties;
-using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Persistence.Extensions;
+using PledgeVault.Services.Queries.Parties;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 

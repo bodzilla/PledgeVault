@@ -3,7 +3,6 @@
 namespace PledgeVault.Core.Validators;
 
 using FluentValidation;
-using System;
 
 public sealed class AddPositionRequestValidator : AbstractValidator<AddPositionRequest>
 {

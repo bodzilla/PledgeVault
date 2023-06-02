@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using PledgeVault.Core.Exceptions;
 using System;
 using System.Text.Json;
-using PledgeVault.Core.Exceptions;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Middleware;
 
