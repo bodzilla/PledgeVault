@@ -10,18 +10,18 @@ using PledgeVault.Core.Exceptions;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class SetCountryInactiveCommandHandler : IRequestHandler<SetCountryInactiveCommand, CountryResponse>
+public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public SetCountryInactiveCommandHandler(PledgeVaultContext context, IMapper mapper)
+    public SetInactiveCommandHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(SetCountryInactiveCommand command, CancellationToken cancellationToken)
+    public async Task<CountryResponse> Handle(SetInactiveCommand command, CancellationToken cancellationToken)
     {
         if (command.Id <= 0) throw new InvalidRequestException();
 

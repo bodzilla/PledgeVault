@@ -6,24 +6,26 @@ using PledgeVault.Core.Models;
 using PledgeVault.Services.Commands.Countries;
 using System.Threading.Tasks;
 using System.Threading;
+using System;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class AddCountryCommandHandler : IRequestHandler<AddCountryCommand, CountryResponse>
+public sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public AddCountryCommandHandler(PledgeVaultContext context, IMapper mapper)
+    public UpdateCommandHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(AddCountryCommand command, CancellationToken cancellationToken)
+    public async Task<CountryResponse> Handle(UpdateCommand command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Country>(command.Request);
-        await _context.Countries.AddAsync(entity, cancellationToken);
+        entity.EntityModified = DateTime.Now;
+        _context.Countries.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<CountryResponse>(entity);
     }

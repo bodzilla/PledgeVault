@@ -4,7 +4,9 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Queries.Countries;
 
-public sealed class GetAllCountriesQuery : IRequest<PaginationResponse<CountryResponse>>
+public sealed class GetByNameQuery : IRequest<PaginationResponse<CountryResponse>>
 {
+    public string Name { get; set; }
+
     public PaginationQuery PaginationQuery { get; set; }
 }

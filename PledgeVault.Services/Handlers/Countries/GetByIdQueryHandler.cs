@@ -12,18 +12,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetCountryByIdQueryHandler : IRequestHandler<GetCountryByIdQuery, CountryResponse>
+public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public GetCountryByIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByIdQueryHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(GetCountryByIdQuery query, CancellationToken cancellationToken)
+    public async Task<CountryResponse> Handle(GetByIdQuery query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 

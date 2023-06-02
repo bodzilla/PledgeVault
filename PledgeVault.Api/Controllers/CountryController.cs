@@ -19,32 +19,32 @@ public class CountryController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetAllCountriesQuery { PaginationQuery = paginationQuery }));
+        => Ok(await _mediator.Send(new GetAllQuery { PaginationQuery = paginationQuery }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
-        => Ok(await _mediator.Send(new GetCountryByIdQuery { Id = id }));
+        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetCountriesByNameQuery { Name = name, PaginationQuery = paginationQuery }));
+        => Ok(await _mediator.Send(new GetByNameQuery { Name = name, PaginationQuery = paginationQuery }));
 
     [HttpGet("government/{type}")]
     public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PaginationQuery paginationQuery)
-        => Ok(await _mediator.Send(new GetCountriesByGovernmentTypeQuery { GovernmentType = type, PaginationQuery = paginationQuery }));
+        => Ok(await _mediator.Send(new GetByGovernmentTypeQuery { GovernmentType = type, PaginationQuery = paginationQuery }));
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddCountryRequest request)
-        => Ok(await _mediator.Send(new AddCountryCommand { Request = request }));
+        => Ok(await _mediator.Send(new AddCommand { Request = request }));
 
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdateCountryRequest request)
-        => Ok(await _mediator.Send(new UpdateCountryCommand { Request = request }));
+        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _mediator.Send(new SetCountryInactiveCommand { Id = id });
+        await _mediator.Send(new SetInactiveCommand { Id = id });
         return NoContent();
     }
 }

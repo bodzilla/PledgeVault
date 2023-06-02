@@ -4,7 +4,7 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Commands.Countries;
 
-public sealed class AddCountryCommand : IRequest<CountryResponse>
+public sealed class UpdateCommand : IRequest<CountryResponse>
 {
-    public AddCountryRequest Request { get; set; }
+    public UpdateCountryRequest Request { get; set; }
 }

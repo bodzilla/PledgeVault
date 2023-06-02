@@ -3,7 +3,7 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Commands.Countries;
 
-public sealed class SetCountryInactiveCommand : IRequest<CountryResponse>
+public sealed class SetInactiveCommand : IRequest<CountryResponse>
 {
     public int Id { get; set; }
 }
