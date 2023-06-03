@@ -6,9 +6,9 @@ using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
+using PledgeVault.Services.Queries.Resources;
 using System.Threading;
 using System.Threading.Tasks;
-using PledgeVault.Services.Queries.Resources;
 
 namespace PledgeVault.Services.Handlers.Resources;
 
@@ -29,7 +29,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery, Page<Resou
             Data = await _context.Resources
                 .AsNoTracking()
                 .PaginateFrom(query.PageOptions)
-                .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken)
+                .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Pledge)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

@@ -16,5 +16,5 @@ public sealed class Page<T> where T : IResponse
 
     public int TotalPages => (int)Math.Ceiling(decimal.Divide(TotalItems, PageSize));
 
-    public List<T> Data { get; set; }
+    public IEnumerable<T> Data { get; set; }
 }

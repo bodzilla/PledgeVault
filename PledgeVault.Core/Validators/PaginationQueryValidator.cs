@@ -1,7 +1,7 @@
 ﻿namespace PledgeVault.Core.Validators;
 
 using FluentValidation;
-using PledgeVault.Core.Dtos.Pagination;
+using Dtos.Pagination;
 
 public sealed class PaginationQueryValidator : AbstractValidator<PageOptions>
 {
