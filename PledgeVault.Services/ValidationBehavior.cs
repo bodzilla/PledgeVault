@@ -1,11 +1,11 @@
-﻿namespace PledgeVault.Services;
-
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+namespace PledgeVault.Services;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
