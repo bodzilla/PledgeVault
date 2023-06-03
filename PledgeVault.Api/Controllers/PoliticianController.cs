@@ -28,7 +28,7 @@ public sealed class PoliticianController : ControllerBase
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByNameQuery { Name = name, PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetByNameQuery<PoliticianResponse> { Name = name, PageOptions = pageOptions }));
 
     [HttpGet("party/{id:int}")]
     public async Task<IActionResult> GetByPartyIdAsync(int id, [FromQuery] PageOptions pageOptions)

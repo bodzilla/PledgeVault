@@ -28,7 +28,7 @@ public sealed class PartyController : ControllerBase
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByNameQuery { Name = name, PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetByNameQuery<PartyResponse> { Name = name, PageOptions = pageOptions }));
 
     [HttpGet("country/{id:int}")]
     public async Task<IActionResult> GetByCountryIdAsync(int id, [FromQuery] PageOptions pageOptions)

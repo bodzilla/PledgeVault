@@ -7,15 +7,16 @@ using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries.Countries;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PledgeVault.Core.Models;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery, Page<CountryResponse>>
+public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<CountryResponse>, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -26,13 +27,15 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery, Page
         _mapper = mapper;
     }
 
-    public async Task<Page<CountryResponse>> Handle(GetByNameQuery query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetByNameQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
+        var dbSet = _context.Set<Country>();
+
         return new Page<CountryResponse>
         {
-            Data = await _context.Countries
+            Data = await dbSet
                 .AsNoTracking()
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .PaginateFrom(query.PageOptions)
@@ -40,7 +43,7 @@ public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery, Page
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Countries.CountAsync(cancellationToken)
+            TotalItems = await dbSet.CountAsync(cancellationToken)
         };
     }
 }

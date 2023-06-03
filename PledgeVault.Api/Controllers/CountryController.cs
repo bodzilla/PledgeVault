@@ -29,7 +29,7 @@ public sealed class CountryController : ControllerBase
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByNameQuery { Name = name, PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, PageOptions = pageOptions }));
 
     [HttpGet("government/{type}")]
     public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PageOptions pageOptions)
