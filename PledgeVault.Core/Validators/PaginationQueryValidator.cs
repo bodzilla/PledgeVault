@@ -1,7 +1,7 @@
-﻿namespace PledgeVault.Core.Validators;
+﻿using FluentValidation;
+using PledgeVault.Core.Dtos.Pagination;
 
-using Dtos.Pagination;
-using FluentValidation;
+namespace PledgeVault.Core.Validators;
 
 public sealed class PaginationQueryValidator : AbstractValidator<PageOptions>
 {
@@ -9,7 +9,8 @@ public sealed class PaginationQueryValidator : AbstractValidator<PageOptions>
     {
         RuleFor(x => x).NotNull();
 
-        RuleFor(x => x.PageNumber).GreaterThanOrEqualTo(1).WithMessage("Page number must be at least 1.");
+        RuleFor(x => x.PageNumber).GreaterThanOrEqualTo(1)
+            .WithMessage("Page number must be at least 1.");
 
         RuleFor(x => x.PageSize)
             .GreaterThanOrEqualTo(25).WithMessage("Page size must be at least 25.")
