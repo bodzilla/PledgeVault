@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Services.Commands.Resources;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Services.Commands;
+using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Resources;
 using System.Threading.Tasks;
-using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -32,16 +32,16 @@ public sealed class ResourceController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddResourceRequest request)
-        => Ok(await _mediator.Send(new AddCommand { Request = request }));
+        => Ok(await _mediator.Send(new AddCommand<AddResourceRequest, ResourceResponse> { Request = request }));
 
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdateResourceRequest request)
-        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
+        => Ok(await _mediator.Send(new UpdateCommand<UpdateResourceRequest, ResourceResponse> { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _mediator.Send(new SetInactiveCommand { Id = id });
+        await _mediator.Send(new SetInactiveCommand<ResourceResponse> { Id = id });
         return NoContent();
     }
 }

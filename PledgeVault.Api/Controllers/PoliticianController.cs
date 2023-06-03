@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Services.Commands.Politicians;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Services.Commands;
+using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Politicians;
 using System.Threading.Tasks;
-using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -36,16 +36,16 @@ public sealed class PoliticianController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddPoliticianRequest request)
-        => Ok(await _mediator.Send(new AddCommand { Request = request }));
+        => Ok(await _mediator.Send(new AddCommand<AddPoliticianRequest, PoliticianResponse> { Request = request }));
 
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdatePoliticianRequest request)
-        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
+        => Ok(await _mediator.Send(new UpdateCommand<UpdatePoliticianRequest, PoliticianResponse> { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _mediator.Send(new SetInactiveCommand { Id = id });
+        await _mediator.Send(new SetInactiveCommand<PoliticianResponse> { Id = id });
         return NoContent();
     }
 }

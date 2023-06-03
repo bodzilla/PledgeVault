@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
+using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
+using PledgeVault.Services.Queries;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PledgeVault.Services.Queries;
-using PledgeVault.Core.Models;
 
 namespace PledgeVault.Services.Handlers.Parties;
 

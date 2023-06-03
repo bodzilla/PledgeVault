@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
-using PledgeVault.Services.Commands.Pledges;
+using PledgeVault.Services.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Pledges;
 
-public sealed class AddCommandHandler : IRequestHandler<AddCommand, PledgeResponse>
+public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPledgeRequest, PledgeResponse>, PledgeResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -20,7 +21,7 @@ public sealed class AddCommandHandler : IRequestHandler<AddCommand, PledgeRespon
         _mapper = mapper;
     }
 
-    public async Task<PledgeResponse> Handle(AddCommand command, CancellationToken cancellationToken)
+    public async Task<PledgeResponse> Handle(AddCommand<AddPledgeRequest, PledgeResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Pledge>(command.Request);
         await _context.Pledges.AddAsync(entity, cancellationToken);

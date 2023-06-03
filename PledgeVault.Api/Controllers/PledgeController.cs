@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Services.Commands.Pledges;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Services.Commands;
+using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Pledges;
 using System.Threading.Tasks;
-using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -36,16 +36,16 @@ public sealed class PledgeController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddPledgeRequest request)
-        => Ok(await _mediator.Send(new AddCommand { Request = request }));
+        => Ok(await _mediator.Send(new AddCommand<AddPledgeRequest, PledgeResponse> { Request = request }));
 
     [HttpPut]
     public async Task<IActionResult> UpdateAsync(UpdatePledgeRequest request)
-        => Ok(await _mediator.Send(new UpdateCommand { Request = request }));
+        => Ok(await _mediator.Send(new UpdateCommand<UpdatePledgeRequest, PledgeResponse> { Request = request }));
 
     [HttpPatch("deactivate/{id:int}")]
     public async Task<IActionResult> SetInactiveAsync(int id)
     {
-        await _mediator.Send(new SetInactiveCommand { Id = id });
+        await _mediator.Send(new SetInactiveCommand<PledgeResponse> { Id = id });
         return NoContent();
     }
 }

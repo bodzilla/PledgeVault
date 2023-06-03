@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
+using PledgeVault.Services.Queries;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Services.Handlers.Countries;
 

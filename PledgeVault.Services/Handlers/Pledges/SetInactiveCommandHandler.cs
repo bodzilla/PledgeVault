@@ -3,14 +3,14 @@ using MediatR;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
-using PledgeVault.Services.Commands.Pledges;
+using PledgeVault.Services.Commands;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Pledges;
 
-public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand, PledgeResponse>
+public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand<PledgeResponse>, PledgeResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveComma
         _mapper = mapper;
     }
 
-    public async Task<PledgeResponse> Handle(SetInactiveCommand command, CancellationToken cancellationToken)
+    public async Task<PledgeResponse> Handle(SetInactiveCommand<PledgeResponse> command, CancellationToken cancellationToken)
     {
         if (command.Id <= 0) throw new InvalidRequestException();
 

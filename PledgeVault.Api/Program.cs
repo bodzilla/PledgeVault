@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
-using PledgeVault.Persistence;
-using System;
 using PledgeVault.Core.Contracts.Services;
+using PledgeVault.Persistence;
 using PledgeVault.Services;
+using System;
 
 namespace PledgeVault.Api;
 

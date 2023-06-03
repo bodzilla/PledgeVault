@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
+using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
-using PledgeVault.Services.Commands.Countries;
+using PledgeVault.Services.Commands;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class AddCommandHandler : IRequestHandler<AddCommand, CountryResponse>
+public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -20,7 +21,7 @@ public sealed class AddCommandHandler : IRequestHandler<AddCommand, CountryRespo
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(AddCommand command, CancellationToken cancellationToken)
+    public async Task<CountryResponse> Handle(AddCommand<AddCountryRequest, CountryResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Country>(command.Request);
         await _context.Countries.AddAsync(entity, cancellationToken);
