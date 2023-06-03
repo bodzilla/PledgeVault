@@ -6,7 +6,6 @@ using PledgeVault.Services.Commands.Resources;
 using PledgeVault.Services.Queries.Resources;
 using System.Threading.Tasks;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
@@ -21,11 +20,11 @@ public sealed class ResourceController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery<Resource, ResourceResponse> { PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetAllQuery<ResourceResponse> { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
-        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
+        => Ok(await _mediator.Send(new GetByIdQuery<ResourceResponse> { Id = id }));
 
     [HttpGet("pledge/{id:int}")]
     public async Task<IActionResult> GetByPledgeIdAsync(int id, [FromQuery] PageOptions pageOptions)

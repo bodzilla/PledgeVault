@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
-using PledgeVault.Services.Queries.Pledges;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Services.Handlers.Pledges;
 
-public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, PledgeResponse>
+public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<PledgeResponse>, PledgeResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery, PledgeRe
         _mapper = mapper;
     }
 
-    public async Task<PledgeResponse> Handle(GetByIdQuery query, CancellationToken cancellationToken)
+    public async Task<PledgeResponse> Handle(GetByIdQuery<PledgeResponse> query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 

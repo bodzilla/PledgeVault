@@ -6,7 +6,6 @@ using PledgeVault.Services.Commands.Parties;
 using PledgeVault.Services.Queries.Parties;
 using System.Threading.Tasks;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
@@ -21,11 +20,11 @@ public sealed class PartyController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery<Party, PartyResponse> { PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetAllQuery<PartyResponse> { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
-        => Ok(await _mediator.Send(new GetByIdQuery { Id = id }));
+        => Ok(await _mediator.Send(new GetByIdQuery<PartyResponse> { Id = id }));
 
     [HttpGet("name/{name}")]
     public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)

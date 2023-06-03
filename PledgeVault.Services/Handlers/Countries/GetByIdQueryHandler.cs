@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
-using PledgeVault.Services.Queries.Countries;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery, CountryResponse>
+public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery<CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery, C
         _mapper = mapper;
     }
 
-    public async Task<CountryResponse> Handle(GetByIdQuery query, CancellationToken cancellationToken)
+    public async Task<CountryResponse> Handle(GetByIdQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Politician, PoliticianResponse>, Page<PoliticianResponse>>
+public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PoliticianResponse>, Page<PoliticianResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Politician,
         _mapper = mapper;
     }
 
-    public async Task<Page<PoliticianResponse>> Handle(GetAllQuery<Politician, PoliticianResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<PoliticianResponse>> Handle(GetAllQuery<PoliticianResponse> query, CancellationToken cancellationToken)
     {
         var dbSet = _context.Set<Politician>();
 

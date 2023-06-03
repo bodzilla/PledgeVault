@@ -13,7 +13,7 @@ using PledgeVault.Core.Models;
 
 namespace PledgeVault.Services.Handlers.Resources;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Resource, ResourceResponse>, Page<ResourceResponse>>
+public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<ResourceResponse>, Page<ResourceResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Resource, R
         _mapper = mapper;
     }
 
-    public async Task<Page<ResourceResponse>> Handle(GetAllQuery<Resource, ResourceResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<ResourceResponse>> Handle(GetAllQuery<ResourceResponse> query, CancellationToken cancellationToken)
     {
         var dbSet = _context.Set<Resource>();
 

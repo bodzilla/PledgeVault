@@ -13,7 +13,7 @@ using PledgeVault.Core.Models;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Country, CountryResponse>, Page<CountryResponse>>
+public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryResponse>, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Country, Co
         _mapper = mapper;
     }
 
-    public async Task<Page<CountryResponse>> Handle(GetAllQuery<Country, CountryResponse> query, CancellationToken cancellationToken)
+    public async Task<Page<CountryResponse>> Handle(GetAllQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
         var dbSet = _context.Set<Country>();
 
