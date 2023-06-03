@@ -34,7 +34,6 @@ internal sealed class ExceptionMiddleware
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        object response;
 
         if (exception is PledgeVaultException)
         {
@@ -47,15 +46,8 @@ internal sealed class ExceptionMiddleware
                     context.Response.StatusCode = StatusCodes.Status404NotFound;
                     return context.Response.StartAsync();
             }
-
-            response = new { message = exception.Message };
         }
-        else
-        {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            response = new { message = exception.Message, innerException = exception.InnerException?.Message };
-        }
-
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        else context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        return context.Response.WriteAsync(JsonSerializer.Serialize(new { message = exception.Message }));
     }
 }
