@@ -6,13 +6,14 @@ using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
-using PledgeVault.Services.Queries.Parties;
+using PledgeVault.Services.Queries;
 using System.Threading;
 using System.Threading.Tasks;
+using PledgeVault.Core.Models;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery, Page<PartyResponse>>
+public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Party, PartyResponse>, Page<PartyResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -23,16 +24,20 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery, Page<Party
         _mapper = mapper;
     }
 
-    public async Task<Page<PartyResponse>> Handle(GetAllQuery query, CancellationToken cancellationToken)
-        => new()
+    public async Task<Page<PartyResponse>> Handle(GetAllQuery<Party, PartyResponse> query, CancellationToken cancellationToken)
+    {
+        var dbSet = _context.Set<Party>();
+
+        return new()
         {
-            Data = await _context.Parties
+            Data = await dbSet
                 .AsNoTracking()
                 .PaginateFrom(query.PageOptions)
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Parties.CountAsync(cancellationToken)
+            TotalItems = await dbSet.CountAsync(cancellationToken)
         };
+    }
 }

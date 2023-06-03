@@ -5,6 +5,9 @@ using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Services.Commands.Politicians;
 using PledgeVault.Services.Queries.Politicians;
 using System.Threading.Tasks;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Models;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -18,7 +21,7 @@ public sealed class PoliticianController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery { PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetAllQuery<Politician, PoliticianResponse> { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)

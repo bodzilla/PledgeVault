@@ -6,6 +6,9 @@ using PledgeVault.Core.Enums;
 using PledgeVault.Services.Commands.Countries;
 using PledgeVault.Services.Queries.Countries;
 using System.Threading.Tasks;
+using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Models;
+using PledgeVault.Services.Queries;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -19,7 +22,7 @@ public sealed class CountryController : ControllerBase
 
     [HttpGet]
     public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery { PageOptions = pageOptions }));
+        => Ok(await _mediator.Send(new GetAllQuery<Country, CountryResponse> { PageOptions = pageOptions }));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id)
