@@ -34,7 +34,7 @@ public sealed class GetByPoliticianIdQueryHandler : IRequestHandler<GetByPolitic
             Data = await _context.Pledges
                 .AsNoTracking()
                 .Where(x => x.PoliticianId == query.Id)
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

@@ -12,11 +12,13 @@ public sealed class AddPartyRequestValidator : AbstractValidator<AddPartyRequest
             .NotNull()
             .WithMessage("Request object cannot be null.");
 
-        RuleFor(x => x.Name.Trim())
+        RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Name length must be between 1 and 250 characters.");
+            .WithMessage("Name length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Name must not start or end with whitespace.");
 
         RuleFor(x => x.DateEstablished)
             .NotEmpty()
@@ -32,12 +34,12 @@ public sealed class AddPartyRequestValidator : AbstractValidator<AddPartyRequest
         RuleFor(x => x.LogoUrl.Trim())
             .Length(1, 250)
             .When(x => !String.IsNullOrWhiteSpace(x.LogoUrl))
-            .WithMessage("LogoUrl length must be between 1 and 250 characters.");
+            .WithMessage("Logo URL length must be between 1 and 250 characters.");
 
         RuleFor(x => x.SiteUrl.Trim())
             .Length(1, 250)
             .When(x => !String.IsNullOrWhiteSpace(x.SiteUrl))
-            .WithMessage("SiteUrl length must be between 1 and 250 characters.");
+            .WithMessage("Site URL length must be between 1 and 250 characters.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)

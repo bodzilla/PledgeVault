@@ -16,17 +16,21 @@ public sealed class UpdateResourceRequestValidator : AbstractValidator<UpdateRes
             .GreaterThan(0)
             .WithMessage("Id must be greater than 0.");
 
-        RuleFor(x => x.Title.Trim())
+        RuleFor(x => x.Title)
             .NotEmpty()
             .WithMessage("Title cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Title length must be between 1 and 250 characters.");
+            .WithMessage("Title length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Title must not start or end with whitespace.");
 
-        RuleFor(x => x.SiteUrl.Trim())
+        RuleFor(x => x.SiteUrl)
             .NotEmpty()
             .WithMessage("Site URL cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Site URL length must be between 1 and 250 characters.");
+            .WithMessage("Site URL length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Site URL must not start or end with whitespace.");
 
         RuleFor(x => x.ResourceType)
             .NotNull()
@@ -41,6 +45,6 @@ public sealed class UpdateResourceRequestValidator : AbstractValidator<UpdateRes
 
         RuleFor(x => x.PledgeId)
             .GreaterThan(0)
-            .WithMessage("Pledge Id must be greater than 0.");
+            .WithMessage("PledgeId must be greater than 0.");
     }
 }

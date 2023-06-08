@@ -37,17 +37,15 @@ internal sealed class ExceptionMiddleware
 
         if (exception is PledgeVaultException)
         {
-            switch (exception)
+            context.Response.StatusCode = exception switch
             {
-                case InvalidRequestException:
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                    return context.Response.StartAsync();
-                case NotFoundException:
-                    context.Response.StatusCode = StatusCodes.Status404NotFound;
-                    return context.Response.StartAsync();
-            }
+                InvalidRequestException => StatusCodes.Status400BadRequest,
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => context.Response.StatusCode
+            };
         }
         else context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
         return context.Response.WriteAsync(JsonSerializer.Serialize(new { message = exception.Message }));
     }
 }

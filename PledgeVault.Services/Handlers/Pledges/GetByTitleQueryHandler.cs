@@ -35,7 +35,7 @@ public sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, Pa
             Data = await _context.Pledges
                 .AsNoTracking()
                 .Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{query.Title.ToLower()}%"))
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

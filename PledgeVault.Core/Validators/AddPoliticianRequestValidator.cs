@@ -9,14 +9,15 @@ public sealed class AddPoliticianRequestValidator : AbstractValidator<AddPolitic
     public AddPoliticianRequestValidator()
     {
         RuleFor(x => x)
-            .NotNull()
-            .WithMessage("Request object cannot be null.");
+            .NotNull();
 
-        RuleFor(x => x.Name.Trim())
+        RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage("Name cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Name length must be between 1 and 250 characters.");
+            .WithMessage("Name length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Name must not start or end with whitespace.");
 
         RuleFor(x => x.SexType)
             .NotNull()
@@ -35,15 +36,17 @@ public sealed class AddPoliticianRequestValidator : AbstractValidator<AddPolitic
             .When(x => x.DateOfDeath.HasValue)
             .WithMessage("Date of Death must be a date in the past when it is not null.");
 
-        RuleFor(x => x.CountryOfBirth.Trim())
+        RuleFor(x => x.CountryOfBirth)
             .NotEmpty()
             .WithMessage("Country of Birth cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Country of Birth length must be between 1 and 250 characters.");
+            .WithMessage("Country of Birth length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Country of Birth must not start or end with whitespace.");
 
         RuleFor(x => x.PartyId)
             .GreaterThan(0)
-            .WithMessage("Party Id must be greater than 0.");
+            .WithMessage("PartyId must be greater than 0.");
 
         RuleFor(x => x.Position)
             .NotEmpty()

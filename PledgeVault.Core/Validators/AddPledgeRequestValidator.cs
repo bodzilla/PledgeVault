@@ -13,11 +13,13 @@ public sealed class AddPledgeRequestValidator : AbstractValidator<AddPledgeReque
             .NotNull()
             .WithMessage("Request object cannot be null.");
 
-        RuleFor(x => x.Title.Trim())
+        RuleFor(x => x.Title)
             .NotEmpty()
             .WithMessage("Title cannot be empty.")
             .Length(1, 250)
-            .WithMessage("Title length must be between 1 and 250 characters.");
+            .WithMessage("Title length must be between 1 and 250 characters.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Title must not start or end with whitespace.");
 
         RuleFor(x => x.DatePledged)
             .NotEmpty()
@@ -46,7 +48,7 @@ public sealed class AddPledgeRequestValidator : AbstractValidator<AddPledgeReque
 
         RuleFor(x => x.PoliticianId)
             .GreaterThan(0)
-            .WithMessage("Politician Id must be greater than 0.");
+            .WithMessage("PoliticianId must be greater than 0.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)

@@ -19,9 +19,14 @@ namespace PledgeVault.Api;
 
 internal sealed class Program
 {
+    private const string CorsPolicy = "CorsPolicy";
+
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, policyBuilder =>
+        { policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build(); }));
 
         builder.Services
             .AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); })
@@ -40,7 +45,7 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddSingleton<IService, Service>();
+        builder.Services.AddScoped<IPoliticianService, PoliticianService>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +60,7 @@ internal sealed class Program
             app.UseSwaggerUI();
         }
 
+        app.UseCors(CorsPolicy);
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();

@@ -32,8 +32,8 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryResp
         {
             Data = await dbSet
                 .AsNoTracking()
-                .PaginateFrom(query.PageOptions)
-                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
+                .WithPagination(query.PageOptions)
+                .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Parties)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

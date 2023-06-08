@@ -4,13 +4,13 @@ using System;
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class AddCountryRequest : IRequest
+public sealed record AddCountryRequest : IRequest
 {
-    public string Name { get; set; }
+    public string Name { get; init; }
 
-    public DateTime? DateEstablished { get; set; }
+    public DateTime? DateEstablished { get; init; }
 
-    public GovernmentType GovernmentType { get; set; }
+    public GovernmentType GovernmentType { get; init; }
 
-    public string Summary { get; set; }
+    public string Summary { get; init; }
 }

@@ -4,9 +4,9 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Queries.Politicians;
 
-public sealed class GetByPartyIdQuery : IRequest<Page<PoliticianResponse>>
+public sealed record GetByPartyIdQuery : IRequest<Page<PoliticianResponse>>
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public PageOptions PageOptions { get; set; }
+    public PageOptions PageOptions { get; init; }
 }

@@ -34,7 +34,7 @@ public sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQue
             Data = await _context.Resources
                 .AsNoTracking()
                 .Where(x => x.PledgeId == query.Id)
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

@@ -4,9 +4,9 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Queries.Resources;
 
-public sealed class GetByPledgeIdQuery : IRequest<Page<ResourceResponse>>
+public sealed record GetByPledgeIdQuery : IRequest<Page<ResourceResponse>>
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public PageOptions PageOptions { get; set; }
+    public PageOptions PageOptions { get; init; }
 }

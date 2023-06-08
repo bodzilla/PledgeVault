@@ -1,6 +1,6 @@
 ﻿namespace PledgeVault.Core.Dtos.Pagination;
 
-public sealed class PageOptions
+public sealed record PageOptions
 {
     public int PageNumber { get; set; } = 1;
 

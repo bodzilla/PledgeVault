@@ -2,5 +2,5 @@
 
 public interface IResponse
 {
-    int Id { get; set; }
+    int Id { get; init; }
 }

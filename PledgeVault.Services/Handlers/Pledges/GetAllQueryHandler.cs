@@ -32,7 +32,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PledgeRespo
         {
             Data = await dbSet
                 .AsNoTracking()
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Resources)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

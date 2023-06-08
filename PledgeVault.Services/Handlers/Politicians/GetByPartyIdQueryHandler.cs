@@ -30,7 +30,7 @@ public sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByPartyIdQuery
             Data = await _context.Politicians
                 .AsNoTracking()
                 .Where(x => x.PartyId == query.Id)
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

@@ -3,17 +3,17 @@ using PledgeVault.Core.Enums;
 
 namespace PledgeVault.Core.Dtos.Responses;
 
-public sealed class ResourceResponse : IResponse
+public sealed record ResourceResponse : IResponse
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public string Title { get; set; }
+    public string Title { get; init; }
 
-    public string SiteUrl { get; set; }
+    public string SiteUrl { get; init; }
 
-    public ResourceType ResourceType { get; set; }
+    public ResourceType ResourceType { get; init; }
 
-    public string Summary { get; set; }
+    public string Summary { get; init; }
 
-    public PledgeResponse Pledge { get; set; }
+    public PledgeResponse Pledge { get; init; }
 }

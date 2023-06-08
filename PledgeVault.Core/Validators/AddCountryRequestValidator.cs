@@ -12,25 +12,27 @@ public sealed class AddCountryRequestValidator : AbstractValidator<AddCountryReq
             .NotNull()
             .WithMessage("Request object cannot be null.");
 
-        RuleFor(x => x.Name.Trim())
+        RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Country name is required.")
+            .WithMessage("Name is required.")
             .Length(1, 250)
-            .WithMessage("Country name must be between 1 and 250 characters long.");
+            .WithMessage("Name must be between 1 and 250 characters long.")
+            .Must(x => x is null || x.Trim() == x)
+            .WithMessage("Name must not start or end with whitespace.");
 
         RuleFor(x => x.DateEstablished)
             .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("Date established cannot be in the future.");
+            .WithMessage("Date Established cannot be in the future.");
 
         RuleFor(x => x.GovernmentType)
             .NotNull()
-            .WithMessage("Government type is required.")
+            .WithMessage("Government Type is required.")
             .IsInEnum()
-            .WithMessage("Invalid government type.");
+            .WithMessage("Invalid Government Type.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
             .When(x => !String.IsNullOrWhiteSpace(x.Summary))
-            .WithMessage("Country summary must be between 1 and 10,000 characters long.");
+            .WithMessage("Summary must be between 1 and 10,000 characters long.");
     }
 }

@@ -4,25 +4,25 @@ using System;
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class UpdatePledgeRequest : IRequest
+public sealed record UpdatePledgeRequest : IRequest
 {
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public string Title { get; set; }
+    public string Title { get; init; }
 
-    public DateTime DatePledged { get; set; }
+    public DateTime DatePledged { get; init; }
 
-    public DateTime? DateFulfilled { get; set; }
+    public DateTime? DateFulfilled { get; init; }
 
-    public PledgeCategoryType PledgeCategoryType { get; set; }
+    public PledgeCategoryType PledgeCategoryType { get; init; }
 
-    public PledgeStatusType PledgeStatusType { get; set; }
+    public PledgeStatusType PledgeStatusType { get; init; }
 
-    public int PoliticianId { get; set; }
+    public int PoliticianId { get; init; }
 
-    public string Summary { get; set; }
+    public string Summary { get; init; }
 
-    public string FulfilledSummary { get; set; }
+    public string FulfilledSummary { get; init; }
 
-    public int Score { get; set; }
+    public int Score { get; init; }
 }

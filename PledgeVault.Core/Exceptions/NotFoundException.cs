@@ -1,5 +1,10 @@
-﻿namespace PledgeVault.Core.Exceptions;
+﻿using System.Runtime.InteropServices;
+
+namespace PledgeVault.Core.Exceptions;
 
 public sealed class NotFoundException : PledgeVaultException
 {
+    public NotFoundException([Optional] string message) : base(message)
+    {
+    }
 }

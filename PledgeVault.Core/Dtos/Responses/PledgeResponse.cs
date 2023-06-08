@@ -5,29 +5,27 @@ using System.Collections.Generic;
 
 namespace PledgeVault.Core.Dtos.Responses;
 
-public sealed class PledgeResponse : IResponse
+public sealed record PledgeResponse : IResponse
 {
-    public PledgeResponse() => Resources = new List<ResourceResponse>();
+    public int Id { get; init; }
 
-    public int Id { get; set; }
+    public string Title { get; init; }
 
-    public string Title { get; set; }
+    public DateTime DatePledged { get; init; }
 
-    public DateTime DatePledged { get; set; }
+    public DateTime? DateFulfilled { get; init; }
 
-    public DateTime? DateFulfilled { get; set; }
+    public PledgeCategoryType PledgeCategoryType { get; init; }
 
-    public PledgeCategoryType PledgeCategoryType { get; set; }
+    public PledgeStatusType PledgeStatusType { get; init; }
 
-    public PledgeStatusType PledgeStatusType { get; set; }
+    public PoliticianResponse Politician { get; init; }
 
-    public PoliticianResponse Politician { get; set; }
+    public string Summary { get; init; }
 
-    public string Summary { get; set; }
+    public string FulfilledSummary { get; init; }
 
-    public string FulfilledSummary { get; set; }
+    public int Score { get; init; }
 
-    public int Score { get; set; }
-
-    public ICollection<ResourceResponse> Resources { get; set; }
+    public IReadOnlyCollection<ResourceResponse> Resources { get; init; }
 }

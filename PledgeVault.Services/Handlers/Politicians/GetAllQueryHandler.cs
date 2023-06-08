@@ -32,7 +32,7 @@ public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PoliticianR
         {
             Data = await dbSet
                 .AsNoTracking()
-                .PaginateFrom(query.PageOptions)
+                .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,

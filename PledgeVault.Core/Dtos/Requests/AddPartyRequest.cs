@@ -3,17 +3,17 @@ using System;
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class AddPartyRequest : IRequest
+public sealed record AddPartyRequest : IRequest
 {
-    public string Name { get; set; }
+    public string Name { get; init; }
 
-    public DateTime? DateEstablished { get; set; }
+    public DateTime? DateEstablished { get; init; }
 
-    public int CountryId { get; set; }
+    public int CountryId { get; init; }
 
-    public string LogoUrl { get; set; }
+    public string LogoUrl { get; init; }
 
-    public string SiteUrl { get; set; }
+    public string SiteUrl { get; init; }
 
-    public string Summary { get; set; }
+    public string Summary { get; init; }
 }
