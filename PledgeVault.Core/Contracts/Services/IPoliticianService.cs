@@ -6,5 +6,5 @@ namespace PledgeVault.Core.Contracts.Services;
 
 public interface IPoliticianService
 {
-    Task CheckIfPartyLeaderExists(Politician entity, CancellationToken cancellationToken);
+    Task CheckPartyLeaderAssignedAsync(Politician entity, CancellationToken cancellationToken);
 }

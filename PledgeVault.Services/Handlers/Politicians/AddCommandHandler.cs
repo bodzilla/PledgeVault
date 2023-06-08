@@ -27,7 +27,7 @@ public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPolitician
     public async Task<PoliticianResponse> Handle(AddCommand<AddPoliticianRequest, PoliticianResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Politician>(command.Request);
-        await _service.CheckIfPartyLeaderExists(entity, cancellationToken);
+        await _service.CheckPartyLeaderAssignedAsync(entity, cancellationToken);
         await _context.Politicians.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<PoliticianResponse>(entity);

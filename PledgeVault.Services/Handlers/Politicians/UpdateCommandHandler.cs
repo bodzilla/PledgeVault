@@ -28,7 +28,7 @@ public sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdateP
     public async Task<PoliticianResponse> Handle(UpdateCommand<UpdatePoliticianRequest, PoliticianResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Politician>(command.Request);
-        await _service.CheckIfPartyLeaderExists(entity, cancellationToken);
+        await _service.CheckPartyLeaderAssignedAsync(entity, cancellationToken);
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
