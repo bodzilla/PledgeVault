@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Validators;
 
-public sealed class PoliticianValidator : IEntityValidator<Politician>
+public sealed class PoliticianEntityValidator : IEntityValidator<Politician>
 {
     private readonly PledgeVaultContext _context;
 
-    public PoliticianValidator(PledgeVaultContext context) => _context = context;
+    public PoliticianEntityValidator(PledgeVaultContext context) => _context = context;
 
     public async Task ValidateAllRules(Politician entity, CancellationToken cancellationToken)
         => await EnsureOnlyOnePartyLeader(entity, cancellationToken);

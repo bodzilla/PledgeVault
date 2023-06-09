@@ -47,7 +47,7 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IEntityValidator<Politician>, PoliticianValidator>();
+        builder.Services.AddScoped<IEntityValidator<Politician>, PoliticianEntityValidator>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
