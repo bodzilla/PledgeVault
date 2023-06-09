@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging;
 using PledgeVault.Core.Exceptions;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace PledgeVault.Api.Middleware;
 
@@ -46,6 +46,6 @@ internal sealed class ExceptionMiddleware
         }
         else context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-        return context.Response.WriteAsync(JsonSerializer.Serialize(new { message = exception.Message }));
+        return context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = exception.Message }));
     }
 }
