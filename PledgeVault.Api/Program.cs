@@ -11,7 +11,6 @@ using Newtonsoft.Json.Converters;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts.Entities;
-using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
 using PledgeVault.Services.Validators;
@@ -47,7 +46,7 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<IEntityValidator<Politician>, PoliticianEntityValidator>();
+        builder.Services.AddScoped<IPoliticianEntityValidator, PoliticianEntityValidator>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

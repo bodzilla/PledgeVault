@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Validators;
 
-public sealed class PoliticianEntityValidator : IEntityValidator<Politician>
+public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
 {
     private readonly PledgeVaultContext _context;
 
     public PoliticianEntityValidator(PledgeVaultContext context) => _context = context;
 
-    public async Task ValidateAllRules(Politician entity, CancellationToken cancellationToken)
-        => await EnsureOnlyOnePartyLeader(entity, cancellationToken);
+    public async Task ValidateAllRules(Politician request, CancellationToken cancellationToken)
+        => await EnsureOnlyOnePartyLeader(request, cancellationToken);
 
-    private async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
+    public async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
     {
         if (!entity.IsPartyLeader) return;
         if (await _context.Politicians.AnyAsync(x => x.Party.Id == entity.PartyId && x.IsPartyLeader, cancellationToken))

@@ -15,10 +15,10 @@ namespace PledgeVault.Services.Handlers.Politicians;
 internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdatePoliticianRequest, PoliticianResponse>, PoliticianResponse>
 {
     private readonly PledgeVaultContext _context;
-    private readonly IEntityValidator<Politician> _entityValidator;
+    private readonly IPoliticianEntityValidator _entityValidator;
     private readonly IMapper _mapper;
 
-    public UpdateCommandHandler(PledgeVaultContext context, IEntityValidator<Politician> entityValidator, IMapper mapper)
+    public UpdateCommandHandler(PledgeVaultContext context, IPoliticianEntityValidator entityValidator, IMapper mapper)
     {
         _context = context;
         _entityValidator = entityValidator;

@@ -5,5 +5,5 @@ namespace PledgeVault.Core.Contracts.Entities;
 
 public interface IEntityValidator<in T> where T : IEntity
 {
-    Task ValidateAllRules(T entity, CancellationToken cancellationToken);
+    Task ValidateAllRules(T request, CancellationToken cancellationToken);
 }
