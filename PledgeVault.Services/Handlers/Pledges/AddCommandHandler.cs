@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Pledges;
 
-public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPledgeRequest, PledgeResponse>, PledgeResponse>
+internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPledgeRequest, PledgeResponse>, PledgeResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

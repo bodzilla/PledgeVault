@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
+internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

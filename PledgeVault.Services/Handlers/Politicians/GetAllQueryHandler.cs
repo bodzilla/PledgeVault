@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PoliticianResponse>, Page<PoliticianResponse>>
+internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PoliticianResponse>, Page<PoliticianResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

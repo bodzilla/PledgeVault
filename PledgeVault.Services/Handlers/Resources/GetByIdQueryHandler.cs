@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Resources;
 
-public sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<ResourceResponse>, ResourceResponse>
+internal sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<ResourceResponse>, ResourceResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

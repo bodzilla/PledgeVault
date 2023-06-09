@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdatePoliticianRequest, PoliticianResponse>, PoliticianResponse>
+internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdatePoliticianRequest, PoliticianResponse>, PoliticianResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IPoliticianService _service;

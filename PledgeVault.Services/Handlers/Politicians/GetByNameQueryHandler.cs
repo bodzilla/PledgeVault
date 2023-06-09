@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PoliticianResponse>, Page<PoliticianResponse>>
+internal sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PoliticianResponse>, Page<PoliticianResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

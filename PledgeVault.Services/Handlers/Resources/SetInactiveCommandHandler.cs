@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Resources;
 
-public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand<ResourceResponse>, ResourceResponse>
+internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCommand<ResourceResponse>, ResourceResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPoliticianRequest, PoliticianResponse>, PoliticianResponse>
+internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPoliticianRequest, PoliticianResponse>, PoliticianResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IPoliticianService _service;

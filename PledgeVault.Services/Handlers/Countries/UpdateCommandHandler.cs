@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdateCountryRequest, CountryResponse>, CountryResponse>
+internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdateCountryRequest, CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

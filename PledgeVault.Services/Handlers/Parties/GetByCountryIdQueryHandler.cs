@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQuery, Page<PartyResponse>>
+internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQuery, Page<PartyResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-public sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryResponse>, Page<CountryResponse>>
+internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryResponse>, Page<CountryResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

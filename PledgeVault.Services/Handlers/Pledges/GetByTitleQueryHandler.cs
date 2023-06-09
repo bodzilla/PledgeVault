@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Pledges;
 
-public sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, Page<PledgeResponse>>
+internal sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, Page<PledgeResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

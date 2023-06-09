@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdatePartyRequest, PartyResponse>, PartyResponse>
+internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdatePartyRequest, PartyResponse>, PartyResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

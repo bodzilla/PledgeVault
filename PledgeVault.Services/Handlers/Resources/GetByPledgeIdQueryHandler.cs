@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Resources;
 
-public sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQuery, Page<ResourceResponse>>
+internal sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQuery, Page<ResourceResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;

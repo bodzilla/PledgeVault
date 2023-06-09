@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-public sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PartyResponse>, Page<PartyResponse>>
+internal sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<PartyResponse>, Page<PartyResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
