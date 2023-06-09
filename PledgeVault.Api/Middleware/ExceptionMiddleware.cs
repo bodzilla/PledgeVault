@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PledgeVault.Core.Exceptions;
 using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace PledgeVault.Api.Middleware;
 
