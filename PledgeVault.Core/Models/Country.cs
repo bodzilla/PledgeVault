@@ -1,4 +1,4 @@
-﻿using PledgeVault.Core.Contracts;
+﻿using PledgeVault.Core.Contracts.Entities;
 using PledgeVault.Core.Enums;
 using System;
 using System.Collections.Generic;

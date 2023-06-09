@@ -3,19 +3,15 @@ using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Enums;
 using System;
 
-namespace PledgeVault.Core.Validators;
+namespace PledgeVault.Core.Dtos.Validators;
 
-public sealed class UpdatePledgeRequestValidator : AbstractValidator<UpdatePledgeRequest>
+public sealed class AddPledgeRequestValidator : AbstractValidator<AddPledgeRequest>
 {
-    public UpdatePledgeRequestValidator()
+    public AddPledgeRequestValidator()
     {
         RuleFor(x => x)
             .NotNull()
             .WithMessage("Request object cannot be null.");
-
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("Id must be greater than 0.");
 
         RuleFor(x => x.Title)
             .NotEmpty()
@@ -56,7 +52,7 @@ public sealed class UpdatePledgeRequestValidator : AbstractValidator<UpdatePledg
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
-            .When(x => !String.IsNullOrWhiteSpace(x.Summary))
+            .When(x => !string.IsNullOrWhiteSpace(x.Summary))
             .WithMessage("Summary length must be between 1 and 10,000 characters when Summary is not empty.");
 
         RuleFor(x => x.FulfilledSummary.Trim())

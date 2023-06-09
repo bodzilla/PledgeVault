@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PledgeVault.Core.Contracts;
+namespace PledgeVault.Core.Contracts.Entities;
 
 public interface IEntity
 {

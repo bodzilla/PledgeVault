@@ -2,7 +2,7 @@
 using PledgeVault.Core.Dtos.Requests;
 using System;
 
-namespace PledgeVault.Core.Validators;
+namespace PledgeVault.Core.Dtos.Validators;
 
 public sealed class UpdateCountryRequestValidator : AbstractValidator<UpdateCountryRequest>
 {
@@ -36,7 +36,7 @@ public sealed class UpdateCountryRequestValidator : AbstractValidator<UpdateCoun
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
-            .When(x => !String.IsNullOrWhiteSpace(x.Summary))
+            .When(x => !string.IsNullOrWhiteSpace(x.Summary))
             .WithMessage("Summary must be between 1 and 10,000 characters long.");
     }
 }

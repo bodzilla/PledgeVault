@@ -2,15 +2,19 @@
 using PledgeVault.Core.Dtos.Requests;
 using System;
 
-namespace PledgeVault.Core.Validators;
+namespace PledgeVault.Core.Dtos.Validators;
 
-public sealed class AddPartyRequestValidator : AbstractValidator<AddPartyRequest>
+public sealed class UpdatePartyRequestValidator : AbstractValidator<UpdatePartyRequest>
 {
-    public AddPartyRequestValidator()
+    public UpdatePartyRequestValidator()
     {
         RuleFor(x => x)
             .NotNull()
             .WithMessage("Request object cannot be null.");
+
+        RuleFor(x => x.Id)
+            .GreaterThan(0)
+            .WithMessage("Id must be greater than 0.");
 
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -33,17 +37,17 @@ public sealed class AddPartyRequestValidator : AbstractValidator<AddPartyRequest
 
         RuleFor(x => x.LogoUrl.Trim())
             .Length(1, 250)
-            .When(x => !String.IsNullOrWhiteSpace(x.LogoUrl))
+            .When(x => !string.IsNullOrWhiteSpace(x.LogoUrl))
             .WithMessage("Logo URL length must be between 1 and 250 characters.");
 
         RuleFor(x => x.SiteUrl.Trim())
             .Length(1, 250)
-            .When(x => !String.IsNullOrWhiteSpace(x.SiteUrl))
+            .When(x => !string.IsNullOrWhiteSpace(x.SiteUrl))
             .WithMessage("Site URL length must be between 1 and 250 characters.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
-            .When(x => !String.IsNullOrWhiteSpace(x.Summary))
+            .When(x => !string.IsNullOrWhiteSpace(x.Summary))
             .WithMessage("Summary length must be between 1 and 10,000 characters.");
     }
 }

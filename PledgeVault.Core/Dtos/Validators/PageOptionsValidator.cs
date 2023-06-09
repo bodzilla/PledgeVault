@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PledgeVault.Core.Dtos.Pagination;
 
-namespace PledgeVault.Core.Validators;
+namespace PledgeVault.Core.Dtos.Validators;
 
 public sealed class PageOptionsValidator : AbstractValidator<PageOptions>
 {

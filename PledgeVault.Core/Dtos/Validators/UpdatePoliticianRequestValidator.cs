@@ -2,14 +2,19 @@
 using PledgeVault.Core.Dtos.Requests;
 using System;
 
-namespace PledgeVault.Core.Validators;
+namespace PledgeVault.Core.Dtos.Validators;
 
-public sealed class AddPoliticianRequestValidator : AbstractValidator<AddPoliticianRequest>
+public sealed class UpdatePoliticianRequestValidator : AbstractValidator<UpdatePoliticianRequest>
 {
-    public AddPoliticianRequestValidator()
+    public UpdatePoliticianRequestValidator()
     {
         RuleFor(x => x)
-            .NotNull();
+            .NotNull()
+            .WithMessage("Request object cannot be null.");
+
+        RuleFor(x => x.Id)
+            .GreaterThan(0)
+            .WithMessage("Id must be greater than 0.");
 
         RuleFor(x => x.Name)
             .NotEmpty()
@@ -56,12 +61,12 @@ public sealed class AddPoliticianRequestValidator : AbstractValidator<AddPolitic
 
         RuleFor(x => x.PhotoUrl)
             .Length(1, 250)
-            .When(x => !String.IsNullOrWhiteSpace(x.PhotoUrl))
+            .When(x => !string.IsNullOrWhiteSpace(x.PhotoUrl))
             .WithMessage("Photo URL length must be between 1 and 250 characters when Photo URL is not empty.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
-            .When(x => !String.IsNullOrWhiteSpace(x.Summary))
+            .When(x => !string.IsNullOrWhiteSpace(x.Summary))
             .WithMessage("Summary length must be between 1 and 10,000 characters when Summary is not empty.");
     }
 }
