@@ -7,6 +7,7 @@ using PledgeVault.Core.Enums.Models;
 using PledgeVault.Services.Commands;
 using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Countries;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Controllers;
@@ -20,33 +21,33 @@ public sealed class CountryController : ControllerBase
     public CountryController(IMediator mediator) => _mediator = mediator;
 
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetAllQuery<CountryResponse> { PageOptions = pageOptions }));
+    public async Task<IActionResult> GetAllAsync([FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new GetAllQuery<CountryResponse> { PageOptions = pageOptions }, cancellationToken));
 
     [HttpGet("id/{id:int}")]
-    public async Task<IActionResult> GetByIdAsync(int id)
-        => Ok(await _mediator.Send(new GetByIdQuery<CountryResponse> { Id = id }));
+    public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new GetByIdQuery<CountryResponse> { Id = id }, cancellationToken));
 
     [HttpGet("name/{name}")]
-    public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, PageOptions = pageOptions }));
+    public async Task<IActionResult> GetByNameAsync(string name, [FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new GetByNameQuery<CountryResponse> { Name = name, PageOptions = pageOptions }, cancellationToken));
 
     [HttpGet("government/{type}")]
-    public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PageOptions pageOptions)
-        => Ok(await _mediator.Send(new GetByGovernmentTypeQuery { GovernmentType = type, PageOptions = pageOptions }));
+    public async Task<IActionResult> GetByGovernmentTypeAsync(GovernmentType type, [FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new GetByGovernmentTypeQuery { GovernmentType = type, PageOptions = pageOptions }, cancellationToken));
 
     [HttpPost]
-    public async Task<IActionResult> AddAsync(AddCountryRequest request)
-        => Ok(await _mediator.Send(new AddCommand<AddCountryRequest, CountryResponse> { Request = request }));
+    public async Task<IActionResult> AddAsync(AddCountryRequest request, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new AddCommand<AddCountryRequest, CountryResponse> { Request = request }, cancellationToken));
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(UpdateCountryRequest request)
-        => Ok(await _mediator.Send(new UpdateCommand<UpdateCountryRequest, CountryResponse> { Request = request }));
+    public async Task<IActionResult> UpdateAsync(UpdateCountryRequest request, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new UpdateCommand<UpdateCountryRequest, CountryResponse> { Request = request }, cancellationToken));
 
     [HttpPatch("deactivate/{id:int}")]
-    public async Task<IActionResult> SetInactiveAsync(int id)
+    public async Task<IActionResult> SetInactiveAsync(int id, CancellationToken cancellationToken)
     {
-        await _mediator.Send(new SetInactiveCommand<CountryResponse> { Id = id });
+        await _mediator.Send(new SetInactiveCommand<CountryResponse> { Id = id }, cancellationToken);
         return NoContent();
     }
 }
