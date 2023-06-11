@@ -3,7 +3,6 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +28,9 @@ internal sealed class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
+        builder.Services.AddHealthChecksUI(options => { options.AddHealthCheckEndpoint("Healthcheck API", "/_health"); })
+            .AddInMemoryStorage();
 
         builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, policyBuilder =>
         { policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build(); }));
@@ -72,7 +74,8 @@ internal sealed class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
-        app.MapHealthChecks("/_health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
+        app.MapHealthChecks("/_health", new() { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
+        app.MapHealthChecksUI(options => options.UIPath = "/_dashboard");
         app.Run();
     }
 }
