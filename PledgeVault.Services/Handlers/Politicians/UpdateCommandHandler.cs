@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using PledgeVault.Core.Contracts.Entities;
+using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;

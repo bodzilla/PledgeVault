@@ -19,6 +19,8 @@ public sealed record PledgeResponse : IResponse
 
     public PledgeStatusType PledgeStatusType { get; init; }
 
+    public int PoliticianId { get; init; }
+
     public PoliticianResponse Politician { get; init; }
 
     public string Summary { get; init; }

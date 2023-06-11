@@ -12,6 +12,8 @@ public sealed record PartyResponse : IResponse
 
     public DateTime? DateEstablished { get; init; }
 
+    public int CountryId { get; init; }
+
     public CountryResponse Country { get; init; }
 
     public string LogoUrl { get; init; }

@@ -19,6 +19,8 @@ public sealed record PoliticianResponse : IResponse
 
     public string CountryOfBirth { get; init; }
 
+    public int PartyId { get; init; }
+
     public PartyResponse Party { get; init; }
 
     public string Position { get; init; }

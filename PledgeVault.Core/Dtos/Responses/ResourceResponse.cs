@@ -15,5 +15,7 @@ public sealed record ResourceResponse : IResponse
 
     public string Summary { get; init; }
 
+    public int PledgeId { get; init; }
+
     public PledgeResponse Pledge { get; init; }
 }

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PledgeVault.Api.Conventions;
 using PledgeVault.Api.Middleware;
-using PledgeVault.Core.Contracts.Entities;
+using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
 using PledgeVault.Services.Validators;
