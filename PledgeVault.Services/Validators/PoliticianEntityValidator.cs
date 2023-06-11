@@ -27,13 +27,13 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
     public async Task EnsurePoliticianExists(Politician entity, CancellationToken cancellationToken)
     {
         if (await _context.Politicians.AsNoTracking().SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
-            throw new InvalidRequestException($"{nameof(Politician)} not found with {nameof(Politician.Id)}: '{entity.Id}'.");
+            throw new InvalidEntityException($"{nameof(Politician)} not found with {nameof(Politician.Id)}: '{entity.Id}'.");
     }
 
     public async Task EnsurePartyExists(Politician entity, CancellationToken cancellationToken)
     {
         if (await _context.Parties.AsNoTracking().SingleOrDefaultAsync(x => x.Id == entity.PartyId, cancellationToken) is null)
-            throw new InvalidRequestException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.PartyId}'.");
+            throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.PartyId}'.");
     }
 
     public async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
