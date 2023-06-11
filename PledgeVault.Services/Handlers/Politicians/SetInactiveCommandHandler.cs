@@ -30,6 +30,7 @@ internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCom
         if (!entity.EntityActive) return _mapper.Map<PoliticianResponse>(entity);
 
         entity.IsPartyLeader = false;
+        entity.Position = null;
         entity.EntityActive = false;
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
