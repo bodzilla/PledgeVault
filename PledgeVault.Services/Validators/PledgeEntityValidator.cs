@@ -34,6 +34,15 @@ public sealed class PledgeEntityValidator : IPledgeEntityValidator
             throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.Id}'.");
     }
 
+    public async Task EnsurePoliticianExists(Pledge entity, CancellationToken cancellationToken)
+    {
+        if (await _context.Politicians
+                .AsNoTracking()
+                .WithOnlyActiveEntities()
+                .SingleOrDefaultAsync(x => x.Id == entity.PoliticianId, cancellationToken) is null)
+            throw new InvalidEntityException($"{nameof(Politician)} not found with {nameof(Politician.Id)}: '{entity.PoliticianId}'.");
+    }
+
     public async Task EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(Pledge entity, CancellationToken cancellationToken)
     {
         if (await _context.Pledges

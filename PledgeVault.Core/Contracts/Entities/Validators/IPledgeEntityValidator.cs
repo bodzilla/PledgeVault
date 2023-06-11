@@ -10,4 +10,6 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 public interface IPledgeEntityValidator : IEntityValidator<Pledge>
 {
     Task EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(Pledge entity, CancellationToken cancellationToken);
+
+    Task EnsurePoliticianExists(Pledge entity, CancellationToken cancellationToken);
 }

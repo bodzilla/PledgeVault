@@ -57,6 +57,7 @@ internal sealed class Program
         builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
         builder.Services.AddScoped<IPledgeEntityValidator, PledgeEntityValidator>();
         builder.Services.AddScoped<IPoliticianEntityValidator, PoliticianEntityValidator>();
+        builder.Services.AddScoped<IResourceEntityValidator, ResourceEntityValidator>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

@@ -22,6 +22,7 @@ public sealed class PartyEntityValidator : IPartyEntityValidator
     public async Task ValidateAllRules(EntityValidatorType type, Party entity, CancellationToken cancellationToken)
     {
         if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
+        await EnsureCountryExists(entity, cancellationToken);
         await EnsureNameWithCountryIdIsUnique(entity, cancellationToken);
     }
 
@@ -32,6 +33,15 @@ public sealed class PartyEntityValidator : IPartyEntityValidator
                 .WithOnlyActiveEntities()
                 .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
             throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.Id}'.");
+    }
+
+    public async Task EnsureCountryExists(Party entity, CancellationToken cancellationToken)
+    {
+        if (await _context.Countries
+                .AsNoTracking()
+                .WithOnlyActiveEntities()
+                .SingleOrDefaultAsync(x => x.Id == entity.CountryId, cancellationToken) is null)
+            throw new InvalidEntityException($"{nameof(Country)} not found with {nameof(Country.Id)}: '{entity.CountryId}'.");
     }
 
     public async Task EnsureNameWithCountryIdIsUnique(Party entity, CancellationToken cancellationToken)
