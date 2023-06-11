@@ -40,6 +40,6 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
     {
         if (!entity.IsPartyLeader) return;
         if (await _context.Politicians.AsNoTracking().AnyAsync(x => x.Party.Id == entity.PartyId && x.IsPartyLeader, cancellationToken))
-            throw new InvalidEntityException($"Cannot have more than one PartyLeader per {nameof(Party)}.");
+            throw new InvalidEntityException($"{nameof(Politician)} cannot be assigned '{nameof(Politician.IsPartyLeader)} = true' as it is already assigned for {nameof(Politician.PartyId)}: '{entity.PartyId}'.");
     }
 }
