@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
+using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries;
 using System.Linq;
 using System.Threading;
@@ -29,6 +30,7 @@ internal sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<PledgeR
 
         return await _context.Pledges
             .AsNoTracking()
+            .WithOnlyActiveEntities()
             .Where(x => x.Id == query.Id)
             .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
             .SingleOrDefaultAsync(cancellationToken);

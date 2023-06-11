@@ -29,6 +29,7 @@ internal sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByGovernment
         {
             Data = await _context.Countries
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .Where(x => x.GovernmentType == query.GovernmentType)
                 .WithPagination(query.PageOptions)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)

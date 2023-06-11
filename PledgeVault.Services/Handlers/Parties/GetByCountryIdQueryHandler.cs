@@ -33,6 +33,7 @@ internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryI
         {
             Data = await _context.Parties
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .Where(x => x.CountryId == query.Id)
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)

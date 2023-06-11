@@ -29,6 +29,7 @@ internal sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByPartyIdQue
         {
             Data = await _context.Politicians
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .Where(x => x.PartyId == query.Id)
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)

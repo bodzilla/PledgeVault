@@ -32,6 +32,7 @@ internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryRe
         {
             Data = await dbSet
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .WithPagination(query.PageOptions)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Parties)
                 .ToListAsync(cancellationToken),

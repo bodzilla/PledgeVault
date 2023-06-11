@@ -32,6 +32,7 @@ internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<ResourceR
         {
             Data = await dbSet
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .WithPagination(query.PageOptions)
                 .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Pledge)
                 .ToListAsync(cancellationToken),

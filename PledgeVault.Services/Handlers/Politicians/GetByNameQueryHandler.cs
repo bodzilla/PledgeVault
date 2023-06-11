@@ -37,6 +37,7 @@ internal sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Pol
         {
             Data = await dbSet
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)

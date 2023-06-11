@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
+using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries;
 using System.Linq;
 using System.Threading;
@@ -29,6 +30,7 @@ internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery<
 
         return await _context.Politicians
             .AsNoTracking()
+            .WithOnlyActiveEntities()
             .Where(x => x.Id == query.Id)
             .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
             .SingleOrDefaultAsync(cancellationToken);

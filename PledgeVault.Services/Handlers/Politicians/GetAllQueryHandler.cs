@@ -32,6 +32,7 @@ internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<Politicia
         {
             Data = await dbSet
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),

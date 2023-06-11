@@ -33,6 +33,7 @@ internal sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQ
         {
             Data = await _context.Resources
                 .AsNoTracking()
+                .WithOnlyActiveEntities()
                 .Where(x => x.PledgeId == query.Id)
                 .WithPagination(query.PageOptions)
                 .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken)

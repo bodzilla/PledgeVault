@@ -25,7 +25,9 @@ internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCom
     {
         if (command.Id <= 0) throw new InvalidRequestException();
 
-        var entity = await _context.Politicians.FindAsync(command.Id) ?? throw new NotFoundException();
+        var entity = await _context.Politicians.FindAsync(new object[] { command.Id }, cancellationToken) ?? throw new NotFoundException();
+
+        if (!entity.EntityActive) return _mapper.Map<PoliticianResponse>(entity);
 
         entity.EntityActive = false;
         entity.EntityModified = DateTime.Now;
