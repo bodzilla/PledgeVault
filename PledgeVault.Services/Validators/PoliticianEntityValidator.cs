@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts.Entities.Validators;
+using PledgeVault.Core.Enums;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
@@ -18,9 +19,9 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
 
     public PoliticianEntityValidator(PledgeVaultContext context) => _context = context;
 
-    public async Task ValidateAllRules(Politician entity, CancellationToken cancellationToken)
+    public async Task ValidateAllRules(EntityValidatorType type, Politician entity, CancellationToken cancellationToken)
     {
-        await EnsureEntityExists(entity, cancellationToken);
+        if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
         await EnsurePartyExists(entity, cancellationToken);
         await EnsureOnlyOnePartyLeader(entity, cancellationToken);
     }

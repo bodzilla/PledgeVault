@@ -1,4 +1,4 @@
-﻿namespace PledgeVault.Core.Enums;
+﻿namespace PledgeVault.Core.Enums.Models;
 
 public enum ResourceType
 {

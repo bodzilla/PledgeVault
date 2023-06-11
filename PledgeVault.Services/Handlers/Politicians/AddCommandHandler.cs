@@ -3,6 +3,7 @@ using MediatR;
 using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Enums;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Services.Commands;
@@ -27,8 +28,7 @@ internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPolitici
     public async Task<PoliticianResponse> Handle(AddCommand<AddPoliticianRequest, PoliticianResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Politician>(command.Request);
-        await _entityValidator.EnsurePartyExists(entity, cancellationToken);
-        await _entityValidator.EnsureOnlyOnePartyLeader(entity, cancellationToken);
+        await _entityValidator.ValidateAllRules(EntityValidatorType.Add, entity, cancellationToken);
         await _context.Politicians.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<PoliticianResponse>(entity);

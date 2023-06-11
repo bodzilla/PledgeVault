@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using PledgeVault.Core.Dtos.Requests;
-using PledgeVault.Core.Enums;
+using PledgeVault.Core.Enums.Models;
 using System;
 
 namespace PledgeVault.Core.Dtos.Validators;

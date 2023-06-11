@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Enums;
+using PledgeVault.Core.Enums.Models;
 using PledgeVault.Services.Commands;
 using PledgeVault.Services.Queries;
 using PledgeVault.Services.Queries.Countries;

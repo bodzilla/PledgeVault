@@ -3,6 +3,7 @@ using MediatR;
 using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
+using PledgeVault.Core.Enums;
 using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Services.Commands;
@@ -28,7 +29,7 @@ internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<Updat
     public async Task<CountryResponse> Handle(UpdateCommand<UpdateCountryRequest, CountryResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Country>(command.Request);
-        await _entityValidator.ValidateAllRules(entity, cancellationToken);
+        await _entityValidator.ValidateAllRules(EntityValidatorType.Update, entity, cancellationToken);
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using PledgeVault.Core.Enums;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Core.Contracts.Entities.Validators;
@@ -10,7 +11,7 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 /// </summary>
 public interface IEntityValidator<in T> where T : IEntity
 {
-    Task ValidateAllRules(T entity, CancellationToken cancellationToken);
+    Task ValidateAllRules(EntityValidatorType type, T entity, CancellationToken cancellationToken);
 
     /// <summary>
     /// Ensures that the entity exists and <see cref="IEntity.EntityActive"/> is true.

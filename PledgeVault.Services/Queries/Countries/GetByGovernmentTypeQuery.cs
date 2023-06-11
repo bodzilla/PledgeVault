@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Enums;
+using PledgeVault.Core.Enums.Models;
 
 namespace PledgeVault.Services.Queries.Countries;
 
