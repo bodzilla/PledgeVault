@@ -29,10 +29,14 @@ internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCom
 
         if (!entity.EntityActive) return _mapper.Map<PoliticianResponse>(entity);
 
+        entity.IsPartyLeader = false;
         entity.EntityActive = false;
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
+
+        //TODO: Do we want to set pledges/resources inactive also?
+
         return _mapper.Map<PoliticianResponse>(entity);
     }
 }

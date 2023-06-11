@@ -11,4 +11,9 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 public interface IEntityValidator<in T> where T : IEntity
 {
     Task ValidateAllRules(T entity, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Ensures that the entity exists and <see cref="IEntity.EntityActive"/> is true.
+    /// </summary>
+    Task EnsureEntityExists(T entity, CancellationToken cancellationToken);
 }

@@ -9,8 +9,6 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 /// </summary>
 public interface IPoliticianEntityValidator : IEntityValidator<Politician>
 {
-    Task EnsurePoliticianExists(Politician entity, CancellationToken cancellationToken);
-
     Task EnsurePartyExists(Politician entity, CancellationToken cancellationToken);
 
     Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken);
