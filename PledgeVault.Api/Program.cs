@@ -51,6 +51,7 @@ internal sealed class Program
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryEntityValidator, CountryEntityValidator>();
+        builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
         builder.Services.AddScoped<IPoliticianEntityValidator, PoliticianEntityValidator>();
 
         builder.Services.AddControllers();
