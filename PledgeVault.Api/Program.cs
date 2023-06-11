@@ -29,6 +29,7 @@ internal sealed class Program
 
         builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
+        // AspNetCore.HealthChecks.UI.InMemory.Storage nuget required for this to work.
         builder.Services.AddHealthChecksUI(options => { options.AddHealthCheckEndpoint("Healthcheck API", "/_health"); })
             .AddInMemoryStorage();
 
