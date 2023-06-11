@@ -10,4 +10,6 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 public interface IResourceEntityValidator : IEntityValidator<Resource>
 {
     Task EnsurePledgeExists(Resource entity, CancellationToken cancellationToken);
+
+    Task EnsureSiteUrlWithPledgeIdIsUnique(Resource entity, CancellationToken cancellationToken);
 }

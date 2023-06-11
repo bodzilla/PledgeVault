@@ -22,6 +22,7 @@ public sealed class PledgeEntityValidator : IPledgeEntityValidator
     public async Task ValidateAllRules(EntityValidatorType type, Pledge entity, CancellationToken cancellationToken)
     {
         if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
+        await EnsurePoliticianExists(entity, cancellationToken);
         await EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(entity, cancellationToken);
     }
 

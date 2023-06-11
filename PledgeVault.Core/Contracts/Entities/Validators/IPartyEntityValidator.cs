@@ -9,7 +9,7 @@ namespace PledgeVault.Core.Contracts.Entities.Validators;
 /// </summary>
 public interface IPartyEntityValidator : IEntityValidator<Party>
 {
-    Task EnsureNameWithCountryIdIsUnique(Party entity, CancellationToken cancellationToken);
-
     Task EnsureCountryExists(Party entity, CancellationToken cancellationToken);
+
+    Task EnsureNameWithCountryIdIsUnique(Party entity, CancellationToken cancellationToken);
 }
