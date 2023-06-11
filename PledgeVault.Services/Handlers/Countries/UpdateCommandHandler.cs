@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
@@ -14,17 +15,20 @@ namespace PledgeVault.Services.Handlers.Countries;
 internal sealed class UpdateCommandHandler : IRequestHandler<UpdateCommand<UpdateCountryRequest, CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
+    private readonly ICountryEntityValidator _entityValidator;
     private readonly IMapper _mapper;
 
-    public UpdateCommandHandler(PledgeVaultContext context, IMapper mapper)
+    public UpdateCommandHandler(PledgeVaultContext context, ICountryEntityValidator entityValidator, IMapper mapper)
     {
         _context = context;
+        _entityValidator = entityValidator;
         _mapper = mapper;
     }
 
     public async Task<CountryResponse> Handle(UpdateCommand<UpdateCountryRequest, CountryResponse> command, CancellationToken cancellationToken)
     {
         var entity = _mapper.Map<Country>(command.Request);
+        await _entityValidator.ValidateAllRules(entity, cancellationToken);
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);

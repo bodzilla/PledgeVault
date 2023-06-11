@@ -35,7 +35,7 @@ internal sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, 
             Data = await _context.Pledges
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
-                .Where(x => EF.Functions.Like(x.Title.ToLower(), $"%{query.Title.ToLower()}%"))
+                .Where(x => EF.Functions.Like(x.Title, $"%{query.Title}%"))
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),

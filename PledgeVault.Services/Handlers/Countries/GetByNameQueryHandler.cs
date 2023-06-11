@@ -38,7 +38,7 @@ internal sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Cou
             Data = await dbSet
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
-                .Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{query.Name.ToLower()}%"))
+                .Where(x => EF.Functions.Like(x.Name, $"%{query.Name}%"))
                 .WithPagination(query.PageOptions)
                 .ProjectTo<CountryResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
