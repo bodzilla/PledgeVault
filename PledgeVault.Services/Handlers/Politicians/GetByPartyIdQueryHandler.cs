@@ -25,17 +25,21 @@ internal sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByPartyIdQue
     }
 
     public async Task<Page<PoliticianResponse>> Handle(GetByPartyIdQuery query, CancellationToken cancellationToken)
-        => new()
+    {
+        var baseQuery = _context.Politicians
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => x.PartyId == query.Id);
+
+        return new Page<PoliticianResponse>
         {
-            Data = await _context.Politicians
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => x.PartyId == query.Id)
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PoliticianResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Politicians.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
+    }
 }

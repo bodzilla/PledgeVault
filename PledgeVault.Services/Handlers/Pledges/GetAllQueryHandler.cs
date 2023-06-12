@@ -4,7 +4,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
-using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries;
@@ -26,19 +25,19 @@ internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PledgeRes
 
     public async Task<Page<PledgeResponse>> Handle(GetAllQuery<PledgeResponse> query, CancellationToken cancellationToken)
     {
-        var dbSet = _context.Set<Pledge>();
+        var baseQuery = _context.Pledges
+            .AsNoTracking()
+            .WithOnlyActiveEntities();
 
-        return new()
+        return new Page<PledgeResponse>
         {
-            Data = await dbSet
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Resources)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await dbSet.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }

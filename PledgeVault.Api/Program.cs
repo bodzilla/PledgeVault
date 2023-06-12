@@ -16,6 +16,7 @@ using PledgeVault.Persistence;
 using PledgeVault.Services;
 using PledgeVault.Services.Validators;
 using System;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace PledgeVault.Api;
 
@@ -77,7 +78,7 @@ internal sealed class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
-        app.MapHealthChecks("/_health", new() { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
+        app.MapHealthChecks("/_health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
         app.MapHealthChecksUI(options => options.UIPath = "/_dashboard");
         app.Run();
     }

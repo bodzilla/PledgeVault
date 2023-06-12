@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
-using PledgeVault.Core.Models;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
 using PledgeVault.Services.Queries;
@@ -31,20 +30,20 @@ internal sealed class GetByNameQueryHandler : IRequestHandler<GetByNameQuery<Par
     {
         if (String.IsNullOrWhiteSpace(query.Name)) throw new InvalidRequestException();
 
-        var dbSet = _context.Set<Party>();
+        var baseQuery = _context.Parties
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => EF.Functions.Like(x.Name, $"%{query.Name}%"));
 
         return new Page<PartyResponse>
         {
-            Data = await dbSet
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => EF.Functions.Like(x.Name, $"%{query.Name}%"))
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await dbSet.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }

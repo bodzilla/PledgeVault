@@ -4,7 +4,7 @@ namespace PledgeVault.Core.Exceptions;
 
 public sealed class InvalidRequestException : PledgeVaultException
 {
-    public InvalidRequestException([Optional] string message) : base(message ?? "The request is not valid.")
+    public InvalidRequestException([Optional] string message) : base(message ?? "The request was not valid.")
     {
     }
 }

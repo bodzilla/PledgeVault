@@ -29,18 +29,20 @@ internal sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPledgeIdQ
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 
-        return new()
+        var baseQuery = _context.Resources
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => x.PledgeId == query.Id);
+
+        return new Page<ResourceResponse>
         {
-            Data = await _context.Resources
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => x.PledgeId == query.Id)
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<ResourceResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Resources.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }

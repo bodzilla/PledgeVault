@@ -30,18 +30,20 @@ internal sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, 
     {
         if (String.IsNullOrWhiteSpace(query.Title)) throw new InvalidRequestException();
 
+        var baseQuery = _context.Pledges
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => EF.Functions.Like(x.Title, $"%{query.Title}%"));
+
         return new Page<PledgeResponse>
         {
-            Data = await _context.Pledges
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => EF.Functions.Like(x.Title, $"%{query.Title}%"))
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Pledges.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }

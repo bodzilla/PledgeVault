@@ -29,18 +29,20 @@ internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryI
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 
-        return new()
+        var baseQuery = _context.Parties
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => x.CountryId == query.Id);
+
+        return new Page<PartyResponse>
         {
-            Data = await _context.Parties
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => x.CountryId == query.Id)
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PartyResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Parties.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }

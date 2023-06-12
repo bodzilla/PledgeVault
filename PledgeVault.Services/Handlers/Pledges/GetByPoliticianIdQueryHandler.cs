@@ -29,18 +29,20 @@ internal sealed class GetByPoliticianIdQueryHandler : IRequestHandler<GetByPolit
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 
-        return new()
+        var baseQuery = _context.Pledges
+            .AsNoTracking()
+            .WithOnlyActiveEntities()
+            .Where(x => x.PoliticianId == query.Id);
+
+        return new Page<PledgeResponse>
         {
-            Data = await _context.Pledges
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .Where(x => x.PoliticianId == query.Id)
+            Data = await baseQuery
                 .WithPagination(query.PageOptions)
                 .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
-            TotalItems = await _context.Pledges.CountAsync(cancellationToken)
+            TotalItems = await baseQuery.CountAsync(cancellationToken)
         };
     }
 }
