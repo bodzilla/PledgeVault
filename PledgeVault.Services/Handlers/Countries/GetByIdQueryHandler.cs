@@ -15,20 +15,22 @@ namespace PledgeVault.Services.Handlers.Countries;
 
 internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByIdQuery<CountryResponse>, CountryResponse>
 {
-    private readonly PledgeVaultContext _context;
+    private readonly IDbContextFactory<PledgeVaultContext> _contextFactory;
     private readonly IMapper _mapper;
 
-    public GetByCountryIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByCountryIdQueryHandler(IDbContextFactory<PledgeVaultContext> contextFactory, IMapper mapper)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _mapper = mapper;
     }
 
     public async Task<CountryResponse> Handle(GetByIdQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+
         if (query.Id <= 0) throw new InvalidRequestException();
 
-        return await _context.Countries
+        return await context.Countries
             .AsNoTracking()
             .WithOnlyActiveEntities()
             .Where(x => x.Id == query.Id)

@@ -14,18 +14,20 @@ namespace PledgeVault.Services.Handlers.Countries;
 
 internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<CountryResponse>, Page<CountryResponse>>
 {
-    private readonly PledgeVaultContext _context;
+    private readonly IDbContextFactory<PledgeVaultContext> _contextFactory;
     private readonly IMapper _mapper;
 
-    public GetAllQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetAllQueryHandler(IDbContextFactory<PledgeVaultContext> contextFactory, IMapper mapper)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _mapper = mapper;
     }
 
     public async Task<Page<CountryResponse>> Handle(GetAllQuery<CountryResponse> query, CancellationToken cancellationToken)
     {
-        var baseQuery = _context.Countries
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+
+        var baseQuery = context.Countries
             .AsNoTracking()
             .WithOnlyActiveEntities();
 

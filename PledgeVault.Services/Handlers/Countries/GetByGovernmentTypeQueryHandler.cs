@@ -15,18 +15,20 @@ namespace PledgeVault.Services.Handlers.Countries;
 
 internal sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByGovernmentTypeQuery, Page<CountryResponse>>
 {
-    private readonly PledgeVaultContext _context;
+    private readonly IDbContextFactory<PledgeVaultContext> _contextFactory;
     private readonly IMapper _mapper;
 
-    public GetByPartyIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByPartyIdQueryHandler(IDbContextFactory<PledgeVaultContext> contextFactory, IMapper mapper)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _mapper = mapper;
     }
 
     public async Task<Page<CountryResponse>> Handle(GetByGovernmentTypeQuery query, CancellationToken cancellationToken)
     {
-        var baseQuery = _context.Countries
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+
+        var baseQuery = context.Countries
             .AsNoTracking()
             .WithOnlyActiveEntities()
             .Where(x => x.GovernmentType == query.GovernmentType);

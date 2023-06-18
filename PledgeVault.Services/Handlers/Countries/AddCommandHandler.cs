@@ -9,18 +9,19 @@ using PledgeVault.Persistence;
 using PledgeVault.Services.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
 internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
 {
-    private readonly PledgeVaultContext _context;
+    private readonly IDbContextFactory<PledgeVaultContext> _contextFactory;
     private readonly ICountryEntityValidator _entityValidator;
     private readonly IMapper _mapper;
 
-    public AddCommandHandler(PledgeVaultContext context, ICountryEntityValidator entityValidator, IMapper mapper)
+    public AddCommandHandler(IDbContextFactory<PledgeVaultContext> contextFactory, ICountryEntityValidator entityValidator, IMapper mapper)
     {
-        _context = context;
+        _contextFactory = contextFactory;
         _entityValidator = entityValidator;
         _mapper = mapper;
     }
@@ -29,8 +30,9 @@ internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryR
     {
         var entity = _mapper.Map<Country>(command.Request);
         await _entityValidator.ValidateAllRules(EntityValidatorType.Add, entity, cancellationToken);
-        await _context.Countries.AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+        await context.Countries.AddAsync(entity, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
         return _mapper.Map<CountryResponse>(entity);
     }
 }

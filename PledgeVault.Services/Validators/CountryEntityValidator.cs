@@ -15,9 +15,9 @@ namespace PledgeVault.Services.Validators;
 /// </summary>
 public sealed class CountryEntityValidator : ICountryEntityValidator
 {
-    private readonly PledgeVaultContext _context;
+    private readonly IDbContextFactory<PledgeVaultContext> _contextFactory;
 
-    public CountryEntityValidator(PledgeVaultContext context) => _context = context;
+    public CountryEntityValidator(IDbContextFactory<PledgeVaultContext> contextFactory) => _contextFactory = contextFactory;
 
     public async Task ValidateAllRules(EntityValidatorType type, Country entity, CancellationToken cancellationToken)
     {
@@ -27,7 +27,8 @@ public sealed class CountryEntityValidator : ICountryEntityValidator
 
     public async Task EnsureEntityExists(Country entity, CancellationToken cancellationToken)
     {
-        if (await _context.Countries
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+        if (await context.Countries
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
                 .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
@@ -36,7 +37,8 @@ public sealed class CountryEntityValidator : ICountryEntityValidator
 
     public async Task EnsureNameIsUnique(Country entity, CancellationToken cancellationToken)
     {
-        if (await _context.Countries
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
+        if (await context.Countries
                 .AsNoTracking()
                 .SingleOrDefaultAsync(x => EF.Functions.Like(x.Name, entity.Name), cancellationToken) is not null)
             throw new InvalidEntityException($"{nameof(Country.Name)} already exists: '{entity.Name}'.");

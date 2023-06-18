@@ -14,9 +14,12 @@ using PledgeVault.Api.Middleware;
 using PledgeVault.Core.Contracts.Entities.Validators;
 using PledgeVault.Persistence;
 using PledgeVault.Services;
-using PledgeVault.Services.Validators;
 using System;
+using HotChocolate.Data;
+using HotChocolate.Types.Pagination;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using PledgeVault.Services.GraphQL;
+using PledgeVault.Services.Validators;
 
 namespace PledgeVault.Api;
 
@@ -53,12 +56,21 @@ internal sealed class Program
         builder.Services.AddAutoMapper(assemblies);
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
-        builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddPooledDbContextFactory<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         builder.Services.AddScoped<ICountryEntityValidator, CountryEntityValidator>();
         builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
         builder.Services.AddScoped<IPledgeEntityValidator, PledgeEntityValidator>();
         builder.Services.AddScoped<IPoliticianEntityValidator, PoliticianEntityValidator>();
         builder.Services.AddScoped<IResourceEntityValidator, ResourceEntityValidator>();
+
+        builder.Services.AddGraphQLServer()
+            .RegisterDbContext<PledgeVaultContext>(DbContextKind.Pooled)
+            .AddQueryType<Queries>()
+            .SetPagingOptions(new PagingOptions { DefaultPageSize = 25, MaxPageSize = 50, AllowBackwardPagination = true })
+            .AddQueryableCursorPagingProvider()
+            .AddProjections()
+            .AddFiltering()
+            .AddSorting();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
@@ -78,6 +90,7 @@ internal sealed class Program
         app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
+        app.MapGraphQL();
         app.MapHealthChecks("/_health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
         app.MapHealthChecksUI(options => options.UIPath = "/_dashboard");
         app.Run();
