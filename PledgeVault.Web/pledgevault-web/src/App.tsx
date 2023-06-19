@@ -5,11 +5,11 @@ import AddCountryRequest from "./dtos/requests/AddCountryRequest";
 function App() {
   return (
     <div className="App">
-      <AddCountry
+      {/* <AddCountry
         addCountry={function (country: AddCountryRequest): void {
           throw new Error("Function not implemented.");
         }}
-      />
+      /> */}
       <CountryList />
     </div>
   );

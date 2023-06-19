@@ -29,12 +29,12 @@ const CountryList: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-5xl">
       <h1 className="text-4xl font-bold mb-6">Countries</h1>
       {countries.data.map((country) => (
         <div
           key={country.id}
-          className="mb-6 p-4 border-2 border-blue-200 rounded-md"
+          className="mb-6 p-4 rounded-md shadow"
         >
           <h2 className="text-2xl font-semibold mb-2">{country.name}</h2>
           <p className="mb-4">{country.summary}</p>
