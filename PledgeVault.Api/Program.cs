@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,6 @@ using PledgeVault.Persistence;
 using PledgeVault.Services;
 using PledgeVault.Services.Validators;
 using System;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace PledgeVault.Api;
 

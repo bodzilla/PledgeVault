@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Controllers;
 
+[IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
 public sealed class CountryController : ControllerBase
