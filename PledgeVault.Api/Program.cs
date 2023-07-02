@@ -30,12 +30,17 @@ internal sealed class Program
 
         builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
-        // AspNetCore.HealthChecks.UI.InMemory.Storage nuget required for this to work.
-        builder.Services.AddHealthChecksUI(options => { options.AddHealthCheckEndpoint("Healthcheck API", "/_health"); })
-            .AddInMemoryStorage();
+        // 'AspNetCore.HealthChecks.UI.InMemory.Storage' Nuget required for this to work.
+        builder.Services.AddHealthChecksUI(options =>
+        {
+            options.AddHealthCheckEndpoint("Healthcheck API", "/_health");
+            options.SetEvaluationTimeInSeconds((int)TimeSpan.FromMinutes(5).TotalSeconds);
+        }).AddInMemoryStorage();
 
         builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, policyBuilder =>
-        { policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build(); }));
+        {
+            policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
+        }));
 
         builder.Services
             .AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); })
