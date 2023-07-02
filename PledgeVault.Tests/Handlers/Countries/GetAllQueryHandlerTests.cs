@@ -101,4 +101,15 @@ public sealed class GetAllQueryHandlerTests : IDisposable
         // Assert.
         Assert.Empty(response.Data);
     }
+
+    [Fact]
+    public async Task Handle_ThrowsException_WhenPageOptionsIsNull()
+    {
+        // Arrange.
+        var handler = new GetAllQueryHandler(_context, _mapper);
+        var query = new GetAllQuery<CountryResponse>();
+
+        // Act and Assert.
+        await Assert.ThrowsAsync<NullReferenceException>(() => handler.Handle(query, CancellationToken.None));
+    }
 }

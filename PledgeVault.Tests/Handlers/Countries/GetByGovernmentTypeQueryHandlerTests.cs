@@ -116,4 +116,19 @@ public sealed class GetByGovernmentTypeQueryHandlerTests : IDisposable
         Assert.Equal(query.PageOptions.PageSize, response.PageSize);
         Assert.Equal(0, response.TotalItems);
     }
+
+    [Fact]
+    public async Task Handle_ThrowsException_WhenPageOptionsIsNull()
+    {
+        // Arrange.
+        var query = new GetByGovernmentTypeQuery
+        {
+            GovernmentType = GovernmentType.Democracy
+        };
+
+        var handler = new GetByPartyIdQueryHandler(_context, _mapper);
+
+        // Act and Assert.
+        await Assert.ThrowsAsync<NullReferenceException>(() => handler.Handle(query, CancellationToken.None));
+    }
 }

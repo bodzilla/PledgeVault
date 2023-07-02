@@ -27,8 +27,8 @@ public sealed class AddCommandHandlerTests : IDisposable
     {
         _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
-        TestHelper.SeedStubCountries(_context, 0);
         _mockValidator = new Mock<ICountryEntityValidator>();
+        TestHelper.SeedStubCountries(_context, 0);
     }
 
     public void Dispose()
@@ -72,5 +72,26 @@ public sealed class AddCommandHandlerTests : IDisposable
 
         // Assert.
         Assert.Equal("Validation failed", exception.Message);
+    }
+
+    [Fact]
+    public async Task Handle_ThrowsException_WhenCommandIsNull()
+    {
+        // Arrange.
+        var handler = new AddCommandHandler(_context, _mockValidator.Object, _mapper);
+
+        // Act and Assert.
+        await Assert.ThrowsAsync<NullReferenceException>(() => handler.Handle(null, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task Handle_ThrowsException_WhenCommandRequestIsNull()
+    {
+        // Arrange.
+        var handler = new AddCommandHandler(_context, _mockValidator.Object, _mapper);
+        var command = new AddCommand<AddCountryRequest, CountryResponse>();
+
+        // Act and Assert.
+        await Assert.ThrowsAsync<ArgumentNullException>(() => handler.Handle(command, CancellationToken.None));
     }
 }
