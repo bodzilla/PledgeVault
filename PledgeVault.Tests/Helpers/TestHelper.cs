@@ -38,6 +38,7 @@ internal static class TestHelper
 
     public static void SeedStubCountries(PledgeVaultContext context, int size)
     {
+        if (size <= 0) throw new ArgumentException($"Invalid {nameof(size)} provided to seed.");
         context.Countries.AddRange(GenerateCountries(size));
         context.SaveChanges();
     }
