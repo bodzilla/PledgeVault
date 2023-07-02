@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Countries;
 
-internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
+public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddCountryRequest, CountryResponse>, CountryResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly ICountryEntityValidator _entityValidator;
