@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Bogus;
 using Microsoft.EntityFrameworkCore;
+using PledgeVault.Core.Contracts.Entities;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
@@ -26,7 +27,16 @@ internal static class TestHelper
     public static PledgeVaultContext CreateContext()
         => new(new DbContextOptionsBuilder<PledgeVaultContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options);
 
-    public static void SeedDatabase(PledgeVaultContext context, int size)
+
+    public static void SeedStub<T>(PledgeVaultContext context, params T[] entities) where T : class, IEntity
+    {
+        if (entities is not { Length: > 0 }) throw new ArgumentException($"No {nameof(entities)} provided to seed.");
+        var dbSet = context.Set<T>();
+        foreach (var entity in entities) dbSet.Add(entity);
+        context.SaveChanges();
+    }
+
+    public static void SeedStubCountries(PledgeVaultContext context, int size)
     {
         context.Countries.AddRange(GenerateCountries(size));
         context.SaveChanges();

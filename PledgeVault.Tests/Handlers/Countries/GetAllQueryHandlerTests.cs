@@ -22,7 +22,7 @@ public sealed class GetAllQueryHandlerTests : IDisposable
     {
         _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
-        TestHelper.SeedDatabase(_context, 10);
+        TestHelper.SeedStubCountries(_context, 10);
     }
 
     public void Dispose()

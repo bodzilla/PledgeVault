@@ -27,7 +27,7 @@ public sealed class AddCommandHandlerTests : IDisposable
     {
         _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
-        TestHelper.SeedDatabase(_context, 0);
+        TestHelper.SeedStubCountries(_context, 0);
         _mockValidator = new Mock<ICountryEntityValidator>();
     }
 
