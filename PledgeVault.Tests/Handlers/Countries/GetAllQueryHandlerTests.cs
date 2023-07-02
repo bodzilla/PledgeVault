@@ -32,21 +32,6 @@ public sealed class GetAllQueryHandlerTests : IDisposable
     }
 
     [Fact]
-    public async Task Handle_ReturnsCorrectData_WhenCountriesExist()
-    {
-        // Arrange.
-        var handler = new GetAllQueryHandler(_context, _mapper);
-        var query = new GetAllQuery<CountryResponse> { PageOptions = new PageOptions() };
-
-        // Act.
-        var response = await handler.Handle(query, CancellationToken.None);
-
-        // Assert.
-        var activeCountriesCount = _context.Countries.Count(x => x.EntityActive);
-        Assert.Equal(activeCountriesCount, response.TotalItems);
-    }
-
-    [Fact]
     public async Task Handle_CorrectlyHandlesPagination()
     {
         // Arrange.
@@ -66,6 +51,21 @@ public sealed class GetAllQueryHandlerTests : IDisposable
 
         // Assert.
         Assert.Equal(query.PageOptions.PageSize, response.Data.Count);
+    }
+
+    [Fact]
+    public async Task Handle_ReturnsCorrectData_WhenCountriesExist()
+    {
+        // Arrange.
+        var handler = new GetAllQueryHandler(_context, _mapper);
+        var query = new GetAllQuery<CountryResponse> { PageOptions = new PageOptions() };
+
+        // Act.
+        var response = await handler.Handle(query, CancellationToken.None);
+
+        // Assert.
+        var activeCountriesCount = _context.Countries.Count(x => x.EntityActive);
+        Assert.Equal(activeCountriesCount, response.TotalItems);
     }
 
     [Fact]
