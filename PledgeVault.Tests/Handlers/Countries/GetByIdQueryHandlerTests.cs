@@ -53,7 +53,7 @@ public sealed class GetByIdQueryHandlerTests : IDisposable
     }
 
     [Fact]
-    public async Task Handle_ReturnsNull_WhenCountryDoesNotExist()
+    public async Task Handle_ReturnsNull_WhenCountryIdDoesNotExist()
     {
         // Arrange.
         var query = new GetByIdQuery<CountryResponse> { Id = 3 };
