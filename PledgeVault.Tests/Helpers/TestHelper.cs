@@ -17,6 +17,7 @@ internal static class TestHelper
         => new MapperConfiguration(x =>
         {
             x.CreateMap<AddCountryRequest, Country>();
+            x.CreateMap<UpdateCountryRequest, Country>();
             x.CreateMap<Country, CountryResponse>();
             x.CreateMap<Party, PartyResponse>();
             x.CreateMap<Politician, PoliticianResponse>();
@@ -39,10 +40,15 @@ internal static class TestHelper
     public static void SeedStubCountries(PledgeVaultContext context, int size)
     {
         if (size <= 0) throw new ArgumentException($"Invalid {nameof(size)} provided to seed.");
-        context.Countries.AddRange(GenerateCountries(size));
+
+        var countries = GenerateCountries(size);
+        context.Countries.AddRange(countries);
         context.SaveChanges();
+
+        // Detach entities after saving to avoid conflicts with tests (this potential conflict only exists while testing).
+        foreach (var country in countries) context.Entry(country).State = EntityState.Detached;
     }
 
-    private static IEnumerable<Country> GenerateCountries(int size)
+    private static ICollection<Country> GenerateCountries(int size)
         => new Faker<Country>().RuleFor(x => x.Name, x => x.Address.Country()).Generate(size);
 }
