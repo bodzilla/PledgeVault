@@ -51,7 +51,7 @@ const PledgeTile: React.FC<PledgeTileProps> = ({ pledge }) => {
           } ${isHovered || userVote === 1 ? "" : "opacity-0"}`}
           onClick={handleUpvote}
         >
-          <ThumbsUp className="h-6 w-6" stroke="darkgreen" />
+          <ThumbsUp className="h-6 w-6"/>
         </button>
         <span className="text-2xl font-semibold">{voteCount}</span>
         <button
@@ -60,7 +60,7 @@ const PledgeTile: React.FC<PledgeTileProps> = ({ pledge }) => {
           } ${isHovered || userVote === -1 ? "" : "opacity-0"}`}
           onClick={handleDownvote}
         >
-          <ThumbsDown className="h-6 w-6" stroke="darkred" />
+          <ThumbsDown className="h-6 w-6"/>
         </button>
       </div>
       <div className="p-6 rounded-md shadow flex-1">

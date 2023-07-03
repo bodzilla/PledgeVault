@@ -33,7 +33,8 @@ internal sealed class GetAllQueryHandler : IRequestHandler<GetAllQuery<PledgeRes
         {
             Data = await baseQuery
                 .WithPagination(query.PageOptions)
-                .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Resources)
+                .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken,
+                    x => x.Politician, x => x.Resources)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,
