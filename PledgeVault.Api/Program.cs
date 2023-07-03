@@ -22,11 +22,11 @@ namespace PledgeVault.Api;
 
 internal sealed class Program
 {
-    private const string CorsPolicy = "CorsPolicy";
-
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors();
 
         builder.Services.AddHealthChecks().AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
@@ -36,11 +36,6 @@ internal sealed class Program
             options.AddHealthCheckEndpoint("Healthcheck API", "/_health");
             options.SetEvaluationTimeInSeconds((int)TimeSpan.FromMinutes(5).TotalSeconds);
         }).AddInMemoryStorage();
-
-        builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, policyBuilder =>
-        {
-            policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build();
-        }));
 
         builder.Services
             .AddControllers(options => { options.Conventions.Add(new PluralizeControllerModelConvention()); })
@@ -78,7 +73,7 @@ internal sealed class Program
             app.UseSwaggerUI();
         }
 
-        app.UseCors(CorsPolicy);
+        app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseHttpsRedirection();
         app.UseAuthorization();
