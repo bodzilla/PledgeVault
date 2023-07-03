@@ -25,9 +25,9 @@ public sealed class Party : IEntity
 
     public DateTime? DateEstablished { get; set; }
 
-    public int CountryId { get; set; }
+    public int CountryId { get; init; }
 
-    public Country Country { get; set; }
+    public Country Country { get; init; }
 
     public string LogoUrl { get; set; }
 

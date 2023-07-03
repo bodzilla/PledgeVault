@@ -32,10 +32,7 @@ const CountryList: React.FC = () => {
     <div className="p-6 max-w-5xl">
       <h1 className="text-4xl font-bold mb-6">Countries</h1>
       {countries.data.map((country) => (
-        <div
-          key={country.id}
-          className="mb-6 p-4 rounded-md shadow"
-        >
+        <div key={country.id} className="mb-6 p-4 rounded-md shadow">
           <h2 className="text-2xl font-semibold mb-2">{country.name}</h2>
           <p className="mb-4">{country.summary}</p>
           {country.parties && country.parties.length > 0 && (

@@ -28,7 +28,7 @@ public sealed class Resource : IEntity
 
     public string Summary { get; set; }
 
-    public int PledgeId { get; set; }
+    public int PledgeId { get; init; }
 
-    public Pledge Pledge { get; set; }
+    public Pledge Pledge { get; init; }
 }

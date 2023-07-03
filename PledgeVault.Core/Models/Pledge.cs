@@ -32,9 +32,9 @@ public sealed class Pledge : IEntity
 
     public PledgeStatusType PledgeStatusType { get; set; }
 
-    public int PoliticianId { get; set; }
+    public int PoliticianId { get; init; }
 
-    public Politician Politician { get; set; }
+    public Politician Politician { get; init; }
 
     public string Summary { get; set; }
 
