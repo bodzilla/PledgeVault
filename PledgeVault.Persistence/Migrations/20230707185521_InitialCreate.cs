@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 #nullable disable
 
@@ -28,6 +28,24 @@ namespace PledgeVault.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    EncryptedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,10 +120,11 @@ namespace PledgeVault.Persistence.Migrations
                     DateFulfilled = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PledgeCategoryType = table.Column<int>(type: "int", nullable: false),
                     PledgeStatusType = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     PoliticianId = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
-                    FulfilledSummary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
-                    Score = table.Column<int>(type: "int", nullable: false)
+                    FulfilledSummary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,6 +135,42 @@ namespace PledgeVault.Persistence.Migrations
                         principalTable: "Politicians",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Pledges_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    PledgeId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Pledges_PledgeId",
+                        column: x => x.PledgeId,
+                        principalTable: "Pledges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,6 +186,7 @@ namespace PledgeVault.Persistence.Migrations
                     SiteUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     ResourceType = table.Column<int>(type: "int", nullable: false),
                     Summary = table.Column<string>(type: "nvarchar(max)", maxLength: 10000, nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     PledgeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -142,7 +198,23 @@ namespace PledgeVault.Persistence.Migrations
                         principalTable: "Pledges",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Resources_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PledgeId",
+                table: "Comments",
+                column: "PledgeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Countries_Name",
@@ -173,6 +245,11 @@ namespace PledgeVault.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pledges_UserId",
+                table: "Pledges",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Politicians_Name",
                 table: "Politicians",
                 column: "Name",
@@ -199,11 +276,31 @@ namespace PledgeVault.Persistence.Migrations
                 table: "Resources",
                 columns: new[] { "SiteUrl", "PledgeId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resources_UserId",
+                table: "Resources",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Comments");
+
             migrationBuilder.DropTable(
                 name: "Resources");
 
@@ -212,6 +309,9 @@ namespace PledgeVault.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Politicians");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Parties");

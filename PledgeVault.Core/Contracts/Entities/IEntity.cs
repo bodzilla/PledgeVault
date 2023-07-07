@@ -4,9 +4,9 @@ namespace PledgeVault.Core.Contracts.Entities;
 
 public interface IEntity
 {
-    int Id { get; set; }
+    int Id { get; init; }
 
-    DateTime EntityCreated { get; set; }
+    DateTime EntityCreated { get; init; }
 
     DateTime? EntityModified { get; set; }
 

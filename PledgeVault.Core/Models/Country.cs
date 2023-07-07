@@ -14,9 +14,9 @@ public sealed class Country : IEntity
         Parties = new List<Party>();
     }
 
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public DateTime EntityCreated { get; set; }
+    public DateTime EntityCreated { get; init; }
 
     public DateTime? EntityModified { get; set; }
 
@@ -30,5 +30,5 @@ public sealed class Country : IEntity
 
     public string Summary { get; set; }
 
-    public ICollection<Party> Parties { get; set; }
+    public ICollection<Party> Parties { get; init; }
 }

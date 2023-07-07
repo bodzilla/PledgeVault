@@ -1,12 +1,11 @@
 ﻿using PledgeVault.Core.Contracts.Entities;
-using PledgeVault.Core.Enums.Models;
 using System;
 
 namespace PledgeVault.Core.Models;
 
-public sealed class Resource : IEntity
+public sealed class Comment : IEntity
 {
-    public Resource()
+    public Comment()
     {
         EntityCreated = DateTime.Now;
         EntityActive = true;
@@ -20,19 +19,13 @@ public sealed class Resource : IEntity
 
     public bool EntityActive { get; set; }
 
-    public string Title { get; set; }
+    public int PledgeId { get; init; }
 
-    public string SiteUrl { get; set; }
-
-    public ResourceType ResourceType { get; set; }
-
-    public string Summary { get; set; }
+    public Pledge Pledge { get; init; }
 
     public int UserId { get; init; }
 
     public User User { get; init; }
 
-    public int PledgeId { get; init; }
-
-    public Pledge Pledge { get; init; }
+    public string Text { get; set; }
 }

@@ -13,9 +13,9 @@ public sealed class Party : IEntity
         Politicians = new List<Politician>();
     }
 
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public DateTime EntityCreated { get; set; }
+    public DateTime EntityCreated { get; init; }
 
     public DateTime? EntityModified { get; set; }
 
@@ -35,5 +35,5 @@ public sealed class Party : IEntity
 
     public string Summary { get; set; }
 
-    public ICollection<Politician> Politicians { get; set; }
+    public ICollection<Politician> Politicians { get; init; }
 }
