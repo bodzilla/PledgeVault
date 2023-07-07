@@ -39,7 +39,10 @@ public sealed class UpdateCommandHandlerTests : IDisposable
     public async Task Handle_UpdatesCountrySuccessfully_WhenCommandIsValid()
     {
         // Arrange.
-        var command = new UpdateCommand<UpdateCountryRequest, CountryResponse> { Request = new UpdateCountryRequest { Id = _countries[0].Id, Name = "Updated Country" } };
+        var command = new UpdateCommand<UpdateCountryRequest, CountryResponse>
+        {
+            Request = new UpdateCountryRequest { Id = _countries[0].Id, Name = "Updated Country" }
+        };
 
         // Act.
         var response = await _handler.Handle(command, CancellationToken.None);
@@ -55,7 +58,10 @@ public sealed class UpdateCommandHandlerTests : IDisposable
     {
         // Arrange.
         var nameThatExists = _countries[1].Name;
-        var command = new UpdateCommand<UpdateCountryRequest, CountryResponse> { Request = new UpdateCountryRequest { Id = _countries[0].Id, Name = nameThatExists } };
+        var command = new UpdateCommand<UpdateCountryRequest, CountryResponse>
+        {
+            Request = new UpdateCountryRequest { Id = _countries[0].Id, Name = nameThatExists }
+        };
 
         // Act.
         await Assert.ThrowsAsync<InvalidEntityException>(() => _handler.Handle(command, CancellationToken.None));
@@ -72,5 +78,6 @@ public sealed class UpdateCommandHandlerTests : IDisposable
     }
 
     [Fact]
-    public async Task Handle_ThrowsException_WhenCommandIsNull() => await Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(null, CancellationToken.None));
+    public async Task Handle_ThrowsException_WhenCommandIsNull()
+        => await Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(null, CancellationToken.None));
 }
