@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Moq;
-using PledgeVault.Core.Contracts.Entities.Validators;
-using PledgeVault.Core.Dtos.Requests;
+﻿using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
@@ -19,14 +15,12 @@ namespace PledgeVault.Tests.Handlers.Countries;
 public sealed class SetInactiveCommandHandlerTests : IDisposable
 {
     private readonly PledgeVaultContext _context;
-    private readonly IMapper _mapper;
-    private readonly Mock<ICountryEntityValidator> _mockValidator;
+    private readonly SetInactiveCommandHandler _handler;
 
     public SetInactiveCommandHandlerTests()
     {
-        _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
-        _mockValidator = new Mock<ICountryEntityValidator>();
+        _handler = new SetInactiveCommandHandler(_context, TestHelper.CreateMapper());
         TestHelper.SeedStubCountries(_context, 1);
     }
 
@@ -40,11 +34,10 @@ public sealed class SetInactiveCommandHandlerTests : IDisposable
     public async Task Handle_SetsCountryInactive_WhenCommandIsValid()
     {
         // Arrange.
-        var handler = new SetInactiveCommandHandler(_context, _mapper);
         var command = new SetInactiveCommand<CountryResponse> { Id = 1 };
 
         // Act.
-        await handler.Handle(command, CancellationToken.None);
+        await _handler.Handle(command, CancellationToken.None);
         var dbCountry = await _context.Countries.SingleAsync(x => x.Id == command.Id);
 
         // Assert.
@@ -55,42 +48,33 @@ public sealed class SetInactiveCommandHandlerTests : IDisposable
     public async Task Handle_ThrowsNotFoundException_WhenCountryNotFound()
     {
         // Arrange.
-        var handler = new SetInactiveCommandHandler(_context, _mapper);
         var command = new SetInactiveCommand<CountryResponse> { Id = 999 };
 
         // Act and Assert.
-        await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
     public async Task Handle_ThrowsInvalidRequestException_WhenIdIsNotValid()
     {
         // Arrange.
-        var handler = new SetInactiveCommandHandler(_context, _mapper);
         var command = new SetInactiveCommand<CountryResponse> { Id = -1 };
 
         // Act and Assert.
-        await Assert.ThrowsAsync<InvalidRequestException>(() => handler.Handle(command, CancellationToken.None));
-    }
-
-    [Fact]
-    public async Task Handle_ThrowsException_WhenCommandIsNull()
-    {
-        // Arrange.
-        var handler = new SetInactiveCommandHandler(_context, _mapper);
-
-        // Act and Assert.
-        await Assert.ThrowsAsync<NullReferenceException>(() => handler.Handle(null, CancellationToken.None));
+        await Assert.ThrowsAsync<InvalidRequestException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
     public async Task Handle_ThrowsException_WhenCommandRequestIsNull()
     {
         // Arrange.
-        var handler = new AddCommandHandler(_context, _mockValidator.Object, _mapper);
-        var command = new AddCommand<AddCountryRequest, CountryResponse>();
+        var command = new SetInactiveCommand<CountryResponse>();
 
         // Act and Assert.
-        await Assert.ThrowsAsync<ArgumentNullException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<InvalidRequestException>(() => _handler.Handle(command, CancellationToken.None));
     }
+
+    [Fact]
+    public async Task Handle_ThrowsException_WhenCommandIsNull()
+        => await Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(null, CancellationToken.None));
 }

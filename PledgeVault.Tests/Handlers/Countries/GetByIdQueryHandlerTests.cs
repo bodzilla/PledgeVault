@@ -20,8 +20,8 @@ public sealed class GetByIdQueryHandlerTests : IDisposable
 
     public GetByIdQueryHandlerTests()
     {
-        _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
+        _mapper = TestHelper.CreateMapper();
     }
 
     public void Dispose()

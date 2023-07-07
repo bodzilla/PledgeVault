@@ -22,8 +22,8 @@ public sealed class GetByNameQueryHandlerTests : IDisposable
 
     public GetByNameQueryHandlerTests()
     {
-        _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
+        _mapper = TestHelper.CreateMapper();
     }
 
     public void Dispose()

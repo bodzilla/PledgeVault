@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-internal sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>
+public sealed class AddCommandHandler : IRequestHandler<AddCommand<AddPartyRequest, PartyResponse>, PartyResponse>
 {
     private readonly PledgeVaultContext _context;
     private readonly IPartyEntityValidator _entityValidator;

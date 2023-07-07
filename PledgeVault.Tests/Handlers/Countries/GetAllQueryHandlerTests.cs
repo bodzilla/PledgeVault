@@ -20,8 +20,8 @@ public sealed class GetAllQueryHandlerTests : IDisposable
 
     public GetAllQueryHandlerTests()
     {
-        _mapper = TestHelper.CreateMapper();
         _context = TestHelper.CreateContext();
+        _mapper = TestHelper.CreateMapper();
         TestHelper.SeedStubCountries(_context, 10);
     }
 
