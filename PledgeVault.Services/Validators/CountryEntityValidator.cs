@@ -25,13 +25,13 @@ public sealed class CountryEntityValidator : ICountryEntityValidator
     }
 
     public async Task EnsureEntityExists(Country entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsureCountryExists(_context, entity.Id, cancellationToken);
+        => await EntityValidator.EnsureCountryExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsureNameIsUnique(Country entity, CancellationToken cancellationToken)
     {
         if (await _context.Countries
                 .AsNoTracking()
-                .SingleOrDefaultAsync(x => EF.Functions.Like(x.Name, entity.Name), cancellationToken) is not null)
+                .AnyAsync(x => EF.Functions.Like(x.Name, entity.Name), cancellationToken))
             throw new EntityValidationException($"{nameof(Country.Name)} already exists: '{entity.Name}'.");
     }
 }

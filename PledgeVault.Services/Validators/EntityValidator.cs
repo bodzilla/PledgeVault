@@ -3,12 +3,16 @@ using PledgeVault.Core.Contracts.Entities;
 using PledgeVault.Core.Exceptions;
 using PledgeVault.Persistence;
 using PledgeVault.Persistence.Extensions;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Validators;
 
-internal static class CommonEntityValidator
+/// <summary>
+/// The base entity validator.
+/// </summary>
+internal static class EntityValidator
 {
     public static async Task EnsureCommentExists(PledgeVaultContext context, int commentId, CancellationToken cancellationToken)
         => await EnsureEntityExists(context.Comments, commentId, cancellationToken);
@@ -31,13 +35,13 @@ internal static class CommonEntityValidator
     public static async Task EnsureUserExists(PledgeVaultContext context, int userId, CancellationToken cancellationToken)
         => await EnsureEntityExists(context.Users, userId, cancellationToken);
 
-    private static async Task EnsureEntityExists<T>(DbSet<T> dbSet, int id, CancellationToken cancellationToken)
+    private static async Task EnsureEntityExists<T>(IQueryable<T> queryable, int id, CancellationToken cancellationToken)
     where T : class, IEntity
     {
-        if (await dbSet
+        if (!await queryable
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken) is null)
+                .AnyAsync(x => x.Id == id, cancellationToken))
             throw new EntityValidationException($"{typeof(T).Name} not found with {nameof(id)}: '{id}'.");
     }
 }

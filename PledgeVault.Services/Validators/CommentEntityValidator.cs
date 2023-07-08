@@ -24,11 +24,11 @@ public sealed class CommentEntityValidator : ICommentEntityValidator
     }
 
     public async Task EnsureEntityExists(Comment entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsureCommentExists(_context, entity.Id, cancellationToken);
+        => await EntityValidator.EnsureCommentExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsureUserExists(Comment entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
+        => await EntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
 
     public async Task EnsurePledgeExists(Comment entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsurePledgeExists(_context, entity.PledgeId, cancellationToken);
+        => await EntityValidator.EnsurePledgeExists(_context, entity.PledgeId, cancellationToken);
 }

@@ -28,20 +28,20 @@ public sealed class PledgeEntityValidator : IPledgeEntityValidator
     }
 
     public async Task EnsureEntityExists(Pledge entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsurePledgeExists(_context, entity.Id, cancellationToken);
+        => await EntityValidator.EnsurePledgeExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsureUserExists(Pledge entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
+        => await EntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
 
     public async Task EnsurePoliticianExists(Pledge entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsurePoliticianExists(_context, entity.PoliticianId, cancellationToken);
+        => await EntityValidator.EnsurePoliticianExists(_context, entity.PoliticianId, cancellationToken);
 
     public async Task EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(Pledge entity, CancellationToken cancellationToken)
     {
         if (await _context.Pledges
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => EF.Functions.Like(x.Title, entity.Title) && x.DatePledged == entity.DatePledged && x.PoliticianId == entity.PoliticianId, cancellationToken) is not null)
+                .AnyAsync(x => EF.Functions.Like(x.Title, entity.Title) && x.DatePledged == entity.DatePledged && x.PoliticianId == entity.PoliticianId, cancellationToken))
             throw new EntityValidationException($"{nameof(Pledge.Title)} with {nameof(Pledge.DatePledged)} with {nameof(Pledge.PoliticianId)} already exists.");
     }
 }

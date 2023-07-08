@@ -27,10 +27,10 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
     }
 
     public async Task EnsureEntityExists(Politician entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsurePoliticianExists(_context, entity.Id, cancellationToken);
+        => await EntityValidator.EnsurePoliticianExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsurePartyExists(Politician entity, CancellationToken cancellationToken)
-        => await CommonEntityValidator.EnsurePartyExists(_context, entity.PartyId, cancellationToken);
+        => await EntityValidator.EnsurePartyExists(_context, entity.PartyId, cancellationToken);
 
     public async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
     {
