@@ -42,6 +42,6 @@ public sealed class ResourceEntityValidator : IResourceEntityValidator
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
                 .AnyAsync(x => EF.Functions.Like(x.SiteUrl, entity.SiteUrl) && x.PledgeId == entity.PledgeId, cancellationToken))
-            throw new EntityValidationException($"{nameof(Resource.SiteUrl)} with  {nameof(Resource.PledgeId)} already exists.");
+            throw new EntityValidationException($"{nameof(Resource.SiteUrl)} with {nameof(Resource.PledgeId)} already exists.");
     }
 }
