@@ -27,22 +27,10 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
     }
 
     public async Task EnsureEntityExists(Politician entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Politicians
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Politician)} not found with {nameof(Politician.Id)}: '{entity.Id}'.");
-    }
+        => await CommonEntityValidator.EnsurePoliticianExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsurePartyExists(Politician entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Parties
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.PartyId, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.PartyId}'.");
-    }
+        => await CommonEntityValidator.EnsurePartyExists(_context, entity.PartyId, cancellationToken);
 
     public async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
     {
@@ -51,6 +39,6 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
         if (await _context.Politicians.AsNoTracking()
                 .WithOnlyActiveEntities()
                 .AnyAsync(x => x.Party.Id == entity.PartyId && x.IsPartyLeader, cancellationToken))
-            throw new InvalidEntityException($"{nameof(Politician)} cannot be assigned '{nameof(Politician.IsPartyLeader)} = true' as it is already assigned for {nameof(Politician.PartyId)}: '{entity.PartyId}'.");
+            throw new EntityValidationException($"{nameof(Politician)} cannot be assigned '{nameof(Politician.IsPartyLeader)} = true' as it is already assigned for {nameof(Politician.PartyId)}: '{entity.PartyId}'.");
     }
 }

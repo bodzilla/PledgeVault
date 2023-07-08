@@ -19,13 +19,13 @@ public sealed class Comment : IEntity
 
     public bool EntityActive { get; set; }
 
-    public int PledgeId { get; init; }
-
-    public Pledge Pledge { get; init; }
-
     public int UserId { get; init; }
 
     public User User { get; init; }
+
+    public int PledgeId { get; init; }
+
+    public Pledge Pledge { get; init; }
 
     public string Text { get; set; }
 }

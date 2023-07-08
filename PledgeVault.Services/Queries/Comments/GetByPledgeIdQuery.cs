@@ -2,9 +2,9 @@
 using PledgeVault.Core.Dtos.Pagination;
 using PledgeVault.Core.Dtos.Responses;
 
-namespace PledgeVault.Services.Queries.Parties;
+namespace PledgeVault.Services.Queries.Comments;
 
-public sealed record GetByPledgeIdQuery : IRequest<Page<PartyResponse>>
+public sealed record GetByPledgeIdQuery : IRequest<Page<CommentResponse>>
 {
     public int Id { get; init; }
 

@@ -54,6 +54,7 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddScoped<ICommentEntityValidator, CommentEntityValidator>();
         builder.Services.AddScoped<ICountryEntityValidator, CountryEntityValidator>();
         builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
         builder.Services.AddScoped<IPledgeEntityValidator, PledgeEntityValidator>();

@@ -40,7 +40,7 @@ internal sealed class ExceptionMiddleware
             context.Response.StatusCode = exception switch
             {
                 InvalidRequestException => StatusCodes.Status400BadRequest,
-                InvalidEntityException => StatusCodes.Status400BadRequest,
+                EntityValidationException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status404NotFound,
                 _ => context.Response.StatusCode
             };

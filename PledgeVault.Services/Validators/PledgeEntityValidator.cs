@@ -22,27 +22,19 @@ public sealed class PledgeEntityValidator : IPledgeEntityValidator
     public async Task ValidateAllRules(EntityValidatorType type, Pledge entity, CancellationToken cancellationToken)
     {
         if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
+        await EnsureUserExists(entity, cancellationToken);
         await EnsurePoliticianExists(entity, cancellationToken);
         await EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(entity, cancellationToken);
     }
 
     public async Task EnsureEntityExists(Pledge entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Pledges
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.Id}'.");
-    }
+        => await CommonEntityValidator.EnsurePledgeExists(_context, entity.Id, cancellationToken);
+
+    public async Task EnsureUserExists(Pledge entity, CancellationToken cancellationToken)
+        => await CommonEntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
 
     public async Task EnsurePoliticianExists(Pledge entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Politicians
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.PoliticianId, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Politician)} not found with {nameof(Politician.Id)}: '{entity.PoliticianId}'.");
-    }
+        => await CommonEntityValidator.EnsurePoliticianExists(_context, entity.PoliticianId, cancellationToken);
 
     public async Task EnsureTitleWithDatePledgedWithPoliticianIdIsUnique(Pledge entity, CancellationToken cancellationToken)
     {
@@ -50,6 +42,6 @@ public sealed class PledgeEntityValidator : IPledgeEntityValidator
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
                 .SingleOrDefaultAsync(x => EF.Functions.Like(x.Title, entity.Title) && x.DatePledged == entity.DatePledged && x.PoliticianId == entity.PoliticianId, cancellationToken) is not null)
-            throw new InvalidEntityException($"{nameof(Pledge.Title)} with {nameof(Pledge.DatePledged)} with {nameof(Pledge.PoliticianId)} already exists.");
+            throw new EntityValidationException($"{nameof(Pledge.Title)} with {nameof(Pledge.DatePledged)} with {nameof(Pledge.PoliticianId)} already exists.");
     }
 }

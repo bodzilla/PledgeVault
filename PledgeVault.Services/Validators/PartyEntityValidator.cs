@@ -27,22 +27,10 @@ public sealed class PartyEntityValidator : IPartyEntityValidator
     }
 
     public async Task EnsureEntityExists(Party entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Parties
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Party)} not found with {nameof(Party.Id)}: '{entity.Id}'.");
-    }
+        => await CommonEntityValidator.EnsurePartyExists(_context, entity.Id, cancellationToken);
 
     public async Task EnsureCountryExists(Party entity, CancellationToken cancellationToken)
-    {
-        if (await _context.Countries
-                .AsNoTracking()
-                .WithOnlyActiveEntities()
-                .SingleOrDefaultAsync(x => x.Id == entity.CountryId, cancellationToken) is null)
-            throw new InvalidEntityException($"{nameof(Country)} not found with {nameof(Country.Id)}: '{entity.CountryId}'.");
-    }
+        => await CommonEntityValidator.EnsureCountryExists(_context, entity.CountryId, cancellationToken);
 
     public async Task EnsureNameWithCountryIdIsUnique(Party entity, CancellationToken cancellationToken)
     {
@@ -50,6 +38,6 @@ public sealed class PartyEntityValidator : IPartyEntityValidator
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
                 .SingleOrDefaultAsync(x => EF.Functions.Like(x.Name, entity.Name) && x.CountryId == entity.CountryId, cancellationToken) is not null)
-            throw new InvalidEntityException($"{nameof(Party.Name)} with {nameof(Party.CountryId)} already exists.");
+            throw new EntityValidationException($"{nameof(Party.Name)} with {nameof(Party.CountryId)} already exists.");
     }
 }

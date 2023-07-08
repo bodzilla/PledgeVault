@@ -4,11 +4,10 @@ using PledgeVault.Core.Models;
 
 namespace PledgeVault.Core.Dtos.MappingProfiles.Responses;
 
-public sealed class PledgeProfile : Profile
+public sealed class UserProfile : Profile
 {
-    public PledgeProfile() => CreateMap<Pledge, PledgeResponse>()
-        .ForMember(x => x.User, options => options.ExplicitExpansion())
-        .ForMember(x => x.Politician, options => options.ExplicitExpansion())
+    public UserProfile() => CreateMap<User, UserResponse>()
+        .ForMember(x => x.Pledges, options => options.ExplicitExpansion())
         .ForMember(x => x.Comments, options => options.ExplicitExpansion())
         .ForMember(x => x.Resources, options => options.ExplicitExpansion());
 }
