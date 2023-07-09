@@ -17,6 +17,7 @@ public sealed class PledgeVaultContext : DbContext
     public DbSet<Pledge> Pledges { get; set; }
 
     public DbSet<Resource> Resources { get; set; }
+
     public DbSet<User> Users { get; set; }
 
     public PledgeVaultContext(DbContextOptions options)

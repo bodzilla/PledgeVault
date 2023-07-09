@@ -10,7 +10,7 @@ public sealed class Pledge : IEntity
     public Pledge()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
         Comments = new List<Comment>();
         Resources = new List<Resource>();
     }
@@ -21,7 +21,7 @@ public sealed class Pledge : IEntity
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public string Title { get; set; }
 

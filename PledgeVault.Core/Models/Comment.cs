@@ -8,7 +8,7 @@ public sealed class Comment : IEntity
     public Comment()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
     }
 
     public int Id { get; init; }
@@ -17,7 +17,7 @@ public sealed class Comment : IEntity
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public int UserId { get; init; }
 

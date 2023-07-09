@@ -12,7 +12,7 @@ using PledgeVault.Persistence;
 namespace PledgeVault.Persistence.Migrations
 {
     [DbContext(typeof(PledgeVaultContext))]
-    [Migration("20230707185521_InitialCreate")]
+    [Migration("20230709152525_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,14 +33,14 @@ namespace PledgeVault.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PledgeId")
                         .HasColumnType("int");
@@ -73,9 +73,6 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateEstablished")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
@@ -84,6 +81,9 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<int>("GovernmentType")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -116,14 +116,14 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateEstablished")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LogoUrl")
                         .HasMaxLength(250)
@@ -166,9 +166,6 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime>("DatePledged")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
@@ -178,6 +175,9 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<string>("FulfilledSummary")
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PledgeCategoryType")
                         .HasColumnType("int");
@@ -234,14 +234,14 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateOfDeath")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPartyLeader")
                         .HasColumnType("bit");
@@ -277,7 +277,7 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.HasIndex("PartyId");
 
-                    b.HasIndex("Name", "DateOfBirth", "PartyId")
+                    b.HasIndex("Name", "DateOfBirth")
                         .IsUnique();
 
                     b.ToTable("Politicians");
@@ -291,14 +291,14 @@ namespace PledgeVault.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PledgeId")
                         .HasColumnType("int");
@@ -345,21 +345,21 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("EncryptedPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EntityActive")
-                        .HasColumnType("bit");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("HashedPassword")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsEntityActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Username")
                         .IsRequired()

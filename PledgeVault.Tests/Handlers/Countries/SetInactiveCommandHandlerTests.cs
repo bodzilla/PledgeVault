@@ -41,7 +41,7 @@ public sealed class SetInactiveCommandHandlerTests : IDisposable
         var dbCountry = await _context.Countries.SingleAsync(x => x.Id == command.Id);
 
         // Assert.
-        Assert.False(dbCountry.EntityActive);
+        Assert.False(dbCountry.IsEntityActive);
     }
 
     [Fact]

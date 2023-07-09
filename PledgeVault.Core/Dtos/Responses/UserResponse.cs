@@ -10,10 +10,6 @@ public sealed record UserResponse : IResponse
 
     public DateTime EntityCreated { get; init; }
 
-    public DateTime? EntityModified { get; init; }
-
-    public string Email { get; init; }
-
     public string Username { get; init; }
 
     public IReadOnlyCollection<PledgeResponse> Pledges { get; init; }

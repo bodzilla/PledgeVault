@@ -9,7 +9,7 @@ public sealed class Resource : IEntity
     public Resource()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
     }
 
     public int Id { get; init; }
@@ -18,7 +18,7 @@ public sealed class Resource : IEntity
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public string Title { get; set; }
 

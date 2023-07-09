@@ -20,7 +20,7 @@ public interface IEntityValidator<in T> where T : IEntity
     Task ValidateAllRules(EntityValidatorType type, T entity, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Ensures that the entity exists and <see cref="IEntity.EntityActive"/> is true.
+    /// Ensures that the entity exists and <see cref="IEntity.IsEntityActive"/> is true.
     /// </summary>
     Task EnsureEntityExists(T entity, CancellationToken cancellationToken);
 }

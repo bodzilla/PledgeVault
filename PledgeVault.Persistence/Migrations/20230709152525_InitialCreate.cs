@@ -19,7 +19,7 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DateEstablished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     GovernmentType = table.Column<int>(type: "int", nullable: false),
@@ -38,10 +38,10 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    EncryptedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    HashedPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +56,7 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DateEstablished = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CountryId = table.Column<int>(type: "int", nullable: false),
@@ -83,7 +83,7 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     SexType = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -114,7 +114,7 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     DatePledged = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateFulfilled = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -151,9 +151,9 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
-                    PledgeId = table.Column<int>(type: "int", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    PledgeId = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
                 },
                 constraints: table =>
@@ -181,7 +181,7 @@ namespace PledgeVault.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EntityCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EntityModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EntityActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsEntityActive = table.Column<bool>(type: "bit", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     SiteUrl = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     ResourceType = table.Column<int>(type: "int", nullable: false),
@@ -256,9 +256,9 @@ namespace PledgeVault.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Politicians_Name_DateOfBirth_PartyId",
+                name: "IX_Politicians_Name_DateOfBirth",
                 table: "Politicians",
-                columns: new[] { "Name", "DateOfBirth", "PartyId" },
+                columns: new[] { "Name", "DateOfBirth" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -23,6 +23,7 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
     {
         if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
         await EnsurePartyExists(entity, cancellationToken);
+        await EnsureNameWithDateOfBirthIsUnique(entity, cancellationToken);
         await EnsureOnlyOnePartyLeader(entity, cancellationToken);
     }
 
@@ -31,6 +32,15 @@ public sealed class PoliticianEntityValidator : IPoliticianEntityValidator
 
     public async Task EnsurePartyExists(Politician entity, CancellationToken cancellationToken)
         => await EntityValidator.EnsurePartyExists(_context, entity.PartyId, cancellationToken);
+
+    public async Task EnsureNameWithDateOfBirthIsUnique(Politician entity, CancellationToken cancellationToken)
+    {
+        if (await _context.Politicians
+                .AsNoTracking()
+                .WithOnlyActiveEntities()
+                .AnyAsync(x => EF.Functions.Like(x.Name, entity.Name) && x.DateOfBirth == entity.DateOfBirth, cancellationToken))
+            throw new EntityValidationException($"{nameof(Politician.Name)} with {nameof(Politician.DateOfBirth)} already exists.");
+    }
 
     public async Task EnsureOnlyOnePartyLeader(Politician entity, CancellationToken cancellationToken)
     {

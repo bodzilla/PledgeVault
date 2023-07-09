@@ -9,7 +9,7 @@ public sealed class User : IEntity
     public User()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
         Pledges = new List<Pledge>();
         Comments = new List<Comment>();
         Resources = new List<Resource>();
@@ -21,13 +21,13 @@ public sealed class User : IEntity
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public string Email { get; set; }
 
     public string Username { get; set; }
 
-    public string EncryptedPassword { get; set; }
+    public string HashedPassword { get; set; }
 
     public ICollection<Pledge> Pledges { get; init; }
 

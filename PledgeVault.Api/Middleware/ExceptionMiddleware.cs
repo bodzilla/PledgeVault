@@ -41,6 +41,7 @@ internal sealed class ExceptionMiddleware
             {
                 InvalidRequestException => StatusCodes.Status400BadRequest,
                 EntityValidationException => StatusCodes.Status400BadRequest,
+                AuthenticationException => StatusCodes.Status400BadRequest,
                 NotFoundException => StatusCodes.Status404NotFound,
                 _ => context.Response.StatusCode
             };

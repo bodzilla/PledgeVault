@@ -10,5 +10,5 @@ public interface IEntity
 
     DateTime? EntityModified { get; set; }
 
-    bool EntityActive { get; set; }
+    bool IsEntityActive { get; set; }
 }

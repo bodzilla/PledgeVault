@@ -9,7 +9,7 @@ public sealed class Party : IEntity
     public Party()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
         Politicians = new List<Politician>();
     }
 
@@ -19,7 +19,7 @@ public sealed class Party : IEntity
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public string Name { get; set; }
 

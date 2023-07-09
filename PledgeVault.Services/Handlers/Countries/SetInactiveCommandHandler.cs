@@ -27,7 +27,7 @@ public sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveComma
 
         var entity = await _context.Countries.FindAsync(new object[] { command.Id }, cancellationToken) ?? throw new NotFoundException();
 
-        entity.EntityActive = false;
+        entity.IsEntityActive = false;
         entity.EntityModified = DateTime.Now;
         _context.Countries.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);

@@ -8,7 +8,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(x => x.Email).HasMaxLength(250);
+        builder.Property(x => x.Email).HasMaxLength(50);
         builder.Property(x => x.Username).HasMaxLength(20);
 
         builder.Property(x => x.Email).IsRequired();
@@ -17,7 +17,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(x => x.Username).IsRequired();
         builder.HasIndex(x => x.Username).IsUnique();
 
-        builder.Property(x => x.EncryptedPassword).IsRequired();
+        builder.Property(x => x.HashedPassword).IsRequired();
 
         builder.HasMany(x => x.Pledges)
             .WithOne(x => x.User)
