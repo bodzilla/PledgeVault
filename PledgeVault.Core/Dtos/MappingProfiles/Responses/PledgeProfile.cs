@@ -15,7 +15,7 @@ public sealed class PledgeProfile : Profile
         .ForMember(x => x.Comments, options =>
         {
             options.ExplicitExpansion();
-            options.MapFrom(x => x.Comments.OrderByDescending(y => y.Id).Take(100));
+            options.MapFrom(x => x.Comments.OrderByDescending(y => y.Id).Take(50));
         })
         .ForMember(x => x.Resources, options
             => options.ExplicitExpansion());

@@ -28,10 +28,14 @@ public sealed class UserController : ControllerBase
         => Ok(await _mediator.Send(new AddCommand<AddUserRequest, UserResponse> { Request = request }, cancellationToken));
 
     [HttpPatch("email")]
-    public async Task<IActionResult> UpdateAsync(UpdateUserEmailRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateEmailAsync(UpdateUserEmailRequest request, CancellationToken cancellationToken)
         => Ok(await _mediator.Send(new UpdateUserEmailCommand { Request = request }, cancellationToken));
 
     [HttpPatch("username")]
-    public async Task<IActionResult> UpdateAsync(UpdateUserUsernameRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUsernameAsync(UpdateUserUsernameRequest request, CancellationToken cancellationToken)
         => Ok(await _mediator.Send(new UpdateUserUsernameCommand { Request = request }, cancellationToken));
+
+    [HttpPatch("password")]
+    public async Task<IActionResult> UpdatePasswordAsync(UpdateUserPasswordRequest request, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new UpdateUserPasswordCommand { Request = request }, cancellationToken));
 }

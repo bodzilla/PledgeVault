@@ -7,7 +7,7 @@ public static class AuthenticationManager
 {
     public static string HashPassword(string password) => BCrypt.Net.BCrypt.EnhancedHashPassword(password);
 
-    public static bool VerifyPassword(string password, string hashedPassword)
+    public static bool IsPasswordMatch(string password, string hashedPassword)
     {
         if (password is null) throw new AuthenticationException($"The {nameof(password)} cannot be null.");
         return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
