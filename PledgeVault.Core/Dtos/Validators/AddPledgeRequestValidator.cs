@@ -46,13 +46,17 @@ public sealed class AddPledgeRequestValidator : AbstractValidator<AddPledgeReque
             .IsInEnum()
             .WithMessage("Invalid Pledge Status Type.");
 
+        RuleFor(x => x.UserId)
+            .GreaterThan(0)
+            .WithMessage("UserId must be greater than 0.");
+
         RuleFor(x => x.PoliticianId)
             .GreaterThan(0)
             .WithMessage("PoliticianId must be greater than 0.");
 
         RuleFor(x => x.Summary.Trim())
             .Length(1, 10000)
-            .When(x => !string.IsNullOrWhiteSpace(x.Summary))
+            .When(x => !String.IsNullOrWhiteSpace(x.Summary))
             .WithMessage("Summary length must be between 1 and 10,000 characters when Summary is not empty.");
 
         RuleFor(x => x.FulfilledSummary.Trim())

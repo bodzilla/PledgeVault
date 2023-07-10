@@ -29,7 +29,7 @@ internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCom
 
         entity.IsPartyLeader = false;
         entity.Position = null;
-        entity.EntityActive = false;
+        entity.IsEntityActive = false;
         entity.EntityModified = DateTime.Now;
         _context.Politicians.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);

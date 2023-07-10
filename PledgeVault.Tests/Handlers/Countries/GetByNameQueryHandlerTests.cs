@@ -53,7 +53,7 @@ public sealed class GetByNameQueryHandlerTests : IDisposable
         Assert.Equal(query.PageOptions.PageNumber, response.PageNumber);
         Assert.Equal(query.PageOptions.PageSize, response.PageSize);
         Assert.Equal(1, response.TotalItems);
-        Assert.Equal(1, response.Data.Count);
+        Assert.Single(response.Data);
         Assert.Equal(expectedCountry.Name, response.Data.First().Name);
     }
 

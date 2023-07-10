@@ -19,6 +19,10 @@ internal sealed class PledgeConfiguration : IEntityTypeConfiguration<Pledge>
 
         builder.HasIndex(x => new { x.Title, x.DatePledged, x.PoliticianId }).IsUnique();
 
+        builder.HasMany(x => x.Comments)
+            .WithOne(x => x.Pledge)
+            .HasForeignKey(x => x.PledgeId);
+
         builder.HasMany(x => x.Resources)
             .WithOne(x => x.Pledge)
             .HasForeignKey(x => x.PledgeId);

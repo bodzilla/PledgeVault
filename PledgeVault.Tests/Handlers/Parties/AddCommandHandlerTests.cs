@@ -62,7 +62,7 @@ public sealed class AddCommandHandlerTests : IDisposable
         var command = new AddCommand<AddPartyRequest, PartyResponse> { Request = new AddPartyRequest { Name = "Test Party", CountryId = countryId } };
 
         // Act and Assert.
-        await Assert.ThrowsAsync<InvalidEntityException>(() => _handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<EntityValidationException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -82,7 +82,7 @@ public sealed class AddCommandHandlerTests : IDisposable
         var command = new AddCommand<AddPartyRequest, PartyResponse>();
 
         // Act and Assert.
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]

@@ -32,7 +32,8 @@ internal sealed class GetByIdQueryHandler : IRequestHandler<GetByIdQuery<PledgeR
             .AsNoTracking()
             .WithOnlyActiveEntities()
             .Where(x => x.Id == query.Id)
-            .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken, x => x.Politician)
+            .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken,
+                x => x.User, x => x.Politician, x => x.Resources)
             .SingleOrDefaultAsync(cancellationToken);
     }
 }

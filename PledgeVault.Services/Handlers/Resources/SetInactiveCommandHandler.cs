@@ -27,7 +27,7 @@ internal sealed class SetInactiveCommandHandler : IRequestHandler<SetInactiveCom
 
         var entity = await _context.Resources.FindAsync(new object[] { command.Id }, cancellationToken) ?? throw new NotFoundException();
 
-        entity.EntityActive = false;
+        entity.IsEntityActive = false;
         entity.EntityModified = DateTime.Now;
         _context.Resources.Update(entity);
         await _context.SaveChangesAsync(cancellationToken);
