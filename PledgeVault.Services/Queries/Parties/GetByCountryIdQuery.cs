@@ -4,7 +4,7 @@ using PledgeVault.Core.Dtos.Responses;
 
 namespace PledgeVault.Services.Queries.Parties;
 
-public sealed record GetByPledgeIdQuery : IRequest<Page<PartyResponse>>
+public sealed record GetByCountryIdQuery : IRequest<Page<PartyResponse>>
 {
     public int Id { get; init; }
 
