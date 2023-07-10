@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Parties;
 
-internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryIdQuery, Page<PartyResponse>>
+internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByPledgeIdQuery, Page<PartyResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
@@ -25,7 +25,7 @@ internal sealed class GetByCountryIdQueryHandler : IRequestHandler<GetByCountryI
         _mapper = mapper;
     }
 
-    public async Task<Page<PartyResponse>> Handle(GetByCountryIdQuery query, CancellationToken cancellationToken)
+    public async Task<Page<PartyResponse>> Handle(GetByPledgeIdQuery query, CancellationToken cancellationToken)
     {
         if (query.Id <= 0) throw new InvalidRequestException();
 

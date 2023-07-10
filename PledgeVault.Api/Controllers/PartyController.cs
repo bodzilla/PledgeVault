@@ -34,7 +34,7 @@ public sealed class PartyController : ControllerBase
 
     [HttpGet("country/{id:int}")]
     public async Task<IActionResult> GetByCountryIdAsync(int id, [FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
-        => Ok(await _mediator.Send(new GetByCountryIdQuery { Id = id, PageOptions = pageOptions }, cancellationToken));
+        => Ok(await _mediator.Send(new GetByPledgeIdQuery { Id = id, PageOptions = pageOptions }, cancellationToken));
 
     [HttpPost]
     public async Task<IActionResult> AddAsync(AddPartyRequest request, CancellationToken cancellationToken)

@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace PledgeVault.Services.Handlers.Politicians;
 
-internal sealed class GetByPartyIdQueryHandler : IRequestHandler<GetByPartyIdQuery, Page<PoliticianResponse>>
+internal sealed class GetByPledgeIdQueryHandler : IRequestHandler<GetByPartyIdQuery, Page<PoliticianResponse>>
 {
     private readonly PledgeVaultContext _context;
     private readonly IMapper _mapper;
 
-    public GetByPartyIdQueryHandler(PledgeVaultContext context, IMapper mapper)
+    public GetByPledgeIdQueryHandler(PledgeVaultContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

@@ -9,16 +9,16 @@ public sealed class Resource : IEntity
     public Resource()
     {
         EntityCreated = DateTime.Now;
-        EntityActive = true;
+        IsEntityActive = true;
     }
 
-    public int Id { get; set; }
+    public int Id { get; init; }
 
-    public DateTime EntityCreated { get; set; }
+    public DateTime EntityCreated { get; init; }
 
     public DateTime? EntityModified { get; set; }
 
-    public bool EntityActive { get; set; }
+    public bool IsEntityActive { get; set; }
 
     public string Title { get; set; }
 
@@ -27,6 +27,10 @@ public sealed class Resource : IEntity
     public ResourceType ResourceType { get; set; }
 
     public string Summary { get; set; }
+
+    public int UserId { get; init; }
+
+    public User User { get; init; }
 
     public int PledgeId { get; init; }
 

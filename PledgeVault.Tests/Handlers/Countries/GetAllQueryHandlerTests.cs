@@ -64,7 +64,7 @@ public sealed class GetAllQueryHandlerTests : IDisposable
         var response = await handler.Handle(query, CancellationToken.None);
 
         // Assert.
-        var activeCountriesCount = _context.Countries.Count(x => x.EntityActive);
+        var activeCountriesCount = _context.Countries.Count(x => x.IsEntityActive);
         Assert.Equal(activeCountriesCount, response.TotalItems);
     }
 
@@ -92,7 +92,7 @@ public sealed class GetAllQueryHandlerTests : IDisposable
         var handler = new GetAllQueryHandler(_context, _mapper);
         var query = new GetAllQuery<CountryResponse> { PageOptions = new PageOptions() };
 
-        foreach (var country in _context.Countries) country.EntityActive = false;
+        foreach (var country in _context.Countries) country.IsEntityActive = false;
         await _context.SaveChangesAsync();
 
         // Act.
