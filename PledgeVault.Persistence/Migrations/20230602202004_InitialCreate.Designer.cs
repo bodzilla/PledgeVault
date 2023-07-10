@@ -12,7 +12,7 @@ using PledgeVault.Persistence;
 namespace PledgeVault.Persistence.Migrations
 {
     [DbContext(typeof(PledgeVaultContext))]
-    [Migration("20230709152525_InitialCreate")]
+    [Migration("20230602202004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,47 +20,10 @@ namespace PledgeVault.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PledgeVault.Core.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EntityCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EntityModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PledgeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PledgeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Country", b =>
                 {
@@ -73,6 +36,9 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateEstablished")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("EntityActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
@@ -81,9 +47,6 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.Property<int>("GovernmentType")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -116,14 +79,14 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateEstablished")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("EntityActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LogoUrl")
                         .HasMaxLength(250)
@@ -166,6 +129,9 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime>("DatePledged")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("EntityActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
@@ -175,9 +141,6 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<string>("FulfilledSummary")
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PledgeCategoryType")
                         .HasColumnType("int");
@@ -200,14 +163,9 @@ namespace PledgeVault.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PoliticianId");
-
-                    b.HasIndex("UserId");
 
                     b.HasIndex("Title", "DatePledged", "PoliticianId")
                         .IsUnique();
@@ -234,14 +192,14 @@ namespace PledgeVault.Persistence.Migrations
                     b.Property<DateTime?>("DateOfDeath")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("EntityActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPartyLeader")
                         .HasColumnType("bit");
@@ -277,7 +235,7 @@ namespace PledgeVault.Persistence.Migrations
 
                     b.HasIndex("PartyId");
 
-                    b.HasIndex("Name", "DateOfBirth")
+                    b.HasIndex("Name", "DateOfBirth", "PartyId")
                         .IsUnique();
 
                     b.ToTable("Politicians");
@@ -291,14 +249,14 @@ namespace PledgeVault.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("EntityActive")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("EntityCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EntityModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PledgeId")
                         .HasColumnType("int");
@@ -320,80 +278,14 @@ namespace PledgeVault.Persistence.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PledgeId");
-
-                    b.HasIndex("UserId");
 
                     b.HasIndex("SiteUrl", "PledgeId")
                         .IsUnique();
 
                     b.ToTable("Resources");
-                });
-
-            modelBuilder.Entity("PledgeVault.Core.Models.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("EntityCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EntityModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HashedPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsEntityActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("PledgeVault.Core.Models.Comment", b =>
-                {
-                    b.HasOne("PledgeVault.Core.Models.Pledge", "Pledge")
-                        .WithMany("Comments")
-                        .HasForeignKey("PledgeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PledgeVault.Core.Models.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Pledge");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Party", b =>
@@ -415,15 +307,7 @@ namespace PledgeVault.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PledgeVault.Core.Models.User", "User")
-                        .WithMany("Pledges")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Politician");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Politician", b =>
@@ -445,15 +329,7 @@ namespace PledgeVault.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PledgeVault.Core.Models.User", "User")
-                        .WithMany("Resources")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Pledge");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Country", b =>
@@ -468,23 +344,12 @@ namespace PledgeVault.Persistence.Migrations
 
             modelBuilder.Entity("PledgeVault.Core.Models.Pledge", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Resources");
                 });
 
             modelBuilder.Entity("PledgeVault.Core.Models.Politician", b =>
                 {
                     b.Navigation("Pledges");
-                });
-
-            modelBuilder.Entity("PledgeVault.Core.Models.User", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Pledges");
-
-                    b.Navigation("Resources");
                 });
 #pragma warning restore 612, 618
         }

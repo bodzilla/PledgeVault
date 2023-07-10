@@ -6,8 +6,6 @@ namespace PledgeVault.Persistence;
 
 public sealed class PledgeVaultContext : DbContext
 {
-    public DbSet<Comment> Comments { get; set; }
-
     public DbSet<Country> Countries { get; set; }
 
     public DbSet<Party> Parties { get; set; }
@@ -18,19 +16,15 @@ public sealed class PledgeVaultContext : DbContext
 
     public DbSet<Resource> Resources { get; set; }
 
-    public DbSet<User> Users { get; set; }
-
     public PledgeVaultContext(DbContextOptions options)
         : base(options)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder builder) => builder
-        .ApplyConfiguration(new CommentConfiguration())
         .ApplyConfiguration(new CountryConfiguration())
         .ApplyConfiguration(new PartyConfiguration())
         .ApplyConfiguration(new PoliticianConfiguration())
         .ApplyConfiguration(new PledgeConfiguration())
-        .ApplyConfiguration(new ResourceConfiguration())
-        .ApplyConfiguration(new UserConfiguration());
+        .ApplyConfiguration(new ResourceConfiguration());
 }

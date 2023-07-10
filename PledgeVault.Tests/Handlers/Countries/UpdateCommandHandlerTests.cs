@@ -64,7 +64,7 @@ public sealed class UpdateCommandHandlerTests : IDisposable
         };
 
         // Act.
-        await Assert.ThrowsAsync<EntityValidationException>(() => _handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<InvalidEntityException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public sealed class UpdateCommandHandlerTests : IDisposable
         var command = new UpdateCommand<UpdateCountryRequest, CountryResponse>();
 
         // Act and Assert.
-        await Assert.ThrowsAsync<NullReferenceException>(() => _handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _handler.Handle(command, CancellationToken.None));
     }
 
     [Fact]

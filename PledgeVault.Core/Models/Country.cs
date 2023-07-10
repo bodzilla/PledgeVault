@@ -10,17 +10,17 @@ public sealed class Country : IEntity
     public Country()
     {
         EntityCreated = DateTime.Now;
-        IsEntityActive = true;
+        EntityActive = true;
         Parties = new List<Party>();
     }
 
-    public int Id { get; init; }
+    public int Id { get; set; }
 
-    public DateTime EntityCreated { get; init; }
+    public DateTime EntityCreated { get; set; }
 
     public DateTime? EntityModified { get; set; }
 
-    public bool IsEntityActive { get; set; }
+    public bool EntityActive { get; set; }
 
     public string Name { get; set; }
 
@@ -30,5 +30,5 @@ public sealed class Country : IEntity
 
     public string Summary { get; set; }
 
-    public ICollection<Party> Parties { get; init; }
+    public ICollection<Party> Parties { get; set; }
 }

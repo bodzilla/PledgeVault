@@ -18,13 +18,11 @@ public sealed record UpdatePledgeRequest : IRequest
 
     public PledgeStatusType PledgeStatusType { get; init; }
 
-    public int UserId { get; init; }
-
     public int PoliticianId { get; init; }
-
-    public int Score { get; init; }
 
     public string Summary { get; init; }
 
     public string FulfilledSummary { get; init; }
+
+    public int Score { get; init; }
 }
