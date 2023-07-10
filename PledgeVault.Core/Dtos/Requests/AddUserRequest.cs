@@ -2,7 +2,7 @@
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class AddUserRequest : IRequest
+public sealed record AddUserRequest : IRequest
 {
     public string Email { get; init; }
 

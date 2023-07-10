@@ -2,7 +2,7 @@
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class UpdateUserPasswordRequest : IRequest
+public sealed record UpdateUserPasswordRequest : IRequest
 {
     public int Id { get; init; }
 

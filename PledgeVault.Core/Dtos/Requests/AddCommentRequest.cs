@@ -2,7 +2,7 @@
 
 namespace PledgeVault.Core.Dtos.Requests;
 
-public sealed class AddCommentRequest : IRequest
+public sealed record AddCommentRequest : IRequest
 {
     public int UserId { get; init; }
 
