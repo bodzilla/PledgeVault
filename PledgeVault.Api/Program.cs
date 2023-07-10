@@ -54,13 +54,11 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-        builder.Services.AddScoped<ICommentEntityValidator, CommentEntityValidator>();
         builder.Services.AddScoped<ICountryEntityValidator, CountryEntityValidator>();
         builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
         builder.Services.AddScoped<IPledgeEntityValidator, PledgeEntityValidator>();
         builder.Services.AddScoped<IPoliticianEntityValidator, PoliticianEntityValidator>();
         builder.Services.AddScoped<IResourceEntityValidator, ResourceEntityValidator>();
-        builder.Services.AddScoped<IUserEntityValidator, UserEntityValidator>();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

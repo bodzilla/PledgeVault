@@ -4,11 +4,11 @@ namespace PledgeVault.Core.Contracts.Entities;
 
 public interface IEntity
 {
-    int Id { get; init; }
+    int Id { get; set; }
 
-    DateTime EntityCreated { get; init; }
+    DateTime EntityCreated { get; set; }
 
     DateTime? EntityModified { get; set; }
 
-    bool IsEntityActive { get; set; }
+    bool EntityActive { get; set; }
 }

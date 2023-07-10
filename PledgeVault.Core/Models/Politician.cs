@@ -10,17 +10,17 @@ public sealed class Politician : IEntity
     public Politician()
     {
         EntityCreated = DateTime.Now;
-        IsEntityActive = true;
+        EntityActive = true;
         Pledges = new List<Pledge>();
     }
 
-    public int Id { get; init; }
+    public int Id { get; set; }
 
-    public DateTime EntityCreated { get; init; }
+    public DateTime EntityCreated { get; set; }
 
     public DateTime? EntityModified { get; set; }
 
-    public bool IsEntityActive { get; set; }
+    public bool EntityActive { get; set; }
 
     public string Name { get; set; }
 
@@ -32,9 +32,9 @@ public sealed class Politician : IEntity
 
     public string CountryOfBirth { get; set; }
 
-    public int PartyId { get; init; }
+    public int PartyId { get; set; }
 
-    public Party Party { get; init; }
+    public Party Party { get; set; }
 
     public string Position { get; set; }
 
@@ -44,5 +44,5 @@ public sealed class Politician : IEntity
 
     public string Summary { get; set; }
 
-    public ICollection<Pledge> Pledges { get; init; }
+    public ICollection<Pledge> Pledges { get; set; }
 }

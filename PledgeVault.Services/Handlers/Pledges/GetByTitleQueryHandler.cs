@@ -39,8 +39,7 @@ internal sealed class GetByTitleQueryHandler : IRequestHandler<GetByTitleQuery, 
         {
             Data = await baseQuery
                 .WithPagination(query.PageOptions)
-                .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken,
-                    x => x.User, x => x.Politician, x => x.Resources)
+                .ProjectTo<PledgeResponse>(_mapper.ConfigurationProvider, cancellationToken)
                 .ToListAsync(cancellationToken),
             PageNumber = query.PageOptions.PageNumber,
             PageSize = query.PageOptions.PageSize,

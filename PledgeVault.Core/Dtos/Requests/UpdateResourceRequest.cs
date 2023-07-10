@@ -15,7 +15,5 @@ public sealed record UpdateResourceRequest : IRequest
 
     public string Summary { get; init; }
 
-    public int UserId { get; init; }
-
     public int PledgeId { get; init; }
 }

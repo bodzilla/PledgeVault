@@ -28,10 +28,6 @@ public sealed class PledgeController : ControllerBase
     public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
         => Ok(await _mediator.Send(new GetByIdQuery<PledgeResponse> { Id = id }, cancellationToken));
 
-    [HttpGet("user/{id:int}")]
-    public async Task<IActionResult> GetByUserIdAsync(int id, [FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
-        => Ok(await _mediator.Send(new GetByUserIdQuery<PledgeResponse> { Id = id, PageOptions = pageOptions }, cancellationToken));
-
     [HttpGet("politician/{id:int}")]
     public async Task<IActionResult> GetByPoliticianIdAsync(int id, [FromQuery] PageOptions pageOptions, CancellationToken cancellationToken)
         => Ok(await _mediator.Send(new GetByPoliticianIdQuery { Id = id, PageOptions = pageOptions }, cancellationToken));

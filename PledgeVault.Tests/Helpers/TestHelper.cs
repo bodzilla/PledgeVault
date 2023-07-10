@@ -20,13 +20,11 @@ internal static class TestHelper
         => new MapperConfiguration(x =>
         {
             // Base maps.
-            x.CreateMap<Comment, CommentResponse>();
             x.CreateMap<Country, CountryResponse>();
             x.CreateMap<Party, PartyResponse>();
             x.CreateMap<Politician, PoliticianResponse>();
             x.CreateMap<Pledge, PledgeResponse>();
             x.CreateMap<Resource, ResourceResponse>();
-            x.CreateMap<User, UserResponse>();
 
             // Command/Request maps.
             x.CreateMap<AddCountryRequest, Country>();

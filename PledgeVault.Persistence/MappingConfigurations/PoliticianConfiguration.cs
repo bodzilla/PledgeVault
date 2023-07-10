@@ -22,7 +22,7 @@ internal sealed class PoliticianConfiguration : IEntityTypeConfiguration<Politic
         builder.Property(x => x.CountryOfBirth).IsRequired();
         builder.Property(x => x.Position).IsRequired();
 
-        builder.HasIndex(x => new { x.Name, x.DateOfBirth }).IsUnique();
+        builder.HasIndex(x => new { x.Name, x.DateOfBirth, x.PartyId }).IsUnique();
 
         builder.HasMany(x => x.Pledges)
             .WithOne(x => x.Politician)

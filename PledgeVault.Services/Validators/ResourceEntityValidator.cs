@@ -22,26 +22,34 @@ public sealed class ResourceEntityValidator : IResourceEntityValidator
     public async Task ValidateAllRules(EntityValidatorType type, Resource entity, CancellationToken cancellationToken)
     {
         if (type is not EntityValidatorType.Add) await EnsureEntityExists(entity, cancellationToken);
-        await EnsureUserExists(entity, cancellationToken);
         await EnsurePledgeExists(entity, cancellationToken);
         await EnsureSiteUrlWithPledgeIdIsUnique(entity, cancellationToken);
     }
 
     public async Task EnsureEntityExists(Resource entity, CancellationToken cancellationToken)
-        => await EntityValidator.EnsureResourceExists(_context, entity.Id, cancellationToken);
-
-    public async Task EnsureUserExists(Resource entity, CancellationToken cancellationToken)
-        => await EntityValidator.EnsureUserExists(_context, entity.UserId, cancellationToken);
+    {
+        if (await _context.Resources
+                .AsNoTracking()
+                .WithOnlyActiveEntities()
+                .SingleOrDefaultAsync(x => x.Id == entity.Id, cancellationToken) is null)
+            throw new InvalidEntityException($"{nameof(Resource)} not found with {nameof(Resource.Id)}: '{entity.Id}'.");
+    }
 
     public async Task EnsurePledgeExists(Resource entity, CancellationToken cancellationToken)
-        => await EntityValidator.EnsurePledgeExists(_context, entity.PledgeId, cancellationToken);
+    {
+        if (await _context.Pledges
+                .AsNoTracking()
+                .WithOnlyActiveEntities()
+                .SingleOrDefaultAsync(x => x.Id == entity.PledgeId, cancellationToken) is null)
+            throw new InvalidEntityException($"{nameof(Pledge)} not found with {nameof(Pledge.Id)}: '{entity.PledgeId}'.");
+    }
 
     public async Task EnsureSiteUrlWithPledgeIdIsUnique(Resource entity, CancellationToken cancellationToken)
     {
         if (await _context.Resources
                 .AsNoTracking()
                 .WithOnlyActiveEntities()
-                .AnyAsync(x => EF.Functions.Like(x.SiteUrl, entity.SiteUrl) && x.PledgeId == entity.PledgeId, cancellationToken))
-            throw new EntityValidationException($"{nameof(Resource.SiteUrl)} with {nameof(Resource.PledgeId)} already exists.");
+                .SingleOrDefaultAsync(x => EF.Functions.Like(x.SiteUrl, entity.SiteUrl) && x.PledgeId == entity.PledgeId, cancellationToken) is not null)
+            throw new InvalidEntityException($"{nameof(Resource.SiteUrl)} with  {nameof(Resource.PledgeId)} already exists.");
     }
 }
