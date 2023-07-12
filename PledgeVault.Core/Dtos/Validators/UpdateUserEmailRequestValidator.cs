@@ -11,10 +11,6 @@ public sealed class UpdateUserEmailRequestValidator : AbstractValidator<UpdateUs
             .NotNull()
             .WithMessage("Request object cannot be null.");
 
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("Id must be greater than 0.");
-
         RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage("Email is required.")

@@ -7,6 +7,10 @@ using PledgeVault.Services.Commands.Users;
 using PledgeVault.Services.Queries;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using PledgeVault.Core.Contracts.Web;
+using PledgeVault.Core.Exceptions;
+using PledgeVault.Persistence;
 
 namespace PledgeVault.Api.Controllers;
 
@@ -16,20 +20,30 @@ namespace PledgeVault.Api.Controllers;
 public sealed class UserController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IContext _context;
 
-    public UserController(IMediator mediator) => _mediator = mediator;
+    public UserController(IMediator mediator, IContext context)
+    {
+        _mediator = mediator;
+        _context = context;
+    }
+
+    [HttpPost("sign-up")]
+    public async Task<IActionResult> SignUpAsync(AddUserRequest request, CancellationToken cancellationToken)
+        => Ok(await _mediator.Send(new AddCommand<AddUserRequest, UserResponse> { Request = request }, cancellationToken));
 
     [HttpGet("id/{id:int}")]
     public async Task<IActionResult> GetByIdAsync(int id, CancellationToken cancellationToken)
         => Ok(await _mediator.Send(new GetByIdQuery<UserResponse> { Id = id }, cancellationToken));
 
-    [HttpPost]
-    public async Task<IActionResult> AddAsync(AddUserRequest request, CancellationToken cancellationToken)
-        => Ok(await _mediator.Send(new AddCommand<AddUserRequest, UserResponse> { Request = request }, cancellationToken));
-
+    [Authorize]
     [HttpPatch("email")]
     public async Task<IActionResult> UpdateEmailAsync(UpdateUserEmailRequest request, CancellationToken cancellationToken)
-        => Ok(await _mediator.Send(new UpdateUserEmailCommand { Request = request }, cancellationToken));
+    {
+        var id = await _context.GetCurrentUserId();
+        request.Id = id.GetValueOrDefault();
+        return Ok(await _mediator.Send(new UpdateUserEmailCommand { Request = request }, cancellationToken));
+    }
 
     [HttpPatch("username")]
     public async Task<IActionResult> UpdateUsernameAsync(UpdateUserUsernameRequest request, CancellationToken cancellationToken)

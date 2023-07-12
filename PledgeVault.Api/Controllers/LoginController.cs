@@ -9,25 +9,31 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using PledgeVault.Core.Contracts.Web;
 using PledgeVault.Core.Dtos.Requests.Authentication;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Core.Models;
+using PledgeVault.Core.Regex;
 using PledgeVault.Core.Security;
 using PledgeVault.Persistence;
+using PledgeVault.Persistence.Extensions;
 
 namespace PledgeVault.Api.Controllers;
 
+[IgnoreAntiforgeryToken]
 [Route("api/login")]
 [ApiController]
-public class LoginController : ControllerBase
+public sealed class LoginController : ControllerBase
 {
     private readonly IConfiguration _configuration;
-    private readonly PledgeVaultContext _context;
+    private readonly IContext _context;
+    private readonly PledgeVaultContext _dbContext;
 
-    public LoginController(IConfiguration configuration, PledgeVaultContext context)
+    public LoginController(IConfiguration configuration, IContext context, PledgeVaultContext dbContext)
     {
         _configuration = configuration;
         _context = context;
+        _dbContext = dbContext;
     }
 
     [AllowAnonymous]
@@ -43,34 +49,33 @@ public class LoginController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Get()
     {
-        var user = await GetCurrentUser();
-        return user is not null ? Ok($"Your email is: {user.Email}") : Unauthorized();
-    }
-
-    private async Task<User> GetCurrentUser()
-    {
-        var user = HttpContext.User.Identity as ClaimsIdentity;
-
-        if (user is null) return null;
-
-        return await _context.Users.SingleOrDefaultAsync(x => x.Email == user.Name)!;
+        var id = await _context.GetCurrentUserId();
+        return id is not null ? Ok($"Your ID is: {id}") : Unauthorized();
     }
 
     private string GenerateJwtToken(User user)
     {
         var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)), SecurityAlgorithms.HmacSha256);
-        var claims = new List<Claim> { new(ClaimTypes.Name, user.Email) };
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.Email),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString())
+        };
+
         var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Issuer"], claims, expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
     private async Task<User> AuthenticateUser(UserLoginRequest request)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == request.Email);
+        // Get the user based on either Username or Email.
+        var user = EmailRegex.IsValidEmail(request.UsernameOrEmail) ?
+            await _dbContext.Users.WithOnlyActiveEntities().SingleOrDefaultAsync(x => x.Email == request.UsernameOrEmail)
+                : await _dbContext.Users.WithOnlyActiveEntities().SingleOrDefaultAsync(x => x.Username == request.UsernameOrEmail);
 
         if (user is null) return null;
 
-        var sss = AuthenticationManager.IsPasswordMatch(request.Password, user.HashedPassword);
         return AuthenticationManager.IsPasswordMatch(request.Password, user.HashedPassword) ? user : null;
     }
 }

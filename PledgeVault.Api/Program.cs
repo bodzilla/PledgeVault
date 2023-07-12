@@ -20,6 +20,8 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PledgeVault.Api.Common;
+using PledgeVault.Core.Contracts.Web;
 
 namespace PledgeVault.Api;
 
@@ -72,6 +74,7 @@ internal sealed class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblies(assemblies));
 
         builder.Services.AddDbContextPool<PledgeVaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Services.AddScoped<IContext, ContextBase>();
         builder.Services.AddScoped<ICommentEntityValidator, CommentEntityValidator>();
         builder.Services.AddScoped<ICountryEntityValidator, CountryEntityValidator>();
         builder.Services.AddScoped<IPartyEntityValidator, PartyEntityValidator>();
