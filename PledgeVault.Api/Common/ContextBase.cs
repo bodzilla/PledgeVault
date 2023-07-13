@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using PledgeVault.Core.Contracts.Web;
 using PledgeVault.Persistence;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PledgeVault.Api.Common;
 

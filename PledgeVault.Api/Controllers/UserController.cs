@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PledgeVault.Core.Contracts.Web;
 using PledgeVault.Core.Dtos.Requests;
 using PledgeVault.Core.Dtos.Responses;
 using PledgeVault.Services.Commands;
@@ -7,10 +9,6 @@ using PledgeVault.Services.Commands.Users;
 using PledgeVault.Services.Queries;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using PledgeVault.Core.Contracts.Web;
-using PledgeVault.Core.Exceptions;
-using PledgeVault.Persistence;
 
 namespace PledgeVault.Api.Controllers;
 
